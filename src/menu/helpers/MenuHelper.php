@@ -48,7 +48,11 @@ class MenuHelper
 		foreach($items as $index => $config) {
 			$menu = self::genItem($config);
 			if(!empty($menu)) {
-			    $result[] = $menu;
+				if(is_array($menu) && ArrayHelper::isIndexed($menu)) {
+					$result = ArrayHelper::merge($result, $menu);
+				} else {
+					$result[] = $menu;
+				}
 			}
 		}
         $result = self::trimDivider($result);
@@ -110,7 +114,19 @@ class MenuHelper
 	    if(!empty($menu['class'])) {
 			$menu = self::runClass($menu);
 		}
-        if(self::isEmptyItem($menu)) {
+		
+		if(!empty($menu) && is_array($menu) && ArrayHelper::isIndexed($menu)) {
+			$result = [];
+			foreach($menu as $item) {
+				$item = self::genItem($item);
+				if(!empty($item)) {
+					$result[] = $item;
+				}
+			}
+			return array_values($result);
+		}
+		
+		if(self::isEmptyItem($menu)) {
             return false;
         }
 

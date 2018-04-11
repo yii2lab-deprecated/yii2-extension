@@ -46,3 +46,22 @@ echo Uml::widget([
 	'lines' => $lines,
 ]);
 ```
+
+```php
+$lines = [
+	'(start)-><a>[kettle empty]->(Fill Kettle)->|b|',
+    '<a>[kettle full]->|b|->(Boil Kettle)->|c|',
+	'|b|->(Add Tea Bag)->(Add Milk)->|c|->(Pour Water)->(end)',
+    '(Pour Water)->(end)',
+];
+
+echo Uml::widget([
+	'type' => Uml::TYPE_ACTIVITY,
+	'code' => UmlHelper::lines2string($lines),
+]);
+
+echo Uml::widget([
+	'type' => Uml::TYPE_ACTIVITY,
+	'lines' => $lines,
+]);
+```

@@ -20,10 +20,14 @@ $lines = [
 	'[User]-(View Events)',
 ];
 
-$code = UmlHelper::lines2string($lines);
+echo Uml::widget([
+	'type' => Uml::TYPE_USE_CASE,
+	'code' => UmlHelper::lines2string($lines),
+]);
 
-echo\yii2lab\extension\yuml\widgets\UmlUseCase::widget([
-	'code' => $code,
+echo Uml::widget([
+	'type' => Uml::TYPE_USE_CASE,
+	'lines' => $lines,
 ]);
 ```
 
@@ -32,9 +36,13 @@ $lines = [
 	'[User|+Forename+;Surname;+HashedPassword;-Salt|+Login();+Logout()]',
 ];
 
-$code = UmlHelper::lines2string($lines);
+echo Uml::widget([
+	'type' => Uml::TYPE_CLASS,
+	'code' => UmlHelper::lines2string($lines),
+]);
 
-echo \yii2lab\extension\yuml\widgets\UmlClass::widget([
-	'code' => $code,
+echo Uml::widget([
+	'type' => Uml::TYPE_CLASS,
+	'lines' => $lines,
 ]);
 ```

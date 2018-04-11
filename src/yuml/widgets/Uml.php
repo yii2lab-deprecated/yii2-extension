@@ -5,7 +5,6 @@ namespace yii2lab\extension\yuml\widgets;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii2lab\extension\yuml\helpers\UmlHelper;
-use yii2lab\helpers\ReflectionHelper;
 
 /**
  * Class UmlDiagram
@@ -15,10 +14,6 @@ use yii2lab\helpers\ReflectionHelper;
  * @example https://yuml.me/diagram/scruffy/usecase/samples
  */
 class Uml extends Widget {
-	
-	//const URL_USE_CASE = 'http://yuml.me/diagram/scruffy/usecase/';
-	//const URL_CLASS = 'http://yuml.me/diagram/scruffy/class/';
-	//const URL_ACTIVITY = 'http://yuml.me/diagram/scruffy/activity/';
 	
 	const TYPE_USE_CASE = 'use-case';
 	const TYPE_CLASS = 'class';
@@ -30,7 +25,6 @@ class Uml extends Widget {
 	];
 	
 	public $code;
-	//public $lines;
 	public $type;
 	
 	public function run() {

@@ -1,6 +1,8 @@
 Руководство
 ===
 
+## Use case
+
 ```php
 $lines = [
 	'(note: figure 1.2{bg:beige})',
@@ -31,6 +33,8 @@ echo Uml::widget([
 ]);
 ```
 
+## Class
+
 ```php
 $lines = [
 	'[User|+Forename+;Surname;+HashedPassword;-Salt|+Login();+Logout()]',
@@ -46,6 +50,8 @@ echo Uml::widget([
 	'lines' => $lines,
 ]);
 ```
+
+## Activity
 
 ```php
 $lines = [

@@ -11,9 +11,13 @@ use yii2lab\domain\BaseEntity;
  * @package yii2lab\extension\code\entities
  *
  * @property string $name
+ * @property boolean $is_abstract
+ * @property string $extends
+ * @property string $implements
  * @property-read string $namespace
  * @property-read string $alias
  * @property ClassUseEntity[] $uses
+ * @property DocBlockEntity $doc_block
  * @property ClassVariableEntity[] $variables
  * @property ClassConstantEntity[] $constants
  * @property ClassMethodEntity[] $methods
@@ -21,7 +25,11 @@ use yii2lab\domain\BaseEntity;
 class ClassEntity extends BaseEntity {
 	
 	protected $name;
+	protected $is_abstract = false;
+	protected $extends;
+	protected $implements;
 	protected $uses = [];
+	protected $doc_block = null;
 	protected $variables = [];
 	protected $constants = [];
 	protected $methods = [];

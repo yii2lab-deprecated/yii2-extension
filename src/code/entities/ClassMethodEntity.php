@@ -3,6 +3,7 @@
 namespace yii2lab\extension\code\entities;
 
 use yii2lab\domain\BaseEntity;
+use yii2lab\domain\helpers\Helper;
 
 /**
  * Class ClassMethodEntity
@@ -25,4 +26,7 @@ class ClassMethodEntity extends BaseEntity {
 	protected $is_abstract = false;
 	protected $parameters = [];
 	
+	public function setParameters($value) {
+		$this->parameters = Helper::forgeEntity($value, ClassMethodParameterEntity::class);
+	}
 }

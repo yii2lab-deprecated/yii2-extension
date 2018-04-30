@@ -2,7 +2,17 @@
 
 namespace yii2lab\extension\code\helpers;
 
+use yii2lab\domain\BaseEntity;
+use yii2lab\domain\helpers\Helper;
+use yii2lab\extension\code\entities\ClassConstantEntity;
 use yii2lab\extension\code\entities\ClassEntity;
+use yii2lab\extension\code\entities\ClassMethodEntity;
+use yii2lab\extension\code\entities\ClassUseEntity;
+use yii2lab\extension\code\entities\ClassVariableEntity;
+use yii2lab\extension\code\entities\CodeEntity;
+use yii2lab\extension\code\entities\DocBlockEntity;
+use yii2lab\extension\code\entities\InterfaceEntity;
+use yii2lab\helpers\yii\FileHelper;
 
 /**
  * Class ClassHelper
@@ -11,21 +21,101 @@ use yii2lab\extension\code\entities\ClassEntity;
  */
 class ClassHelper
 {
-
-	public static function render(ClassEntity $classEntity) {
+	
+	public static function renderFromArray(array $data) {
+		$classEntity = new ClassEntity();
+		$classEntity->name = 'common\enums\rbac\PermissionEnum';
+		$classEntity->is_abstract = true;
+		$classEntity->extends = 'BaseEnum';
+		$classEntity->implements = 'EnumInterface';
+		$classEntity->doc_block = new DocBlockEntity([
+			'title' => 'Class ' . $classEntity->name,
+		]);
+		$classEntity->uses = [
+			new ClassUseEntity([
+				'name' => 'ArTrait',
+			]),
+		];
+		$classEntity->constants = [
+			new ClassConstantEntity([
+				'name' => 'typeOfVar',
+				'value' => 'var',
+			]),
+		];
+		$classEntity->variables = [
+			new ClassVariableEntity([
+				'name' => 'id',
+				'value' => 'null',
+			]),
+			new ClassVariableEntity([
+				'name' => 'name',
+				'value' => 'null',
+			]),
+		];
+		$classEntity->methods = [
+			new ClassMethodEntity([
+				'name' => 'one',
+			]),
+			new ClassMethodEntity([
+				'name' => 'all',
+			]),
+		];
+	}
+	
+	public static function generate(BaseEntity $classEntity, $uses = []) {
+		$classCode = self::render($classEntity);
+		$codeEntity = new CodeEntity();
+		$codeEntity->namespace = $classEntity->namespace;
+		$codeEntity->uses = Helper::forgeEntity($uses, ClassUseEntity::class);
+		$codeEntity->code = $classCode;
+		$code =  self::renderPhp($codeEntity);
+		/** @var ClassEntity $classEntity */
+		$pathName = FileHelper::getPath('@' . $classEntity->namespace);
+		$fileName = $pathName . DS . $classEntity->name . DOT . 'php';
+		FileHelper::save($fileName, $code);
+	}
+	
+	public static function render(BaseEntity $classEntity) {
 		$code = '';
+		/** @var ClassEntity|InterfaceEntity $classEntity */
+		$isClass = ! ($classEntity instanceof InterfaceEntity);
 		$code .= static::renderDocBlock($classEntity);
-		$code .= static::renderHeader($classEntity);
-		$code .= ' { ' . PHP_EOL;
-		$code .= static::renderUses($classEntity);
-		$code .= static::renderConstants($classEntity);
-		$code .= static::renderVariables($classEntity);
+		if($isClass) {
+			$code .= static::renderHeader($classEntity);
+		} else {
+			$code .= static::renderHeaderInterface($classEntity);
+		}
+		$code .= ' {' . PHP_EOL;
+		if($isClass) {
+			$code .= static::renderUses($classEntity);
+			$code .= static::renderConstants($classEntity);
+			$code .= static::renderVariables($classEntity);
+		}
 		$code .= static::renderMethods($classEntity);
-		$code .=  PHP_EOL . ' }';
+		$code .=  PHP_EOL . '}';
 		return $code;
 	}
 	
-	private static function renderUses(ClassEntity $classEntity) {
+	public static function renderPhp(CodeEntity $codeEntity) {
+		$code = '<?php' . PHP_EOL;
+		if($codeEntity->namespace != null) {
+			$code .= PHP_EOL;
+			$code .= 'namespace ' . $codeEntity->namespace . ';' . PHP_EOL;
+		}
+		if($codeEntity->uses != null) {
+			$code .= PHP_EOL;
+			foreach($codeEntity->uses as $useEntity) {
+				$code .= 'use ' . $useEntity->name . ';' . PHP_EOL;
+			}
+		}
+		$code .= PHP_EOL;
+		if($codeEntity->code != null) {
+			$code .= $codeEntity->code . PHP_EOL;
+		}
+		return $code;
+	}
+	
+	private static function renderUses(BaseEntity $classEntity) {
 		if($classEntity->uses == null) {
 			return EMP;
 		}
@@ -36,7 +126,7 @@ class ClassHelper
 		return $code;
 	}
 	
-	private static function renderConstants(ClassEntity $classEntity) {
+	private static function renderConstants(BaseEntity $classEntity) {
 		if($classEntity->constants == null) {
 			return EMP;
 		}
@@ -47,7 +137,7 @@ class ClassHelper
 		return $code;
 	}
 	
-	private static function renderVariables(ClassEntity $classEntity) {
+	private static function renderVariables(BaseEntity $classEntity) {
 		if($classEntity->variables == null) {
 			return EMP;
 		}
@@ -58,7 +148,7 @@ class ClassHelper
 		return $code;
 	}
 	
-	private static function renderMethods(ClassEntity $classEntity) {
+	private static function renderMethods(BaseEntity $classEntity) {
 		if($classEntity->methods == null) {
 			return EMP;
 		}
@@ -69,7 +159,7 @@ class ClassHelper
 		return $code;
 	}
 	
-	private static function renderDocBlock(ClassEntity $classEntity) {
+	private static function renderDocBlock(BaseEntity $classEntity) {
 		if($classEntity->doc_block == null) {
 			return EMP;
 		}
@@ -100,6 +190,17 @@ class ClassHelper
 		if($classEntity->implements) {
 			$code .= ' implements ' . $classEntity->implements;
 		}
+		$code = trim($code);
+		return $code;
+	}
+	
+	private static function renderHeaderInterface(InterfaceEntity $classEntity) {
+		$code = '';
+		$code .= ' interface ' . $classEntity->getName();
+		if($classEntity->extends) {
+			$code .= ' extends ' . $classEntity->extends;
+		}
+		$code = trim($code);
 		return $code;
 	}
 	

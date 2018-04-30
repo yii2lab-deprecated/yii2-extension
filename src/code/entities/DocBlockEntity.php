@@ -3,6 +3,7 @@
 namespace yii2lab\extension\code\entities;
 
 use yii2lab\domain\BaseEntity;
+use yii2lab\domain\helpers\Helper;
 
 /**
  * Class DocBlockEntity
@@ -19,4 +20,7 @@ class DocBlockEntity extends BaseEntity {
 	protected $description;
 	protected $parameters = [];
 	
+	public function setParameters($value) {
+		$this->parameters = Helper::forgeEntity($value, DocBlockParameterEntity::class);
+	}
 }

@@ -10,10 +10,11 @@ class MethodRender extends BaseRender
 			return EMP;
 		}
 		$code = PHP_EOL;
-		foreach($this->classEntity->methods as $methodEntity) {
-			$code .= TAB . 'function ' . $methodEntity->name . '() {' . PHP_EOL . PHP_EOL . TAB . '}' . PHP_EOL . PHP_EOL;
-		}
+		$code .= $this->renderItems($this->classEntity->methods);
 		return $code;
 	}
 	
+	protected function renderItem($methodEntity) {
+		return TAB . 'function ' . $methodEntity->name . '() {' . PHP_EOL . PHP_EOL . TAB . '}' . PHP_EOL . PHP_EOL;
+	}
 }

@@ -8,23 +8,19 @@ use yii2lab\extension\code\entities\InterfaceEntity;
 class InterfaceRender extends BaseRender
 {
 	
+	const LINE_START = ' {' . PHP_EOL;
+	const LINE_END = '}';
+	
 	public function run() {
 		$classEntity = $this->classEntity;
 		$code = '';
 		/** @var ClassEntity|InterfaceEntity $classEntity */
 		$code .= $this->render(DocBlockRender::class);
 		$code .= $this->renderHeader($classEntity);
-		$code .= ' {' . PHP_EOL;
+		$code .= self::LINE_START;
 		$code .= $this->render(MethodRender::class);
-		$code .=  '}';
+		$code .= self::LINE_END;
 		return $code;
-	}
-	
-	private function render($renderClass) {
-		/** @var BaseRender $render */
-		$render = new $renderClass();
-		$render->classEntity = $this->classEntity;
-		return $render->run();
 	}
 	
 	private static function renderHeader(InterfaceEntity $classEntity) {

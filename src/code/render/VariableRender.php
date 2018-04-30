@@ -10,10 +10,12 @@ class VariableRender extends BaseRender
 			return EMP;
 		}
 		$code = PHP_EOL;
-		foreach($this->classEntity->variables as $variableEntity) {
-			$code .= TAB . 'var $' . $variableEntity->name . ' = ' . $variableEntity->value . ';' . PHP_EOL;
-		}
+		$code .= $this->renderItems($this->classEntity->variables);
 		return $code;
+	}
+	
+	protected function renderItem($useEntity) {
+		return TAB . 'var $' . $useEntity->name . ' = ' . $useEntity->value . ';' . PHP_EOL;
 	}
 	
 }

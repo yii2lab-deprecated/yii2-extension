@@ -22,12 +22,10 @@ class ClassHelper extends BaseClassHelper
 {
 	
 	public static function generatePhpData($alias, $data) {
-		$codeEntity = new CodeEntity();
 		$store = new Store('php');
 		$content = $store->encode($data);
-		$codeEntity->code = 'return ' . $content . ';';
-		$pathName = FileHelper::getPath('@' . $alias);
-		FileHelper::save($pathName . DOT . 'php', self::renderPhp($codeEntity));
+		$code = 'return ' . $content . ';';
+		self::generatePhp($alias, $code);
 	}
 	
 	public static function generatePhp($alias, $code) {
@@ -38,12 +36,11 @@ class ClassHelper extends BaseClassHelper
 	}
 	
 	public static function generate(BaseEntity $classEntity, $uses = []) {
-		$classCode = self::render($classEntity);
 		$codeEntity = new CodeEntity();
 		$codeEntity->namespace = $classEntity->namespace;
 		$codeEntity->uses = Helper::forgeEntity($uses, ClassUseEntity::class);
-		$codeEntity->code = $classCode;
-		$code =  self::renderPhp($codeEntity);
+		$codeEntity->code = self::render($classEntity);
+		$code = self::renderPhp($codeEntity);
 		/** @var ClassEntity $classEntity */
 		$pathName = FileHelper::getPath('@' . $classEntity->namespace);
 		$fileName = $pathName . DS . $classEntity->name . DOT . 'php';

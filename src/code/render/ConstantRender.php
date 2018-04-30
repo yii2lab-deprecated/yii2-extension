@@ -10,10 +10,11 @@ class ConstantRender extends BaseRender
 			return EMP;
 		}
 		$code = PHP_EOL;
-		foreach($this->classEntity->constants as $constantEntity) {
-			$code .= TAB . 'const ' . $constantEntity->name . ' = ' . $constantEntity->value . ';' . PHP_EOL;
-		}
+		$code .= $this->renderItems($this->classEntity->constants);
 		return $code;
 	}
 	
+	protected function renderItem($constantEntity) {
+		return TAB . 'const ' . $constantEntity->name . ' = ' . $constantEntity->value . ';' . PHP_EOL;
+	}
 }

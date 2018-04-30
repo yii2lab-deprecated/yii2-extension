@@ -4,23 +4,24 @@ namespace yii2lab\extension\code\scenarios\generator;
 
 use yii2lab\domain\repositories\relations\BaseSchema;
 use yii2lab\extension\code\entities\ClassEntity;
-use yii2lab\extension\code\entities\DocBlockEntity;
-use yii2lab\extension\code\helpers\ClassHelper;
 
 class RepositorySchemaGenerator extends BaseGenerator {
 
 	public $name;
+	public $defaultUses = [
+		['name' => BaseSchema::class],
+	];
 	
 	public function run() {
 		$classEntity = new ClassEntity();
 		$classEntity->name = $this->name;
 		$classEntity->extends = 'BaseSchema';
-		$classEntity->doc_block = new DocBlockEntity([
-			'title' => 'Class ' . $classEntity->name,
-		]);
-		ClassHelper::generate($classEntity, [
-			['name' => BaseSchema::class],
-		]);
+		$classEntity->methods = [
+			[
+				'name' => 'relations',
+			],
+		];
+		$this->generate($classEntity);
 	}
 	
 }

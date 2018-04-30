@@ -92,7 +92,7 @@ class ClassHelper
 			$code .= static::renderVariables($classEntity);
 		}
 		$code .= static::renderMethods($classEntity);
-		$code .=  PHP_EOL . '}';
+		$code .=  '}';
 		return $code;
 	}
 	
@@ -143,7 +143,7 @@ class ClassHelper
 		}
 		$code = PHP_EOL;
 		foreach($classEntity->variables as $variableEntity) {
-			$code .= TAB . 'var ' . $variableEntity->name . ' = ' . $variableEntity->value . ';' . PHP_EOL;
+			$code .= TAB . 'var $' . $variableEntity->name . ' = ' . $variableEntity->value . ';' . PHP_EOL;
 		}
 		return $code;
 	}
@@ -169,6 +169,20 @@ class ClassHelper
 		$code .= self::renderDocBlockLine();
 		$code .= self::renderDocBlockLine('@package ' . $classEntity->namespace);
 		$code .= self::renderDocBlockLine();
+		
+		if($classEntity->doc_block->parameters != null) {
+			foreach($classEntity->doc_block->parameters as $parameter) {
+				$line = '@' . $parameter->name;
+				if($parameter->type != null) {
+					$line .= SPC . $parameter->type;
+				}
+				if($parameter->value != null) {
+					$line .= SPC . '$' . $parameter->value;
+				}
+				$code .= self::renderDocBlockLine($line);
+			}
+		}
+		
 		$code .= ' */' . PHP_EOL;
 		return $code;
 	}

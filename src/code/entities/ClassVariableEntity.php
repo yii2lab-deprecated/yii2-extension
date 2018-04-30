@@ -17,6 +17,8 @@ use yii2lab\domain\BaseEntity;
 class ClassVariableEntity extends BaseEntity {
 	
 	const ACCESS_PUBLIC = 'public';
+	const ACCESS_PROTECTED = 'protected';
+	const ACCESS_PRIVATE = 'private';
 	
 	protected $name;
 	protected $access = self::ACCESS_PUBLIC;

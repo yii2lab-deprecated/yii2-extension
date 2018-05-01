@@ -28,7 +28,7 @@ class CodeHelper extends BaseClassHelper
 	
 	private static function render(CodeEntity $codeEntity) {
 		$render = new CodeRender();
-		$render->classEntity = $codeEntity;
+		$render->entity = $codeEntity;
 		return $render->run();
 	}
 	

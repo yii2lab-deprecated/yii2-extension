@@ -5,6 +5,13 @@ namespace yii2lab\extension\code\render;
 use yii2lab\extension\code\entities\ClassEntity;
 use yii2lab\extension\code\entities\InterfaceEntity;
 
+/**
+ * Class ClassRender
+ *
+ * @package yii2lab\extension\code\render
+ *
+ * @property ClassEntity|InterfaceEntity $entity
+ */
 class ClassRender extends BaseRender
 {
 	
@@ -12,11 +19,9 @@ class ClassRender extends BaseRender
 	const LINE_END = PHP_EOL . '}';
 	
 	public function run() {
-		$classEntity = $this->classEntity;
 		$code = '';
-		/** @var ClassEntity|InterfaceEntity $classEntity */
 		$code .= $this->render(DocBlockRender::class);
-		$code .= $this->renderHeader($classEntity);
+		$code .= $this->renderHeader($this->entity);
 		$code .= self::LINE_START;
 		$code .= $this->render(UseRender::class);
 		$code .= $this->render(ConstantRender::class);

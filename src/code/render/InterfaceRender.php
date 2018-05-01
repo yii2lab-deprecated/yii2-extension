@@ -12,7 +12,7 @@ class InterfaceRender extends BaseRender
 	const LINE_END = PHP_EOL . '}';
 	
 	public function run() {
-		$classEntity = $this->classEntity;
+		$classEntity = $this->entity;
 		$code = '';
 		/** @var ClassEntity|InterfaceEntity $classEntity */
 		$code .= $this->render(DocBlockRender::class);
@@ -24,8 +24,7 @@ class InterfaceRender extends BaseRender
 	}
 	
 	private static function renderHeader(InterfaceEntity $classEntity) {
-		$code = '';
-		$code .= ' interface ' . $classEntity->getName();
+		$code = 'interface ' . $classEntity->getName();
 		if($classEntity->extends) {
 			$code .= ' extends ' . $classEntity->extends;
 		}

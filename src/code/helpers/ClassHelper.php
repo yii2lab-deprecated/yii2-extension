@@ -35,7 +35,7 @@ class ClassHelper extends BaseClassHelper
 		} elseif($classEntity instanceof InterfaceEntity) {
 			$render = new InterfaceRender();
 		}
-		$render->classEntity = $classEntity;
+		$render->entity = $classEntity;
 		return $render->run();
 	}
 	

@@ -10,6 +10,7 @@ use yii2lab\domain\BaseEntity;
  * @package yii2lab\extension\code\entities
  *
  * @property string $name
+ * @property string $type
  * @property mixed $value
  */
 class DocBlockParameterEntity extends BaseEntity {

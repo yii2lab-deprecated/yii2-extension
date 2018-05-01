@@ -4,6 +4,13 @@ namespace yii2lab\extension\code\render;
 
 use yii2lab\extension\code\entities\CodeEntity;
 
+/**
+ * Class CodeRender
+ *
+ * @package yii2lab\extension\code\render
+ *
+ * @property CodeEntity $entity
+ */
 class CodeRender extends BaseRender
 {
 	
@@ -11,8 +18,7 @@ class CodeRender extends BaseRender
 	const LINE_END = PHP_EOL . '?>';
 	
 	public function run() {
-		/** @var CodeEntity $codeEntity */
-		$codeEntity = $this->classEntity;
+		$codeEntity = $this->entity;
 		$code = self::LINE_START;
 		if($codeEntity->namespace != null) {
 			$code .= PHP_EOL;

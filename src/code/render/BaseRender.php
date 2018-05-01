@@ -7,7 +7,7 @@ use yii2lab\designPattern\scenario\base\BaseScenario;
 abstract class BaseRender extends BaseScenario
 {
 	
-	public $classEntity;
+	public $entity;
 	
 	protected function renderItem($entity) {
 	
@@ -16,7 +16,7 @@ abstract class BaseRender extends BaseScenario
 	protected function render($renderClass) {
 		/** @var BaseRender $render */
 		$render = new $renderClass();
-		$render->classEntity = $this->classEntity;
+		$render->entity = $this->entity;
 		return $render->run();
 	}
 	

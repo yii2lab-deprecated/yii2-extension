@@ -2,17 +2,25 @@
 
 namespace yii2lab\extension\code\render;
 
+use yii2lab\extension\code\entities\ClassEntity;
 use yii2lab\extension\code\entities\ClassMethodEntity;
 
+/**
+ * Class MethodRender
+ *
+ * @package yii2lab\extension\code\render
+ *
+ * @property ClassEntity $entity
+ */
 class MethodRender extends BaseRender
 {
 	
 	public function run() {
-		if($this->classEntity->methods == null) {
+		if($this->entity->methods == null) {
 			return EMP;
 		}
 		$code = PHP_EOL;
-		$code .= $this->renderItems($this->classEntity->methods);
+		$code .= $this->renderItems($this->entity->methods);
 		return $code;
 	}
 	

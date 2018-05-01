@@ -2,6 +2,15 @@
 
 namespace yii2lab\extension\code\render;
 
+use yii2lab\extension\code\entities\ClassEntity;
+
+/**
+ * Class DocBlockRender
+ *
+ * @package yii2lab\extension\code\render
+ *
+ * @property ClassEntity $entity
+ */
 class DocBlockRender extends BaseRender
 {
 	
@@ -9,7 +18,7 @@ class DocBlockRender extends BaseRender
 	const LINE_END = ' */' . PHP_EOL;
 	
 	public function run() {
-		$classEntity = $this->classEntity;
+		$classEntity = $this->entity;
 		if($classEntity->doc_block == null) {
 			return EMP;
 		}
@@ -29,7 +38,7 @@ class DocBlockRender extends BaseRender
 	}
 	
 	private function renderParameters() {
-		$classEntity = $this->classEntity;
+		$classEntity = $this->entity;
 		if($classEntity->doc_block->parameters == null) {
 			return EMP;
 		}

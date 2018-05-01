@@ -2,15 +2,24 @@
 
 namespace yii2lab\extension\code\render;
 
+use yii2lab\extension\code\entities\ClassEntity;
+
+/**
+ * Class ConstantRender
+ *
+ * @package yii2lab\extension\code\render
+ *
+ * @property ClassEntity $entity
+ */
 class ConstantRender extends BaseRender
 {
 	
 	public function run() {
-		if($this->classEntity->constants == null) {
+		if($this->entity->constants == null) {
 			return EMP;
 		}
 		$code = PHP_EOL;
-		$code .= $this->renderItems($this->classEntity->constants);
+		$code .= $this->renderItems($this->entity->constants);
 		return $code;
 	}
 	

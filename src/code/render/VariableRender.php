@@ -2,17 +2,25 @@
 
 namespace yii2lab\extension\code\render;
 
+use yii2lab\extension\code\entities\ClassEntity;
 use yii2lab\extension\code\entities\ClassVariableEntity;
 
+/**
+ * Class VariableRender
+ *
+ * @package yii2lab\extension\code\render
+ *
+ * @property ClassEntity $entity
+ */
 class VariableRender extends BaseRender
 {
 	
 	public function run() {
-		if($this->classEntity->variables == null) {
+		if($this->entity->variables == null) {
 			return EMP;
 		}
 		$code = PHP_EOL;
-		$code .= $this->renderItems($this->classEntity->variables);
+		$code .= $this->renderItems($this->entity->variables);
 		return $code;
 	}
 	

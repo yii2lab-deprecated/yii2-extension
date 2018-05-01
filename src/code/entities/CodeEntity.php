@@ -10,12 +10,14 @@ use yii2lab\domain\helpers\Helper;
  *
  * @package yii2lab\extension\code\entities
  *
+ * @property string $fileName
  * @property string $namespace
  * @property ClassUseEntity[] $uses
  * @property string $code
  */
 class CodeEntity extends BaseEntity {
 	
+	protected $fileName;
 	protected $namespace;
 	protected $uses;
 	protected $code;

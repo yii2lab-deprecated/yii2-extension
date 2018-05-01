@@ -14,6 +14,7 @@ use yii2lab\domain\helpers\Helper;
  * @property string $access
  * @property boolean $is_static
  * @property boolean $is_abstract
+ * @property boolean $is_final
  * @property ClassMethodParameterEntity[] $parameters
  */
 class ClassMethodEntity extends BaseEntity {
@@ -24,6 +25,7 @@ class ClassMethodEntity extends BaseEntity {
 	protected $access = self::ACCESS_PUBLIC;
 	protected $is_static = false;
 	protected $is_abstract = false;
+	protected $is_final = false;
 	protected $parameters = [];
 	
 	public function setParameters($value) {

@@ -9,7 +9,7 @@ class ClassRender extends BaseRender
 {
 	
 	const LINE_START = ' {' . PHP_EOL;
-	const LINE_END = '}';
+	const LINE_END = PHP_EOL . '}';
 	
 	public function run() {
 		$classEntity = $this->classEntity;

@@ -25,4 +25,11 @@ class ClassVariableEntity extends BaseEntity {
 	protected $is_static = false;
 	protected $value = null;
 	
+	public function getAccess() {
+		if(!isset($this->access)) {
+			return self::ACCESS_PUBLIC;
+		}
+		return $this->access;
+	}
+	
 }

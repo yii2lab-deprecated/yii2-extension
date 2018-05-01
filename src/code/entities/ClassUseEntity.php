@@ -17,4 +17,9 @@ class ClassUseEntity extends BaseEntity {
 	protected $name = null;
 	protected $as = null;
 	
+	public function rules() {
+		return [
+			[['name'], 'required'],
+		];
+	}
 }

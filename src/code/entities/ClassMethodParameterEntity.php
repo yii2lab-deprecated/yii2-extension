@@ -15,8 +15,13 @@ use yii2lab\domain\BaseEntity;
  */
 class ClassMethodParameterEntity extends BaseEntity {
 	
-	protected $type;
 	protected $name;
+	protected $type;
 	protected $value;
 	
+	public function rules() {
+		return [
+			[['name'], 'required'],
+		];
+	}
 }

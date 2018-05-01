@@ -3,10 +3,13 @@
 namespace yii2lab\extension\code\render;
 
 use yii2lab\designPattern\scenario\base\BaseScenario;
+use yii2lab\domain\BaseEntity;
 
 abstract class BaseRender extends BaseScenario
 {
-	
+	/**
+	 * @var BaseEntity
+	 */
 	public $entity;
 	
 	protected function renderItem($entity) {

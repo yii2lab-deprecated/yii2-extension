@@ -3,6 +3,7 @@
 namespace yii2lab\extension\code\entities;
 
 use yii2lab\domain\BaseEntity;
+use yii2lab\extension\code\enums\AccessEnum;
 
 /**
  * Class ClassVariableEntity
@@ -16,20 +17,15 @@ use yii2lab\domain\BaseEntity;
  */
 class ClassVariableEntity extends BaseEntity {
 	
-	const ACCESS_PUBLIC = 'public';
-	const ACCESS_PROTECTED = 'protected';
-	const ACCESS_PRIVATE = 'private';
-	
 	protected $name;
-	protected $access = self::ACCESS_PUBLIC;
+	protected $access = AccessEnum::PUBLIC;
 	protected $is_static = false;
-	protected $value = null;
+	protected $value;
 	
-	public function getAccess() {
-		if(!isset($this->access)) {
-			return self::ACCESS_PUBLIC;
-		}
-		return $this->access;
+	public function rules() {
+		return [
+			[['name','access'], 'required'],
+			[['access'], 'in', 'range' => AccessEnum::values()],
+		];
 	}
-	
 }

@@ -35,6 +35,12 @@ class ClassEntity extends BaseEntity {
 	protected $constants = [];
 	protected $methods = [];
 	
+	public function rules() {
+		return [
+			[['name'], 'required'],
+		];
+	}
+	
 	public function setUses($value) {
 		$this->uses = Helper::forgeEntity($value, ClassUseEntity::class);
 	}

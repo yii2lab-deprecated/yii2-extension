@@ -18,6 +18,12 @@ class ClassConstantEntity extends BaseEntity {
 	protected $name = null;
 	protected $value = null;
 	
+	public function rules() {
+		return [
+			[['name','value'], 'required'],
+		];
+	}
+	
 	public function getName() {
 		$underscore = Inflector::underscore($this->name);
 		return strtoupper($underscore);

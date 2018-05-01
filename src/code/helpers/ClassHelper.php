@@ -16,26 +16,27 @@ use yii2lab\extension\code\render\InterfaceRender;
  *
  * @package yii2lab\extension\code\helpers
  */
-class ClassHelper extends BaseClassHelper
+class ClassHelper
 {
 	
-	public static function generate(BaseEntity $classEntity, $uses = []) {
+	public static function generate(BaseEntity $entity, $uses = []) {
 		$codeEntity = new CodeEntity();
-		$codeEntity->fileName = $classEntity->namespace . DS . $classEntity->name;
-		$codeEntity->namespace = $classEntity->namespace;
+		/** @var ClassEntity|InterfaceEntity $entity */
+		$codeEntity->fileName = $entity->namespace . DS . $entity->name;
+		$codeEntity->namespace = $entity->namespace;
 		$codeEntity->uses = Helper::forgeEntity($uses, ClassUseEntity::class);
-		$codeEntity->code = self::render($classEntity);
+		$codeEntity->code = self::render($entity);
 		CodeHelper::save($codeEntity);
 	}
 	
-	private static function render(BaseEntity $classEntity) {
-		/** @var ClassRender|InterfaceEntity $render */
-		if($classEntity instanceof ClassEntity) {
+	private static function render(BaseEntity $entity) {
+		/** @var ClassRender|InterfaceRender $render */
+		if($entity instanceof ClassEntity) {
 			$render = new ClassRender();
-		} elseif($classEntity instanceof InterfaceEntity) {
+		} elseif($entity instanceof InterfaceEntity) {
 			$render = new InterfaceRender();
 		}
-		$render->entity = $classEntity;
+		$render->entity = $entity;
 		return $render->run();
 	}
 	

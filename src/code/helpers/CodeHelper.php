@@ -7,21 +7,19 @@ use yii2lab\extension\code\render\CodeRender;
 use yii2lab\helpers\yii\FileHelper;
 use yii2lab\store\Store;
 
-class CodeHelper extends BaseClassHelper
+class CodeHelper
 {
 	
 	public static function generatePhpData($alias, $data) {
-		$store = new Store('php');
-		$content = $store->encode($data);
 		$codeEntity = new CodeEntity();
 		$codeEntity->fileName = $alias;
-		$codeEntity->code = 'return ' . $content . ';';
+		$codeEntity->code = self::encodeDataForPhp($data);
 		self::save($codeEntity);
 	}
 	
 	public static function save(CodeEntity $codeEntity) {
 		$pathName = FileHelper::getPath('@' . $codeEntity->fileName);
-		$fileName = $pathName . DOT . 'php';
+		$fileName = $pathName . DOT . $codeEntity->fileExtension;
 		$code = CodeHelper::render($codeEntity);
 		FileHelper::save($fileName, $code);
 	}
@@ -32,4 +30,10 @@ class CodeHelper extends BaseClassHelper
 		return $render->run();
 	}
 	
+	private static function encodeDataForPhp($data) {
+		$store = new Store('php');
+		$content = $store->encode($data);
+		$code = 'return ' . $content . ';';
+		return $code;
+	}
 }

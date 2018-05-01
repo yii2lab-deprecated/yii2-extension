@@ -4,6 +4,7 @@ namespace yii2lab\extension\code\entities;
 
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\helpers\Helper;
+use yii2lab\extension\code\enums\AccessEnum;
 
 /**
  * Class ClassMethodEntity
@@ -19,14 +20,19 @@ use yii2lab\domain\helpers\Helper;
  */
 class ClassMethodEntity extends BaseEntity {
 	
-	const ACCESS_PUBLIC = 'public';
-	
 	protected $name;
-	protected $access = self::ACCESS_PUBLIC;
+	protected $access = AccessEnum::PUBLIC;
 	protected $is_static = false;
 	protected $is_abstract = false;
 	protected $is_final = false;
 	protected $parameters = [];
+	
+	public function rules() {
+		return [
+			[['name','access'], 'required'],
+			[['access'], 'in', 'range' => AccessEnum::values()],
+		];
+	}
 	
 	public function setParameters($value) {
 		$this->parameters = Helper::forgeEntity($value, ClassMethodParameterEntity::class);

@@ -23,6 +23,12 @@ class InterfaceEntity extends BaseEntity {
 	protected $doc_block = null;
 	protected $methods = [];
 	
+	public function rules() {
+		return [
+			[['name'], 'required'],
+		];
+	}
+	
 	public function setDocBlock($value) {
 		$this->doc_block = Helper::forgeEntity($value, DocBlockEntity::class);
 	}

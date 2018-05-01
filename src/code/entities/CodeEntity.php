@@ -11,6 +11,7 @@ use yii2lab\domain\helpers\Helper;
  * @package yii2lab\extension\code\entities
  *
  * @property string $fileName
+ * @property string $fileExtension
  * @property string $namespace
  * @property ClassUseEntity[] $uses
  * @property string $code
@@ -18,9 +19,16 @@ use yii2lab\domain\helpers\Helper;
 class CodeEntity extends BaseEntity {
 	
 	protected $fileName;
+	protected $fileExtension = 'php';
 	protected $namespace;
 	protected $uses;
 	protected $code;
+	
+	public function rules() {
+		return [
+			[['fileName'], 'required'],
+		];
+	}
 	
 	public function setUses($value) {
 		$this->uses = Helper::forgeEntity($value, ClassUseEntity::class);

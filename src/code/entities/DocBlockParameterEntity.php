@@ -23,4 +23,11 @@ class DocBlockParameterEntity extends BaseEntity {
 	protected $type;
 	protected $value;
 	
+	public function rules() {
+		$names = $this->getConstantEnum('name');
+		return [
+			[['name'], 'required'],
+			[['name'], 'in', 'range' => $names],
+		];
+	}
 }

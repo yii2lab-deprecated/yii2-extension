@@ -2,11 +2,13 @@
 
 namespace yii2lab\extension\activeRecord\traits;
 
+use Yii;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\helpers\ErrorCollection;
 use yii2lab\domain\exceptions\UnprocessableEntityHttpException;
 use yii\web\NotFoundHttpException;
+use yii2lab\domain\helpers\repository\QueryFilter;
 use yii2lab\domain\helpers\repository\RelationHelper;
 use yii2lab\domain\helpers\repository\RelationWithHelper;
 use yii\base\InvalidArgumentException;
@@ -103,13 +105,18 @@ trait ActiveRepositoryTrait {
 	
 	public function all(Query $query = null) {
 		$query = $this->prepareQuery($query);
-		$query2 = clone $query;
-		$with = RelationWithHelper::cleanWith($this->relations(), $query);
-		$models = $this->allModels($query);
+		
+		$queryFilter = Yii::createObject([
+			'class' => QueryFilter::class,
+			'repository' => $this,
+			'query' => $query,
+		]);
+		$queryWithoutRelations = $queryFilter->getQueryWithoutRelations();
+		
+		$models = $this->allModels($queryWithoutRelations);
 		$collection = $this->forgeEntity($models);
-		if(!empty($with)) {
-			$collection = RelationHelper::load($this->domain->id, $this->id, $query2, $collection);
-		}
+		
+		$collection = $queryFilter->loadRelations($collection);
 		return $collection;
 	}
 	

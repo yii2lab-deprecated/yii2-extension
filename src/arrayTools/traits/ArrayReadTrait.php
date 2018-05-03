@@ -2,7 +2,9 @@
 
 namespace yii2lab\extension\arrayTools\traits;
 
+use Yii;
 use yii2lab\domain\BaseEntity;
+use yii2lab\domain\helpers\repository\QueryFilter;
 use yii2lab\extension\arrayTools\helpers\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii\web\NotFoundHttpException;
@@ -73,31 +75,30 @@ trait ArrayReadTrait {
 	}
 	
 	public function one(Query $query = null) {
-		/** @var Query $query */
 		$query = Query::forge($query);
-		$query2 = clone $query;
-		$with = RelationWithHelper::cleanWith($this->relations(), $query);
 		$collection = $this->all($query);
 		if(empty($collection)) {
 			throw new NotFoundHttpException(__METHOD__ . ':' . __LINE__);
 		}
 		$entity = $collection[0];
-		if(!empty($with)) {
-			$entity = RelationHelper::load($this->domain->id, $this->id, $query2, $entity);
-		}
 		return $entity;
 	}
 
 	public function all(Query $query = null) {
-		$query = Query::forge($query);
-		$query2 = clone $query;
-		$with = RelationWithHelper::cleanWith($this->relations(), $query);
+		$query = $this->prepareQuery($query);
+		
+		$queryFilter = Yii::createObject([
+			'class' => QueryFilter::class,
+			'repository' => $this,
+			'query' => $query,
+		]);
+		$queryWithoutRelations = $queryFilter->getQueryWithoutRelations();
+		
 		$iterator = $this->getIterator();
-		$array = $iterator->all($query);
+		$array = $iterator->all($queryWithoutRelations);
 		$collection = $this->forgeEntity($array);
-		if(!empty($with)) {
-			$collection = RelationHelper::load($this->domain->id, $this->id, $query2, $collection);
-		}
+		
+		$collection = $queryFilter->loadRelations($collection);
 		return $collection;
 	}
 	

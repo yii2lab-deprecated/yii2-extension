@@ -1,6 +1,6 @@
 <?php
 
-namespace yii2lab\extension\shell\base\exception;
+namespace yii2lab\extension\shell\exceptions;
 
 use Exception;
 

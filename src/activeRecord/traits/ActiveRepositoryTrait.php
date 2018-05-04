@@ -9,8 +9,6 @@ use yii2lab\domain\helpers\ErrorCollection;
 use yii2lab\domain\exceptions\UnprocessableEntityHttpException;
 use yii\web\NotFoundHttpException;
 use yii2lab\domain\helpers\repository\QueryFilter;
-use yii2lab\domain\helpers\repository\RelationHelper;
-use yii2lab\domain\helpers\repository\RelationWithHelper;
 use yii\base\InvalidArgumentException;
 use yii2mod\helpers\ArrayHelper;
 

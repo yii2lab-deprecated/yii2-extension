@@ -2,7 +2,7 @@
 
 namespace yii2lab\extension\shell\base;
 
-use yii2lab\misc\exceptions\ShellException;
+use yii2lab\extension\shell\base\exception\ShellException;
 
 abstract class BaseShell {
 

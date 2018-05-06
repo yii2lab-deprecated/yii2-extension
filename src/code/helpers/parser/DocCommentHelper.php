@@ -49,7 +49,7 @@ class DocCommentHelper
 		}
 		$code = '/**' . PHP_EOL;
 		$code .= implode(PHP_EOL, $lines);
-		$code .= PHP_EOL . '*/';
+		$code .= PHP_EOL . ' */';
 		return $code;
 	}
 	
@@ -110,25 +110,28 @@ class DocCommentHelper
 	private static function getCollection($lines) {
 		$collection = [];
 		foreach($lines as $line) {
-			$arr = explode(SPC, $line);
-			if($arr[0]{0} == '@') {
-				$collection[] = [
-					'type' => self::TYPE_ATTRIBUTE,
-					'name' => substr($arr[0], 1),
-					'value' => array_slice($arr, 1),
-				];
-			} else {
-				if(empty($line)) {
+			if(!empty($line)) {
+				$arr = explode(SPC, $line);
+				if($arr[0]{0} == '@') {
 					$collection[] = [
-						'type' => self::TYPE_EMPTY,
+						'type' => self::TYPE_ATTRIBUTE,
+						'name' => substr($arr[0], 1),
+						'value' => array_slice($arr, 1),
 					];
 				} else {
-					$collection[] = [
-						'type' => self::TYPE_STRING,
-						'value' => $line,
-					];
+					if(empty($line)) {
+						$collection[] = [
+							'type' => self::TYPE_EMPTY,
+						];
+					} else {
+						$collection[] = [
+							'type' => self::TYPE_STRING,
+							'value' => $line,
+						];
+					}
 				}
 			}
+			
 		}
 		return $collection;
 	}

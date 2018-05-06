@@ -39,7 +39,7 @@ class TokenHelper
 	}
 	
 	public static function collectionToCode(array $tokenCollection) {
-		$code = SPC;
+		$code = EMP;
 		/** @var TokenEntity[] $tokenCollection */
 		foreach($tokenCollection as $entity) {
 			$code .= $entity->value;

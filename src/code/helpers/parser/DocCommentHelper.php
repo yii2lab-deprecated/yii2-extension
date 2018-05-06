@@ -9,6 +9,22 @@ class DocCommentHelper
 	const TYPE_STRING = 'string';
 	const TYPE_ATTRIBUTE = 'attribute';
 	
+	public static function addAttribute($entity, $attribute) {
+		if(!self::hasAttribute($entity, $attribute)) {
+			$entity['attributes'][] = $attribute;
+		}
+		return $entity;
+	}
+	
+	public static function hasAttribute($entity, $attribute) {
+		foreach($entity['attributes'] as $item) {
+			if(self::attributeToLine($item) == self::attributeToLine($attribute)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static function generate($entity) {
 		$lines = [];
 		if(!empty($entity['title'])) {
@@ -25,7 +41,7 @@ class DocCommentHelper
 		}
 		if(!empty($entity['attributes'])) {
 			foreach($entity['attributes'] as $item) {
-				$lines[] = '@' . $item['name'] . SPC . implode(SPC, $item['value']);
+				$lines[] = self::attributeToLine($item);
 			}
 		}
 		foreach($lines as &$line) {
@@ -43,6 +59,10 @@ class DocCommentHelper
 		$collection = self::getCollection($lines);
 		$entity = self::getEntity($collection);
 		return $entity;
+	}
+	
+	private static function attributeToLine($attribute) {
+		return '@' . $attribute['name'] . SPC . implode(SPC, $attribute['value']);
 	}
 	
 	private static function getEntity($collection) {

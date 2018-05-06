@@ -17,6 +17,16 @@ class TokenCollectionHelper {
 		return self::applyFilters($collection, $filterCollection);
 	}
 	
+	public static function getDocCommentIndexes($collection) {
+		$indexes = [];
+		foreach($collection as $k => $entity) {
+			if($entity->type == T_DOC_COMMENT) {
+				$indexes[] = $k;
+			}
+		}
+		return $indexes;
+	}
+	
 	public static function compress($collection) {
 		$filterCollection = [
 			RemoveComment::class,

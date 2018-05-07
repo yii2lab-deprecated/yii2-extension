@@ -67,10 +67,10 @@ class DocCommentHelper
 	
 	private static function getEntity($collection) {
 		$entity = [];
-		
+		$collection = array_values($collection);
 		if($collection[0]['type'] == self::TYPE_STRING) {
 			$i = 0;
-			while($collection[$i]['type'] == self::TYPE_STRING) {
+			while(isset($collection[$i]) && $collection[$i]['type'] == self::TYPE_STRING) {
 				$entity['title'][] = $collection[$i]['value'];
 				unset($collection[$i]);
 				$i++;
@@ -78,10 +78,10 @@ class DocCommentHelper
 			$collection = array_values($collection);
 		}
 		
-		if($collection[0]['type'] == self::TYPE_EMPTY && $collection[1]['type'] == self::TYPE_STRING) {
+		if(isset($collection[0]) && $collection[0]['type'] == self::TYPE_EMPTY && $collection[1]['type'] == self::TYPE_STRING) {
 			unset($collection[0]);
 			$i = 1;
-			while($collection[$i]['type'] == self::TYPE_STRING || $collection[$i]['type'] == self::TYPE_EMPTY) {
+			while(isset($collection[$i]) && $collection[$i]['type'] == self::TYPE_STRING || $collection[$i]['type'] == self::TYPE_EMPTY) {
 				$entity['description'][] = $collection[$i]['value'];
 				unset($collection[$i]);
 				$i++;

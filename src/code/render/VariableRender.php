@@ -26,7 +26,12 @@ class VariableRender extends BaseRender
 	
 	protected function renderItem($variableEntity) {
 		$header = $this->renderHeader($variableEntity);
-		return TAB . $header . ' = ' . $variableEntity->value . ';' . PHP_EOL;
+		$code = TAB . $header;
+		if(isset($variableEntity->value)) {
+			$code .= ' = ' . $variableEntity->value;
+		}
+		$code .= ';' . PHP_EOL;
+		return $code;
 	}
 	
 	private function renderHeader(ClassVariableEntity $variableEntity) {

@@ -111,4 +111,13 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		$encodedCondition = $this->alias->encode($condition);
 		$this->model::deleteAll($encodedCondition);
 	}
+	
+	public function deleteAll($condition) {
+		$encodedCondition = $this->alias->encode($condition);
+		$this->model->deleteAll($encodedCondition);
+	}
+	
+	public function truncate() {
+		Yii::$app->db->createCommand()->truncateTable($this->model->tableName())->execute();
+	}
 }

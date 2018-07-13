@@ -33,22 +33,14 @@ trait ArrayReadTrait {
 		return [];
 	}
 	
-	public function all(Query $query = null) {
-		$query = $this->prepareQuery($query);
-		
-		$queryFilter = Yii::createObject([
-			'class' => QueryFilter::class,
-			'repository' => $this,
-			'query' => $query,
-		]);
-		$queryWithoutRelations = $queryFilter->getQueryWithoutRelations();
-		
+	public function allArray(Query $query = null) {
 		$iterator = $this->getIterator();
-		$array = $iterator->all($queryWithoutRelations);
-		$collection = $this->forgeEntity($array);
-		
-		$collection = $queryFilter->loadRelations($collection);
-		return $collection;
+		$array = $iterator->all($query);
+		return $array;
+	}
+	
+	public function all(Query $query = null) {
+		return $this->allWithRelation($query, 'allArray');
 	}
 	
 	public function count(Query $query = null) {

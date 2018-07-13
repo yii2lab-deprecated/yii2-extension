@@ -2,7 +2,6 @@
 
 namespace yii2lab\extension\activeRecord\traits;
 
-use Yii;
 use yii2lab\domain\Alias;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
@@ -28,39 +27,34 @@ trait ActiveRepositoryTrait {
 	 */
 	abstract protected function prepareQuery(Query $query = null);
 	
-	/*public function one(Query $query = null) {
-		$query = $this->prepareQuery($query);
-		if(!$query->hasParam('where') || $query->getParam('where') == []) {
-		    throw new InvalidArgumentException(\Yii::t('domain:domain/repository', 'where_connot_be_empty'));
-		};
-		$query2 = clone $query;
-		$with = RelationWithHelper::cleanWith($this->relations(), $query);
-		$model = $this->oneModel($query);
-		if(empty($model)) {
-			throw new NotFoundHttpException();
-		}
-		$entity = $this->forgeEntity($model);
-		if(!empty($with)) {
-			$entity = RelationHelper::load($this->domain->id, $this->id, $query2, $entity);
-		}
-		return $entity;
-	}*/
+	/**
+	 * @param Query|null $query
+	 *
+	 * @return QueryFilter
+	 */
+	abstract protected function queryFilterInstance(Query $query = null);
+		
+		
+		/*public function one(Query $query = null) {
+			$query = $this->prepareQuery($query);
+			if(!$query->hasParam('where') || $query->getParam('where') == []) {
+				throw new InvalidArgumentException(\Yii::t('domain:domain/repository', 'where_connot_be_empty'));
+			};
+			$query2 = clone $query;
+			$with = RelationWithHelper::cleanWith($this->relations(), $query);
+			$model = $this->oneModel($query);
+			if(empty($model)) {
+				throw new NotFoundHttpException();
+			}
+			$entity = $this->forgeEntity($model);
+			if(!empty($with)) {
+				$entity = RelationHelper::load($this->domain->id, $this->id, $query2, $entity);
+			}
+			return $entity;
+		}*/
 	
 	public function all(Query $query = null) {
-		$query = $this->prepareQuery($query);
-		
-		$queryFilter = Yii::createObject([
-			'class' => QueryFilter::class,
-			'repository' => $this,
-			'query' => $query,
-		]);
-		$queryWithoutRelations = $queryFilter->getQueryWithoutRelations();
-		
-		$models = $this->allModels($queryWithoutRelations);
-		$collection = $this->forgeEntity($models);
-		
-		$collection = $queryFilter->loadRelations($collection);
-		return $collection;
+		return $this->allWithRelation($query, 'allModels');
 	}
 	
 	protected function oneModelByCondition($condition, Query $query = null) {

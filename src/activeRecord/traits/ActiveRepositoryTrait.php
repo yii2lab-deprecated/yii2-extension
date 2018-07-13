@@ -3,16 +3,23 @@
 namespace yii2lab\extension\activeRecord\traits;
 
 use Yii;
+use yii2lab\domain\Alias;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\helpers\ErrorCollection;
 use yii2lab\domain\exceptions\UnprocessableEntityHttpException;
 use yii\web\NotFoundHttpException;
 use yii2lab\domain\helpers\repository\QueryFilter;
-use yii\base\InvalidArgumentException;
-use yii2mod\helpers\ArrayHelper;
+use yii2lab\domain\traits\repository\ReadOneTrait;
 
 trait ActiveRepositoryTrait {
+	
+	use ReadOneTrait;
+	
+	/**
+	 * @return Alias
+	 */
+	abstract public function getAlias();
 	
 	/**
 	 * @param Query|null $query
@@ -21,68 +28,6 @@ trait ActiveRepositoryTrait {
 	 */
 	abstract protected function prepareQuery(Query $query = null);
 	
-	public function isExistsById($id) {
-		try {
-			$this->oneById($id);
-			return true;
-		} catch(NotFoundHttpException $e) {
-			return false;
-		}
-	}
-	
-	public function isExists($condition) {
-		/** @var Query $query */
-		$query = $this->prepareQuery();
-		if(is_array($condition)) {
-			$query->whereFromCondition($condition);
-		} else {
-			$query->where($this->primaryKey, $condition);
-		}
-		try {
-			$this->one($query);
-			return true;
-		} catch(NotFoundHttpException $e) {
-			return false;
-		}
-	}
-	
-	/**
-	 * @param            $id
-	 * @param Query|null $query
-	 *
-	 * @return BaseEntity
-	 *
-	 * @throws NotFoundHttpException
-	 */
-	public function oneById($id, Query $query = null) {
-		/** @var Query $query */
-		$query = $this->prepareQuery($query);
-		$query->removeParam('where');
-		$query->where($this->primaryKey, $id);
-		return $this->one($query);
-	}
-	
-	/**
-	 * @param Query|null $query
-	 *
-	 * @return BaseEntity
-	 *
-	 * @throws NotFoundHttpException
-	 * @throws \yii\web\BadRequestHttpException
-	 */
-	public function one(Query $query = null) {
-		$query = $this->prepareQuery($query);
-		if(!$query->hasParam('where') || $query->getParam('where') == []) {
-			throw new InvalidArgumentException(Yii::t('domain:domain/repository', 'where_connot_be_empty'));
-		};
-		$query->limit(1);
-		$collection = $this->all($query);
-		if(empty($collection)) {
-			throw new NotFoundHttpException();
-		}
-		$entity = ArrayHelper::first($collection);
-		return $entity;
-	}
 	/*public function one(Query $query = null) {
 		$query = $this->prepareQuery($query);
 		if(!$query->hasParam('where') || $query->getParam('where') == []) {

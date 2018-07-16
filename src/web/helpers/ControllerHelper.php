@@ -25,7 +25,7 @@ class ControllerHelper {
 		if(empty($serviceName)) {
 			return null;
 		}
-		if($serviceName instanceof BaseService) {
+		if(is_object($serviceName)) {
 			return $serviceName;
 		} elseif(is_string($serviceName)) {
 			return ArrayHelper::getValue(Yii::$domain, $serviceName);

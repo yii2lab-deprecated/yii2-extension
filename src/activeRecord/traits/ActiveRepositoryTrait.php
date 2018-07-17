@@ -91,17 +91,18 @@ trait ActiveRepositoryTrait {
 		}
 		try {
 			$first = $this->oneModelByCondition($condition);
-			$encodedPkName = $this->getAlias()->encode($this->primaryKey);
-			if($isUpdate && $entity->{$this->primaryKey} == $first[$encodedPkName]) {
-
-			} else {
-				$error = new ErrorCollection();
-				foreach($uniqueItem as $name) {
-					$error->add($name, 'domain/db', 'already_exists {value}', ['value' => $entity->{$name}]);
+			if(!empty($this->primaryKey)) {
+				$encodedPkName = $this->getAlias()->encode($this->primaryKey);
+				if($isUpdate && $entity->{$this->primaryKey} == $first[$encodedPkName]) {
+				
+				} else {
+					$error = new ErrorCollection();
+					foreach($uniqueItem as $name) {
+						$error->add($name, 'domain/db', 'already_exists {value}', ['value' => $entity->{$name}]);
+					}
+					throw new UnprocessableEntityHttpException($error);
 				}
-				throw new UnprocessableEntityHttpException($error);
 			}
-
 		} catch(NotFoundHttpException $e) {
 			
 		}

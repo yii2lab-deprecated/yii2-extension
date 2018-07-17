@@ -66,7 +66,8 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 				$entity->{$this->primaryKey} =  Yii::$app->db->getLastInsertID($tableSchema->sequenceName);*/
 				
 			}catch(\Exception $e) {
-				throw new ServerErrorHttpException('Postgre sequence error');
+				return null;
+				//throw new ServerErrorHttpException('Postgre sequence error');
 			}
 		}
 		return $entity;
@@ -75,8 +76,15 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 	public function update(BaseEntity $entity) {
 		$entity->validate();
 		$this->findUnique($entity, true);
-		$entityPk = $entity->{$this->primaryKey};
-		$model = $this->findOne([$this->primaryKey => $entityPk]);
+		
+		if(!empty($this->primaryKey)) {
+			$entityPk = $entity->{$this->primaryKey};
+			$condition = [$this->primaryKey => $entityPk];
+		} else {
+			$condition = $entity->toArray();
+			$condition = \yii2lab\helpers\yii\ArrayHelper::extractByKeys($condition, $this->uniqueFields()[0]);
+		}
+		$model = $this->findOne($condition);
 		$this->massAssignment($model, $entity, self::SCENARIO_UPDATE);
 		$this->saveModel($model);
 	}

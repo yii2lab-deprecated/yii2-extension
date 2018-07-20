@@ -2,12 +2,30 @@
 
 namespace yii2lab\extension\web\helpers;
 
+use DateTimeZone;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
+use yii\web\BadRequestHttpException;
 use yii2lab\domain\services\base\BaseService;
+use yii2lab\misc\enums\HttpHeaderEnum;
 
 class ControllerHelper {
+	
+	public static function setTimeZone() {
+		$timeZone = Yii::$app->request->getHeaders()->get(HttpHeaderEnum::TIME_ZONE);
+		if(!empty($timeZone)) {
+			$listIdentifiers = DateTimeZone::listIdentifiers();
+			if(!in_array($timeZone, $listIdentifiers)) {
+				throw new BadRequestHttpException('Header "'.HttpHeaderEnum::TIME_ZONE.'" not valid!');
+			}
+			//Yii::$app->setTimeZone($timeZone);
+		} else {
+			$timeZone = Yii::$app->getTimeZone();
+		}
+		Yii::$app->response->getHeaders()->set(HttpHeaderEnum::TIME_ZONE, $timeZone);
+		return $timeZone;
+	}
 	
 	public static function runServiceMethod($service, $serviceMethod, $args, $serviceMethodParams = []) {
 		$service = self::forgeService($service);

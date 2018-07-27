@@ -2,7 +2,7 @@
 
 namespace yii2lab\extension\activeRecord\repositories\base;
 
-use yii\web\ServerErrorHttpException;
+use yii\db\Exception;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\exceptions\BadQueryHttpException;
@@ -11,11 +11,24 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
 use yii\helpers\ArrayHelper;
+use yii2lab\domain\interfaces\repositories\SearchInterface;
+use yii2lab\extension\activeRecord\helpers\SearchHelper;
 use yii2lab\extension\activeRecord\traits\ActiveRepositoryTrait;
 
-abstract class BaseActiveArRepository extends BaseArRepository implements CrudInterface {
+abstract class BaseActiveArRepository extends BaseArRepository implements CrudInterface, SearchInterface {
 	
 	use ActiveRepositoryTrait;
+	
+	public function searchByTextFields() {
+		return [];
+	}
+	
+	public function searchByText($text, Query $query = null) {
+		$query = $this->prepareQuery($query);
+		$searchByTextFields = $this->searchByTextFields();
+		SearchHelper::appendSearchCondition($query, $searchByTextFields, $text);
+		return $this->getDataProvider($query);
+	}
 	
 	public function count(Query $query = null) {
 		$this->queryValidator->validateWhereFields($query);
@@ -24,7 +37,7 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		$this->forgeQueryForWhere($query);
 		try {
 			return (int) $this->query->count();
-		} catch(\yii\db\Exception $e) {
+		} catch(Exception $e) {
 			throw new BadQueryHttpException(null, 0, $e);
 		}
 	}

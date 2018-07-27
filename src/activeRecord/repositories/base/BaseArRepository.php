@@ -2,17 +2,15 @@
 
 namespace yii2lab\extension\activeRecord\repositories\base;
 
+use yii\base\InvalidArgumentException;
 use yii\base\Model;
+use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\exceptions\BadQueryHttpException;
-use yii2lab\domain\helpers\ErrorCollection;
-use yii2lab\domain\exceptions\UnprocessableEntityHttpException;
 use Yii;
 use yii\base\UnknownMethodException;
-use yii\db\IntegrityException;
-use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii2lab\domain\repositories\BaseRepository;
 use yii2lab\extension\filedb\repositories\base\BaseActiveFiledbRepository;
@@ -143,7 +141,7 @@ abstract class BaseArRepository extends BaseRepository {
 		$this->forgeQueryForWhere($query);
 		try {
 			$models = $this->query->all();
-		} catch(\yii\base\InvalidArgumentException $e) {
+		} catch(InvalidArgumentException $e) {
 			if(strpos($e->getMessage(), 'has no relation named') !== false) {
 				throw new BadQueryHttpException('Relation not defined', 0, $e);
 			} else {
@@ -154,27 +152,27 @@ abstract class BaseArRepository extends BaseRepository {
 		return $modelData;
 	}
 	
-	protected function saveModel(Model $model) {
+	protected function saveModel(ActiveRecord $model) {
 		return $model->save();
-		try {
+		/*try {
 		
 		} catch(IntegrityException $e) {
 			$error = new ErrorCollection();
 			if($e->getCode() == 23503 || $e->getCode() == 23000) {
 				$error->add(null, 'domain/db', 'integrity_constraint_violation');
 				throw new UnprocessableEntityHttpException($error);
-			} elseif($e->getCode() == 23505 /*|| $e->getCode() == 23000*/) {
+			} elseif($e->getCode() == 23505) { //|| $e->getCode() == 23000
 				$error->add(null, 'domain/db', 'already_exists');
 				throw new UnprocessableEntityHttpException($error);
 			} else {
 				throw new BadRequestHttpException;
 			}
 		}
-		return false;
+		return false;*/
 	}
 	
 	// todo: deprecated
-	protected function unsetNotExistedFields(Model $model, $data) {
+	protected function unsetNotExistedFields(ActiveRecord $model, $data) {
 		$modelAttributes = array_keys($model->attributes);
 		foreach($data as $name => $value) {
 			if(!in_array($name, $modelAttributes)) {
@@ -196,7 +194,7 @@ abstract class BaseArRepository extends BaseRepository {
 		return $data;
 	}
 	
-	protected function massAssignment(Model $model, BaseEntity $entity, $scenario = null) {
+	protected function massAssignment(ActiveRecord $model, BaseEntity $entity, $scenario = null) {
 		$data = $entity->toArray();
 		$data = $this->unsetFieldsByKey($this->allFields(), $data);
 		$scenarios = $this->scenarios();
@@ -275,15 +273,6 @@ abstract class BaseArRepository extends BaseRepository {
 			return $list;
 		}
 		return $this->modelItemToArray($model, $query);
-	}
-	
-	private function validateWithParam($with) {
-		/*$modelExtraFields = $this->getModelExtraFields();
-		foreach($with as $key => $value) {
-			if(!in_array($value, $modelExtraFields)) {
-				throw new BadQueryHttpException(Yii::t('domain/exception', 'not_allowed_to_use_parameter_in_expand {parameter}', ['parameter' => $value]));
-			}
-		}*/
 	}
 	
 	private function modelItemToArray(Model $model, Query $query) {

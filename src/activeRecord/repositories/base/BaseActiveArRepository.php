@@ -19,10 +19,6 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 	
 	use ActiveRepositoryTrait;
 	
-	public function searchByTextFields() {
-		return [];
-	}
-	
 	public function searchByText($text, Query $query = null) {
 		$query = $this->prepareQuery($query);
 		$searchByTextFields = $this->searchByTextFields();

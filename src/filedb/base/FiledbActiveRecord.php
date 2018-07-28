@@ -2,9 +2,13 @@
 
 namespace yii2lab\extension\filedb\base;
 
+use Yii;
+use yii2lab\app\domain\helpers\EnvService;
 use yii2mod\helpers\ArrayHelper;
 
 class FiledbActiveRecord extends \yii2tech\filedb\ActiveRecord {
+	
+	const DEFAULT_PATH = '@common/data';
 	
 	public function attributes() {
 		static $attributes;
@@ -20,4 +24,14 @@ class FiledbActiveRecord extends \yii2tech\filedb\ActiveRecord {
 		return $attributes;
 	}
 	
+	public static function getDb() {
+		if(!Yii::$app->has('filedb')) {
+			$path = EnvService::getServer('filedb.path', self::DEFAULT_PATH);
+			Yii::$app->set('filedb', [
+				'class' => 'yii2tech\filedb\Connection',
+				'path' => $path,
+			]);
+		}
+		return parent::getDb();
+	}
 }

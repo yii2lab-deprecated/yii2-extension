@@ -102,7 +102,7 @@ abstract class BaseCollection implements ArrayAccess, Countable, Iterator, Seria
 			if($items instanceof BaseCollection) {
 				$items = $items->all();
 			} else {
-				throw new InvalidArgumentException();
+				throw new InvalidArgumentException('Collection data can not be object');
 			}
 		}
 		return $items;

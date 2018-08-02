@@ -78,11 +78,7 @@ abstract class BaseCollection implements ArrayAccess, Countable, Iterator, Seria
 		}
 		return null;
 	}
-	
-	public function one($index) {
-		return $this->offsetGet($index);
-	}
-	
+
 	public function all() {
 		return $this->items;
 	}

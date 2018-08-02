@@ -9,7 +9,7 @@ class RegistryTest extends Unit
 	
 	public function testGetStartValues()
 	{
-		expect(Registry::get())->equals([]);
+		$this->tester->assertEquals(Registry::get(), []);
 	}
 	
 	public function testSetValues()
@@ -21,14 +21,14 @@ class RegistryTest extends Unit
 	
 	public function testGetValue()
 	{
-		expect(Registry::get('key1'))->equals('value1');
-		expect(Registry::get('key2'))->equals('value2');
-		expect(Registry::get('key3'))->equals('value3');
+		$this->tester->assertEquals(Registry::get('key1'), 'value1');
+		$this->tester->assertEquals(Registry::get('key2'), 'value2');
+		$this->tester->assertEquals(Registry::get('key3'), 'value3');
 	}
 
 	public function testGetAllValues()
 	{
-		expect(Registry::get())->equals([
+		$this->tester->assertEquals(Registry::get(), [
 			'key1' => 'value1',
 			'key2' => 'value2',
 			'key3' => 'value3',
@@ -37,22 +37,22 @@ class RegistryTest extends Unit
 	
 	public function testGetNotExistsValue()
 	{
-		expect(Registry::get('key4'))->equals(null);
-		expect(Registry::get('key4', 'default_value4'))->equals('default_value4');
+		$this->tester->assertEquals(Registry::get('key4'), null);
+		$this->tester->assertEquals(Registry::get('key4', 'default_value4'), 'default_value4');
 	}
 	
 	public function testRemoveValue()
 	{
 		Registry::remove('key3');
-		expect(Registry::get('key3'))->equals(null);
-		expect(Registry::get('key3', 'default_value3'))->equals('default_value3');
+		$this->tester->assertEquals(Registry::get('key3'), null);
+		$this->tester->assertEquals(Registry::get('key3', 'default_value3'), 'default_value3');
 	}
 	
 	public function testHasKey()
 	{
-		expect(Registry::has('key1'))->equals(true);
-		expect(Registry::has('key3'))->equals(false);
-		expect(Registry::has('key333'))->equals(false);
+		$this->tester->assertEquals(Registry::has('key1'), true);
+		$this->tester->assertEquals(Registry::has('key3'), false);
+		$this->tester->assertEquals(Registry::has('key333'), false);
 	}
 	
 }

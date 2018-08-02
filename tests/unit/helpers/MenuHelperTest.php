@@ -18,7 +18,7 @@ class MenuHelperTest extends Unit
 		$menu = DataHelper::load(self::PACKAGE, 'store/source/menu.php');
 		$resultMenu = MenuHelper::gen($menu);
 		$expect = DataHelper::load(self::PACKAGE, 'store/expect/generatedMenu.php', $resultMenu);
-		expect($expect)->equals($resultMenu);
+		$this->tester->assertEquals($expect, $resultMenu);
 	}
 	
 	public function testGenerateMenuAccess()
@@ -35,7 +35,7 @@ class MenuHelperTest extends Unit
 		
 		$resultMenu = MenuHelper::gen($menu);
 		$expect = DataHelper::load(self::PACKAGE, 'store/expect/generatedMenuForDomain.php', $resultMenu);
-		expect($expect)->equals($resultMenu);
+		$this->tester->assertEquals($expect, $resultMenu);
 	}
 	
 	public function testGenerateMenuAccessForbidden()
@@ -51,7 +51,7 @@ class MenuHelperTest extends Unit
 		];
 		
 		$resultMenu = MenuHelper::gen($menu);
-		expect([])->equals($resultMenu);
+		$this->tester->assertEquals([], $resultMenu);
 	}
 	
 	public function testGenerateMenuAccessForbidden1()
@@ -67,7 +67,7 @@ class MenuHelperTest extends Unit
 		];
 		
 		$resultMenu = MenuHelper::gen($menu);
-		expect([])->equals($resultMenu);
+		$this->tester->assertEquals([], $resultMenu);
 	}
 	
 	public function testRenderMenu()
@@ -75,7 +75,7 @@ class MenuHelperTest extends Unit
 		$menu = DataHelper::load(self::PACKAGE, 'store/source/simpleMenu.php');
 		$resultMenu = MenuHelper::renderMenu($menu);
 		$expect = DataHelper::load(self::PACKAGE, 'store/expect/renderedMenu.php', $resultMenu);
-		expect($expect)->equals($resultMenu);
+		$this->tester->assertEquals($expect, $resultMenu);
 	}
 	
 }

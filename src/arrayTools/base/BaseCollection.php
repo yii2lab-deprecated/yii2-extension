@@ -66,8 +66,7 @@ abstract class BaseCollection implements ArrayAccess, Countable, Iterator, Seria
 	}
 	
 	public function unserialize($data) {
-		$items = unserialize($data);
-		$this->loadItems($items);
+		$this->items = unserialize($data);
 	}
 	
 	public function __invoke(array $data = null) {

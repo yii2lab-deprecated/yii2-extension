@@ -14,7 +14,13 @@ abstract class BaseFlyRepository extends BaseRepository {
 	 * @var Filesystem
 	 */
 	private $storeInstance;
-	
+
+    protected function hasFile($fileName) {
+        $staticFs = $this->storeInstance();
+        $file = $this->fullName($fileName);
+        return $staticFs->has($file, $content);
+    }
+
 	protected function writeFile($fileName, $content) {
 		$this->removeFile($fileName);
 		$staticFs = $this->storeInstance();

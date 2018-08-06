@@ -36,6 +36,7 @@ trait ArrayReadTrait {
 	public function allArray(Query $query = null) {
 		$iterator = $this->getIterator();
 		$array = $iterator->all($query);
+		$array = $this->forgeEntity($array);
 		return $array;
 	}
 	

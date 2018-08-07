@@ -2,16 +2,10 @@
 
 namespace yii2lab\extension\arrayTools\traits;
 
-use Yii;
-use yii2lab\domain\BaseEntity;
-use yii2lab\domain\helpers\repository\QueryFilter;
 use yii2lab\domain\traits\repository\ReadOneTrait;
 use yii2lab\extension\arrayTools\helpers\ArrayIterator;
 use yii2lab\domain\data\Query;
-use yii\web\NotFoundHttpException;
 use yii2lab\domain\Domain;
-use yii2lab\domain\helpers\repository\RelationHelper;
-use yii2lab\domain\helpers\repository\RelationWithHelper;
 
 /**
  * Trait ArrayReadTrait
@@ -28,10 +22,6 @@ trait ArrayReadTrait {
 	
 	abstract public function forgeEntity($data, $class = null);
 	abstract protected function getCollection();
-	
-	public function relations() {
-		return [];
-	}
 	
 	public function allArray(Query $query = null) {
 		$iterator = $this->getIterator();

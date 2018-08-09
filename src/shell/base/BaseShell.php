@@ -75,7 +75,7 @@ abstract class BaseShell {
 		$this->begin();
 		exec("$cmd", $output, $exitCode);
 		$this->end();
-		if($exitCode !== 0 || !is_array($output)) {
+		if(/*$exitCode !== 0 || */!is_array($output)) {
 			throw new ShellException("Command $cmd failed.");
 		}
 		/** @var string $filter */

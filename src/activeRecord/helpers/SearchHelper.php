@@ -15,7 +15,13 @@ class SearchHelper {
 	public static function extractSearchTextFromQuery(Query $query) {
 		$searchText = $query->getWhere(self::SEARCH_PARAM_NAME);
 		$query->removeWhere(self::SEARCH_PARAM_NAME);
+		if(is_null($searchText)) {
+			return null;
+		}
 		$searchText = trim($searchText);
+		if(empty($searchText)) {
+			throw new BadRequestHttpException(Yii::t('yii', '{attribute} cannot be blank.', ['attribute' => self::SEARCH_PARAM_NAME]));
+		}
 		return $searchText;
 	}
 	

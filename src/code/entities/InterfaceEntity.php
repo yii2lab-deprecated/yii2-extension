@@ -5,6 +5,7 @@ namespace yii2lab\extension\code\entities;
 use yii\helpers\Inflector;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\helpers\Helper;
+use yii2lab\helpers\yii\FileHelper;
 
 /**
  * Class ClassEntity
@@ -44,6 +45,7 @@ class InterfaceEntity extends BaseEntity {
 	}
 	
 	public function getName() {
+		$this->name= FileHelper::normalizePath($this->name);
 		$basename = basename($this->name);
 		return ucfirst(Inflector::camelize($basename));
 	}

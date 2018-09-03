@@ -25,12 +25,6 @@ class JwtService extends BaseService implements JwtInterface {
 
     const DEFAULT_PROFILE = 'default';
 
-    private $profiles = null;
-
-    public function setProfiles($value) {
-        $this->profiles = $value;
-    }
-
     private function getProfile($name) {
         try {
             $profileEntity = $this->domain->repositories->profile->oneById($name);
@@ -42,7 +36,6 @@ class JwtService extends BaseService implements JwtInterface {
     }
 
     public function sign(JwtEntity $jwtEntity, $profileName = self::DEFAULT_PROFILE) {
-        $this->prepEntity($jwtEntity);
         $profileEntity = $this->getProfile($profileName);
         $this->repository->sign($jwtEntity, $profileEntity);
         return $jwtEntity;
@@ -53,10 +46,6 @@ class JwtService extends BaseService implements JwtInterface {
         $jwtEntity = $this->repository->decode($token, $profileEntity);
         $jwtEntity->token = $token;
         return $jwtEntity;
-    }
-
-    private function prepEntity(JwtEntity $jwtEntity) {
-
     }
 
 }

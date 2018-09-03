@@ -44,7 +44,7 @@ trait ActiveRepositoryTrait {
 			$with = RelationWithHelper::cleanWith($this->relations(), $query);
 			$model = $this->oneModel($query);
 			if(empty($model)) {
-				throw new NotFoundHttpException();
+				throw new NotFoundHttpException(__METHOD__ . ': ' . __LINE__);
 			}
 			$entity = $this->forgeEntity($model);
 			if(!empty($with)) {
@@ -63,7 +63,7 @@ trait ActiveRepositoryTrait {
 		$query->whereFromCondition($condition);
 		$model = $this->oneModel($query);
 		if(empty($model)) {
-			throw new NotFoundHttpException();
+			throw new NotFoundHttpException(__METHOD__ . ': ' . __LINE__);
 		}
 		return $model;
 	}

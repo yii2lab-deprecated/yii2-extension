@@ -70,19 +70,16 @@ class TokenTest extends Unit
     {
         $userId = 1;
         $profileName = 'default';
-        $jwtEntity = $this->forgeJwtEntity($userId);
-        $jwtEntity->expire_at = 1536247466;
-        \Dii::$domain->jwt->jwt->sign($jwtEntity, $profileName);
-        $decoded = \Dii::$domain->jwt->jwt->decodeRaw($jwtEntity->token);
-
+        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjZjNjk3OWVjLTk1NzUtNDc5NC05MzAzLTBkMmI4NTFlZGIwMiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkuZXhhbXBsZS5jb21cL3YxXC9hdXRoIiwic3ViamVjdCI6eyJpZCI6MX0sInN1YiI6Imh0dHA6XC9cL2FwaS5leGFtcGxlLmNvbVwvdjFcL3VzZXJcLzEiLCJhdWQiOlsiaHR0cDpcL1wvYXBpLmNvcmUueWlpIl0sImV4cCI6MTUzNjI0NzQ2Nn0.XjAxVetPxtldVYLQwkVmKNwbjlatLD5yo_PXfHcwEHo';
+        $decoded = \Dii::$domain->jwt->jwt->decodeRaw($token);
         $this->tester->assertRegExp('#[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}#', $decoded->header->kid);
         $this->tester->assertNotEmpty($decoded->sig);
         $this->tester->assertArraySubset([
-
+            'sig' => base64_decode('XjAxVetPxtldVYLQwkVmKNwbjlatLD5yo/PXfHcwEHo='),
             'header' => [
                 'typ' => 'JWT',
                 'alg' => 'HS256',
-                //'kid' => '6c6979ec-9575-4794-9303-0d2b851edb02',
+                'kid' => '6c6979ec-9575-4794-9303-0d2b851edb02',
             ],
             'payload' => [
                 'iss' => 'http://api.example.com/v1/auth',

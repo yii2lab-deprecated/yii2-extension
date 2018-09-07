@@ -33,14 +33,14 @@ class JwtHelper
 
     public static function decodeRaw($token, ProfileEntity $profileEntity) {
         $decodedObject = JwtHelper::tokenDecode($token);
-        if (empty($profileEntity->key)) {
+        /*if (empty($profileEntity->key)) {
             throw new InvalidArgumentException('Key may not be empty');
-        }
+        }*/
         self::validateHeader($decodedObject->header, $profileEntity);
         return $decodedObject;
     }
 
-    public static function tokenDecode($jwt) {
+    private static function tokenDecode($jwt) {
         $tks = explode('.', $jwt);
         $result = new \stdClass();
         $result->header = self::tokenDecodeItem($tks[0]);

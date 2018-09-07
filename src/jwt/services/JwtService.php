@@ -48,6 +48,11 @@ class JwtService extends BaseService implements JwtInterface {
         return $jwtEntity;
     }
 
+    public function decodeRaw($token, $profileName = self::DEFAULT_PROFILE) {
+        $profileEntity = $this->getProfile($profileName);
+        return $this->repository->decodeRaw($token, $profileEntity);
+    }
+
 }
 
 /**

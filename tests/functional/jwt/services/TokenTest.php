@@ -2,6 +2,7 @@
 
 namespace tests\functional\jwt\services;
 
+use yii\helpers\ArrayHelper;
 use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\extension\jwt\entities\JwtEntity;
 use yii2lab\test\helpers\DataHelper;
@@ -17,16 +18,6 @@ class TokenTest extends Unit
 
     const PACKAGE = 'yii2lab/yii2-extension';
 
-    private function forgeJwtEntity($userId) {
-        $jwtEntity = new JwtEntity();
-        $jwtEntity->issuer_url = EnvService::getUrl(API, 'v1/auth');
-        $jwtEntity->subject_url = EnvService::getUrl(API, 'v1/user/' . $userId);
-        $jwtEntity->subject = [
-            'id' => $userId,
-        ];
-        return $jwtEntity;
-    }
-
     public function testSign()
     {
         $userId = 1;
@@ -35,7 +26,7 @@ class TokenTest extends Unit
         $jwtEntity->expire_at = 1536247466;
         \Dii::$domain->jwt->jwt->sign($jwtEntity, $profileName);
         $expected = DataHelper::loadForTest(self::PACKAGE, __METHOD__, $jwtEntity);
-        $this->tester->assertEquals($expected, $jwtEntity->toArray());
+        $this->tester->assertRegExp('#^[a-zA-Z0-9-_\.]+$#', $jwtEntity->token);
     }
 
     public function testSignAndDecode()
@@ -72,6 +63,35 @@ class TokenTest extends Unit
         } catch (\UnexpectedValueException $e) {
             $this->tester->assertExceptionMessage('Wrong number of segments', $e);
         }
+    }
+
+    public function testSignAndDecodeRaw()
+    {
+        $userId = 1;
+        $profileName = 'default';
+        $jwtEntity = $this->forgeJwtEntity($userId);
+        $jwtEntity->expire_at = 1536247466;
+        \Dii::$domain->jwt->jwt->sign($jwtEntity, $profileName);
+        $decoded = \Dii::$domain->jwt->jwt->decodeRaw($jwtEntity->token);
+
+        $this->tester->assertEquals('JWT', $decoded->header->typ);
+        $this->tester->assertEquals('HS256', $decoded->header->alg);
+        $this->tester->assertRegExp('#[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}#', $decoded->header->kid);
+        $this->tester->assertEquals('http://api.example.com/v1/auth', $decoded->payload->iss);
+        $this->tester->assertEquals('http://api.example.com/v1/user/1', $decoded->payload->sub);
+        $this->tester->assertEquals(['http://api.core.yii'], $decoded->payload->aud);
+        $this->tester->assertEquals(1536247466, $decoded->payload->exp);
+        $this->tester->assertNotEmpty($decoded->sig);
+    }
+
+    private function forgeJwtEntity($userId) {
+        $jwtEntity = new JwtEntity();
+        $jwtEntity->issuer_url = EnvService::getUrl(API, 'v1/auth');
+        $jwtEntity->subject_url = EnvService::getUrl(API, 'v1/user/' . $userId);
+        $jwtEntity->subject = [
+            'id' => $userId,
+        ];
+        return $jwtEntity;
     }
 
 }

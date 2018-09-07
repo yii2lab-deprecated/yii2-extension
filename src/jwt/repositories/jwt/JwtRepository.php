@@ -2,12 +2,15 @@
 
 namespace yii2lab\extension\jwt\repositories\jwt;
 
+use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use yii2lab\extension\jwt\entities\JwtEntity;
 use yii2lab\extension\jwt\entities\ProfileEntity;
+use yii2lab\extension\jwt\helpers\JwtHelper;
 use yii2lab\extension\jwt\interfaces\repositories\JwtInterface;
 use yii2lab\domain\repositories\BaseRepository;
 use Firebase\JWT\JWT;
+use yii2lab\helpers\StringHelper;
 
 /**
  * Class JwtRepository
@@ -38,7 +41,8 @@ class JwtRepository extends BaseRepository implements JwtInterface {
         }
 
         $data = $this->entityToToken($jwtEntity);
-        $jwtEntity->token = JWT::encode($data, $profileEntity->key);
+        $keyId = StringHelper::genUuid();
+        $jwtEntity->token = JWT::encode($data, $profileEntity->key, $profileEntity->default_alg, $keyId);
     }
 
     public function encode(JwtEntity $jwtEntity, ProfileEntity $profileEntity) {
@@ -50,6 +54,34 @@ class JwtRepository extends BaseRepository implements JwtInterface {
         $decoded = JWT::decode($token, $profileEntity->key, $profileEntity->allowed_algs);
         $jwtEntity = $this->forgeEntity($decoded);
         return $jwtEntity;
+    }
+
+    public function decodeRaw($token, ProfileEntity $profileEntity) {
+        $key = $profileEntity->key;
+        $decodedObject = JwtHelper::tokenDecode($token);
+        if (empty($key)) {
+            throw new InvalidArgumentException('Key may not be empty');
+        }
+        if (empty($decodedObject->header->alg)) {
+            throw new UnexpectedValueException('Empty algorithm');
+        }
+        if (empty(JWT::$supported_algs[$decodedObject->header->alg])) {
+            throw new UnexpectedValueException('Algorithm not supported');
+        }
+        if (!in_array($decodedObject->header->alg, $profileEntity->allowed_algs)) {
+            throw new UnexpectedValueException('Algorithm not allowed');
+        }
+        if (is_array($key) || $key instanceof \ArrayAccess) {
+            if (isset($decodedObject->header->kid)) {
+                if (!isset($key[$decodedObject->header->kid])) {
+                    throw new UnexpectedValueException('"kid" invalid, unable to lookup correct key');
+                }
+                $key = $key[$decodedObject->header->kid];
+            } else {
+                throw new UnexpectedValueException('"kid" empty, unable to lookup correct key');
+            }
+        }
+        return $decodedObject;
     }
 
     private function entityToToken(JwtEntity $jwtEntity) {

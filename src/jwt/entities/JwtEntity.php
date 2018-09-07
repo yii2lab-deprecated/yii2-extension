@@ -2,9 +2,7 @@
 
 namespace yii2lab\extension\jwt\entities;
 
-use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\domain\BaseEntity;
-use yii2lab\helpers\StringHelper;
 
 /**
  * Class JwtEntity
@@ -21,8 +19,7 @@ use yii2lab\helpers\StringHelper;
  * @property $begin_at integer nbf: в противоположность ключу exp, это время в формате Unix Time, определяющее момент, когда токен станет валидным
  */
 class JwtEntity extends BaseEntity {
-	
-	//protected $id;
+
     protected $token;
 	protected $issuer_url;
 	protected $subject;
@@ -30,22 +27,5 @@ class JwtEntity extends BaseEntity {
 	protected $audience = [];
 	protected $expire_at;
 	protected $begin_at;
-
-    /*public function getSubjectUrl() {
-        if($this->subject_url) {
-            return $this->subject_url;
-        }
-        if(empty($this->subject_id)) {
-            return null;
-        }
-        return EnvService::getUrl(API, 'v1/user/' . $this->subject_id);
-    }
-
-	public function getId() {
-	    if($this->id) {
-	        return $this->id;
-        }
-        return StringHelper::genUuid();
-    }*/
 
 }

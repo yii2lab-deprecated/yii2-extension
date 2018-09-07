@@ -18,10 +18,7 @@ class Domain extends \yii2lab\domain\Domain {
 		return [
 			'repositories' => [
                 'jwt' => 'jwt',
-                'profile' => [
-                    'driver' => Driver::MEMORY,
-                    'profiles' => EnvService::get('jwt.profiles', []),
-                ],
+                'profile' => Driver::ENV,
 			],
 			'services' => [
                 'jwt',

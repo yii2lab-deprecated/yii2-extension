@@ -32,7 +32,6 @@ class JwtRepository extends BaseRepository implements JwtInterface {
     }
 
     public function sign(JwtEntity $jwtEntity, ProfileEntity $profileEntity, $keyId = null, $head = null) {
-
         if($profileEntity->audience) {
             $jwtEntity->audience = ArrayHelper::merge($jwtEntity->audience, $profileEntity->audience);
         }

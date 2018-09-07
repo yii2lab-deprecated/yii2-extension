@@ -3,6 +3,7 @@
 namespace tests\functional\jwt\services;
 
 use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\extension\jwt\entities\JwtEntity;
 use yii2lab\test\helpers\DataHelper;
@@ -17,6 +18,20 @@ class TokenTest extends Unit
 {
 
     const PACKAGE = 'yii2lab/yii2-extension';
+
+    public function testNotFoundProfile()
+    {
+        $userId = 1;
+        $profileName = 'default111111111111111';
+        $jwtEntity = $this->forgeJwtEntity($userId);
+        $jwtEntity->expire_at = 1536247466;
+        try {
+            \Dii::$domain->jwt->jwt->sign($jwtEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+            $this->tester->assertTrue(false);
+        } catch (NotFoundHttpException $e) {
+            $this->tester->assertExceptionMessage('Profile "default111111111111111" not defined!', $e);
+        }
+    }
 
     public function testSign()
     {

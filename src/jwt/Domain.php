@@ -11,6 +11,7 @@ use yii2lab\domain\enums\Driver;
  * @package yii2lab\extension\jwt
  * @property-read \yii2lab\extension\jwt\interfaces\services\JwtInterface $jwt
  * @property-read \yii2lab\extension\jwt\interfaces\repositories\RepositoriesInterface $repositories
+ * @property-read \yii2lab\extension\jwt\interfaces\services\ProfileInterface $profile
  */
 class Domain extends \yii2lab\domain\Domain {
 	
@@ -22,6 +23,7 @@ class Domain extends \yii2lab\domain\Domain {
 			],
 			'services' => [
                 'jwt',
+                'profile',
 			],
 		];
 	}

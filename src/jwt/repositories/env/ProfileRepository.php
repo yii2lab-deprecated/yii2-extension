@@ -22,7 +22,7 @@ class ProfileRepository extends BaseRepository implements ProfileInterface {
 	//protected $schemaClass = true;
     protected $primaryKey = 'id';
 
-	protected function getCollection()
+    protected function getCollection()
     {
         $envProfiles = EnvService::get('jwt.profiles', []);
         $profiles = [];
@@ -31,10 +31,6 @@ class ProfileRepository extends BaseRepository implements ProfileInterface {
             $profiles[$name] = $config;
         }
         return $profiles;
-    }
-
-    public function setProfiles($value) {
-        $this->profiles = $value;
     }
 
 }

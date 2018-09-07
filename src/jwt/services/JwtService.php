@@ -27,18 +27,14 @@ class JwtService extends BaseService implements JwtInterface {
     const DEFAULT_PROFILE = 'default';
 
     private function getProfile($name) {
-        try {
-            $profileEntity = $this->domain->repositories->profile->oneById($name);
-        } catch (NotFoundHttpException $e) {
-            throw new InvalidConfigException("Profile \"{$name}\" not defined!");
-        }
+        $profileEntity = $this->domain->profile->oneById($name);
         $profileEntity->validate();
         return $profileEntity;
     }
 
     public function sign(JwtEntity $jwtEntity, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null) {
         $profileEntity = $this->getProfile($profileName);
-        $keyId = $keyId ? $keyId : StringHelper::genUuid();
+        $keyId = $keyId ?  : StringHelper::genUuid();
         $this->repository->sign($jwtEntity, $profileEntity, $keyId, $head);
         return $jwtEntity;
     }

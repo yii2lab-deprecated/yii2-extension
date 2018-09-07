@@ -20,13 +20,11 @@ class Domain extends \yii2lab\domain\Domain {
                 'jwt' => 'jwt',
                 'profile' => [
                     'driver' => Driver::MEMORY,
-                    'profiles' => EnvService::get('jwt.profiles'),
+                    'profiles' => EnvService::get('jwt.profiles', []),
                 ],
 			],
 			'services' => [
-                'jwt' => [
-                    'profiles' => EnvService::get('jwt.profiles'),
-                ],
+                'jwt',
 			],
 		];
 	}

@@ -12,17 +12,18 @@ use yii2lab\domain\enums\Driver;
  * @property-read \yii2lab\extension\jwt\interfaces\services\JwtInterface $jwt
  * @property-read \yii2lab\extension\jwt\interfaces\repositories\RepositoriesInterface $repositories
  * @property-read \yii2lab\extension\jwt\interfaces\services\ProfileInterface $profile
+ * @property-read \yii2lab\extension\jwt\interfaces\services\TokenInterface $token
  */
 class Domain extends \yii2lab\domain\Domain {
 	
 	public function config() {
 		return [
 			'repositories' => [
-                'jwt' => 'jwt',
+                'token' => 'jwt',
                 'profile' => Driver::ENV,
 			],
 			'services' => [
-                'jwt',
+                'token',
                 'profile',
 			],
 		];

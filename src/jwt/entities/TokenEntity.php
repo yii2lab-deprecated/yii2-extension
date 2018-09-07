@@ -5,8 +5,8 @@ namespace yii2lab\extension\jwt\entities;
 use yii2lab\domain\BaseEntity;
 
 /**
- * Class JwtEntity
- *
+ * Class TokenEntity
+ * 
  * @package yii2lab\extension\jwt\entities
  *
  * property $id integer
@@ -18,14 +18,14 @@ use yii2lab\domain\BaseEntity;
  * @property $expire_at integer exp: время в формате Unix Time, определяющее момент, когда токен станет не валидным
  * @property $begin_at integer nbf: в противоположность ключу exp, это время в формате Unix Time, определяющее момент, когда токен станет валидным
  */
-class JwtEntity extends BaseEntity {
+class TokenEntity extends BaseEntity {
 
     protected $token;
-	protected $issuer_url;
-	protected $subject;
-	protected $subject_url;
-	protected $audience = [];
-	protected $expire_at;
-	protected $begin_at;
+    protected $issuer_url;
+    protected $subject;
+    protected $subject_url;
+    protected $audience = [];
+    protected $expire_at;
+    protected $begin_at;
 
 }

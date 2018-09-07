@@ -2,24 +2,26 @@
 
 namespace yii2lab\extension\jwt\repositories\jwt;
 
+use yii2lab\extension\jwt\interfaces\repositories\TokenInterface;
+use yii2lab\domain\repositories\BaseRepository;
+
 use yii\base\Object;
 use yii\helpers\ArrayHelper;
-use yii2lab\extension\jwt\entities\JwtEntity;
+use yii2lab\extension\jwt\entities\TokenEntity;
 use yii2lab\extension\jwt\entities\ProfileEntity;
 use yii2lab\extension\jwt\helpers\JwtHelper;
 use yii2lab\extension\jwt\interfaces\repositories\JwtInterface;
-use yii2lab\domain\repositories\BaseRepository;
 use Firebase\JWT\JWT;
 use yii2lab\helpers\StringHelper;
 
 /**
- * Class JwtRepository
+ * Class TokenRepository
  * 
  * @package yii2lab\extension\jwt\repositories\jwt
  * 
  * @property-read \yii2lab\extension\jwt\Domain $domain
  */
-class JwtRepository extends BaseRepository implements JwtInterface {
+class TokenRepository extends BaseRepository implements TokenInterface {
 
     public function fieldAlias() {
         return [
@@ -31,7 +33,7 @@ class JwtRepository extends BaseRepository implements JwtInterface {
         ];
     }
 
-    public function sign(JwtEntity $jwtEntity, ProfileEntity $profileEntity, $keyId = null, $head = null) {
+    public function sign(TokenEntity $jwtEntity, ProfileEntity $profileEntity, $keyId = null, $head = null) {
         if($profileEntity->audience) {
             $jwtEntity->audience = ArrayHelper::merge($jwtEntity->audience, $profileEntity->audience);
         }
@@ -42,7 +44,7 @@ class JwtRepository extends BaseRepository implements JwtInterface {
         $jwtEntity->token = JWT::encode($data, $profileEntity->key, $profileEntity->default_alg, $keyId, $head);
     }
 
-    public function encode(JwtEntity $jwtEntity, ProfileEntity $profileEntity) {
+    public function encode(TokenEntity $jwtEntity, ProfileEntity $profileEntity) {
         $this->sign($jwtEntity, $profileEntity);
         return $jwtEntity->token;
     }
@@ -57,7 +59,7 @@ class JwtRepository extends BaseRepository implements JwtInterface {
         return JwtHelper::decodeRaw($token, $profileEntity);
     }
 
-    private function entityToToken(JwtEntity $jwtEntity) {
+    private function entityToToken(TokenEntity $jwtEntity) {
         $data = $jwtEntity->toArray();
         $data = array_filter($data, function ($value) {return $value !== null;});
         $data = $this->alias->encode($data);

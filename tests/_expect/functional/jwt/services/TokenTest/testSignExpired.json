@@ -1,0 +1,13 @@
+{
+	"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjZjNjk3OWVjLTk1NzUtNDc5NC05MzAzLTBkMmI4NTFlZGIwMiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkuZXhhbXBsZS5jb21cL3YxXC9hdXRoIiwic3ViamVjdCI6eyJpZCI6MX0sInN1YiI6Imh0dHA6XC9cL2FwaS5leGFtcGxlLmNvbVwvdjFcL3VzZXJcLzEiLCJhdWQiOlsiaHR0cDpcL1wvYXBpLmNvcmUueWlpIl0sImV4cCI6MTUzNjM1MTQ2MH0.-5LfOkC_82szk7KN3fiikyNNfvVX-yfjeYnJi0QvOfU",
+	"issuer_url": "http://api.example.com/v1/auth",
+	"subject": {
+		"id": 1
+	},
+	"subject_url": "http://api.example.com/v1/user/1",
+	"audience": [
+		"http://api.core.yii"
+	],
+	"expire_at": 1536351460,
+	"begin_at": null
+}

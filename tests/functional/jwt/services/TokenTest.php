@@ -2,11 +2,13 @@
 
 namespace tests\functional\jwt\services;
 
+use Firebase\JWT\ExpiredException;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\extension\jwt\entities\JwtEntity;
 use yii2lab\extension\jwt\entities\TokenEntity;
+use yii2lab\misc\enums\TimeEnum;
 use yii2lab\test\helpers\DataHelper;
 use yii2lab\test\helpers\TestHelper;
 use yii2lab\test\Test\Unit;
@@ -44,6 +46,21 @@ class TokenTest extends Unit
         $expected = DataHelper::loadForTest(self::PACKAGE, __METHOD__, $jwtEntity->toArray());
         $this->tester->assertEquals($expected, $jwtEntity->toArray());
         $this->tester->assertRegExp('#^[a-zA-Z0-9-_\.]+$#', $jwtEntity->token);
+    }
+
+    public function testSignExpired()
+    {
+        $userId = 1;
+        $profileName = 'default';
+        $jwtEntity = $this->forgeTokenEntity($userId);
+        $jwtEntity->expire_at = TIMESTAMP - TimeEnum::SECOND_PER_HOUR;
+        \Dii::$domain->jwt->token->sign($jwtEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+        try {
+            $jwtEntityDecoded = \Dii::$domain->jwt->token->decode($jwtEntity->token);
+            $this->tester->assertTrue(false);
+        } catch (ExpiredException $e) {
+            $this->tester->assertExceptionMessage('Expired token', $e);
+        }
     }
 
     public function testSignAndDecode()

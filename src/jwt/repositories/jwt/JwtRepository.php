@@ -31,7 +31,7 @@ class JwtRepository extends BaseRepository implements JwtInterface {
         ];
     }
 
-    public function sign(JwtEntity $jwtEntity, ProfileEntity $profileEntity) {
+    public function sign(JwtEntity $jwtEntity, ProfileEntity $profileEntity, $keyId = null, $head = null) {
 
         if($profileEntity->audience) {
             $jwtEntity->audience = ArrayHelper::merge($jwtEntity->audience, $profileEntity->audience);
@@ -39,10 +39,8 @@ class JwtRepository extends BaseRepository implements JwtInterface {
         if(!$jwtEntity->expire_at && $profileEntity->life_time) {
             $jwtEntity->expire_at = TIMESTAMP + $profileEntity->life_time;
         }
-
         $data = $this->entityToToken($jwtEntity);
-        $keyId = StringHelper::genUuid();
-        $jwtEntity->token = JWT::encode($data, $profileEntity->key, $profileEntity->default_alg, $keyId);
+        $jwtEntity->token = JWT::encode($data, $profileEntity->key, $profileEntity->default_alg, $keyId, $head);
     }
 
     public function encode(JwtEntity $jwtEntity, ProfileEntity $profileEntity) {
@@ -57,31 +55,7 @@ class JwtRepository extends BaseRepository implements JwtInterface {
     }
 
     public function decodeRaw($token, ProfileEntity $profileEntity) {
-        $key = $profileEntity->key;
-        $decodedObject = JwtHelper::tokenDecode($token);
-        if (empty($key)) {
-            throw new InvalidArgumentException('Key may not be empty');
-        }
-        if (empty($decodedObject->header->alg)) {
-            throw new UnexpectedValueException('Empty algorithm');
-        }
-        if (empty(JWT::$supported_algs[$decodedObject->header->alg])) {
-            throw new UnexpectedValueException('Algorithm not supported');
-        }
-        if (!in_array($decodedObject->header->alg, $profileEntity->allowed_algs)) {
-            throw new UnexpectedValueException('Algorithm not allowed');
-        }
-        if (is_array($key) || $key instanceof \ArrayAccess) {
-            if (isset($decodedObject->header->kid)) {
-                if (!isset($key[$decodedObject->header->kid])) {
-                    throw new UnexpectedValueException('"kid" invalid, unable to lookup correct key');
-                }
-                $key = $key[$decodedObject->header->kid];
-            } else {
-                throw new UnexpectedValueException('"kid" empty, unable to lookup correct key');
-            }
-        }
-        return $decodedObject;
+        return JwtHelper::decodeRaw($token, $profileEntity);
     }
 
     private function entityToToken(JwtEntity $jwtEntity) {

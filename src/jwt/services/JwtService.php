@@ -10,6 +10,7 @@ use yii2lab\extension\jwt\entities\ProfileEntity;
 use yii2lab\extension\jwt\interfaces\services\JwtInterface;
 use yii2lab\domain\services\base\BaseService;
 use yii2lab\domain\Alias;
+use yii2lab\helpers\StringHelper;
 use yii2lab\helpers\yii\ArrayHelper;
 use yii2lab\extension\jwt\entities\JwtEntity;
 
@@ -35,9 +36,10 @@ class JwtService extends BaseService implements JwtInterface {
         return $profileEntity;
     }
 
-    public function sign(JwtEntity $jwtEntity, $profileName = self::DEFAULT_PROFILE) {
+    public function sign(JwtEntity $jwtEntity, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null) {
         $profileEntity = $this->getProfile($profileName);
-        $this->repository->sign($jwtEntity, $profileEntity);
+        $keyId = $keyId ? $keyId : StringHelper::genUuid();
+        $this->repository->sign($jwtEntity, $profileEntity, $keyId, $head);
         return $jwtEntity;
     }
 

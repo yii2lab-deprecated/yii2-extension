@@ -24,8 +24,9 @@ class TokenTest extends Unit
         $profileName = 'default';
         $jwtEntity = $this->forgeJwtEntity($userId);
         $jwtEntity->expire_at = 1536247466;
-        \Dii::$domain->jwt->jwt->sign($jwtEntity, $profileName);
-        $expected = DataHelper::loadForTest(self::PACKAGE, __METHOD__, $jwtEntity);
+        \Dii::$domain->jwt->jwt->sign($jwtEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+        $expected = DataHelper::loadForTest(self::PACKAGE, __METHOD__, $jwtEntity->toArray());
+        $this->tester->assertEquals($expected, $jwtEntity->toArray());
         $this->tester->assertRegExp('#^[a-zA-Z0-9-_\.]+$#', $jwtEntity->token);
     }
 
@@ -74,14 +75,27 @@ class TokenTest extends Unit
         \Dii::$domain->jwt->jwt->sign($jwtEntity, $profileName);
         $decoded = \Dii::$domain->jwt->jwt->decodeRaw($jwtEntity->token);
 
-        $this->tester->assertEquals('JWT', $decoded->header->typ);
-        $this->tester->assertEquals('HS256', $decoded->header->alg);
         $this->tester->assertRegExp('#[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}#', $decoded->header->kid);
-        $this->tester->assertEquals('http://api.example.com/v1/auth', $decoded->payload->iss);
-        $this->tester->assertEquals('http://api.example.com/v1/user/1', $decoded->payload->sub);
-        $this->tester->assertEquals(['http://api.core.yii'], $decoded->payload->aud);
-        $this->tester->assertEquals(1536247466, $decoded->payload->exp);
         $this->tester->assertNotEmpty($decoded->sig);
+        $this->tester->assertArraySubset([
+
+            'header' => [
+                'typ' => 'JWT',
+                'alg' => 'HS256',
+                //'kid' => '6c6979ec-9575-4794-9303-0d2b851edb02',
+            ],
+            'payload' => [
+                'iss' => 'http://api.example.com/v1/auth',
+                'sub' => 'http://api.example.com/v1/user/1',
+                'aud' => [
+                    'http://api.core.yii',
+                ],
+                'exp' => 1536247466,
+                'subject' => [
+                    'id' => $userId,
+                ],
+            ],
+        ], ArrayHelper::toArray($decoded));
     }
 
     private function forgeJwtEntity($userId) {

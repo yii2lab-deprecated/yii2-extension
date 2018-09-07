@@ -14,7 +14,7 @@ use yii2lab\extension\jwt\entities\ProfileEntity;
  */
 interface JwtInterface {
 
-    public function sign(JwtEntity $jwtEntity, ProfileEntity $profileEntity);
+    public function sign(JwtEntity $jwtEntity, ProfileEntity $profileEntity, $keyId = null, $head = null);
     public function encode(JwtEntity $jwtEntity, ProfileEntity $profileEntity);
     public function decode($token, ProfileEntity $profileEntity);
 

@@ -2,6 +2,7 @@
 
 namespace tests\functional\jwt\services;
 
+use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
@@ -48,7 +49,7 @@ class TokenTest extends Unit
         $this->tester->assertRegExp('#^[a-zA-Z0-9-_\.]+$#', $jwtEntity->token);
     }
 
-    public function testSignExpired()
+    public function testExpired()
     {
         $userId = 1;
         $profileName = 'default';
@@ -60,6 +61,21 @@ class TokenTest extends Unit
             $this->tester->assertTrue(false);
         } catch (ExpiredException $e) {
             $this->tester->assertExceptionMessage('Expired token', $e);
+        }
+    }
+
+    public function testBegin()
+    {
+        $userId = 1;
+        $profileName = 'default';
+        $jwtEntity = $this->forgeTokenEntity($userId);
+        $jwtEntity->begin_at = TIMESTAMP + TimeEnum::SECOND_PER_HOUR;
+        \Dii::$domain->jwt->token->sign($jwtEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+        try {
+            $jwtEntityDecoded = \Dii::$domain->jwt->token->decode($jwtEntity->token);
+            $this->tester->assertTrue(false);
+        } catch (BeforeValidException $e) {
+            $this->tester->assertExceptionMessageRegexp('#Cannot handle token prior to#', $e);
         }
     }
 

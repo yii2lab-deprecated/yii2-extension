@@ -4,15 +4,11 @@ namespace yii2lab\extension\jwt\repositories\jwt;
 
 use yii2lab\extension\jwt\interfaces\repositories\TokenInterface;
 use yii2lab\domain\repositories\BaseRepository;
-
-use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use yii2lab\extension\jwt\entities\TokenEntity;
 use yii2lab\extension\jwt\entities\ProfileEntity;
 use yii2lab\extension\jwt\helpers\JwtHelper;
-use yii2lab\extension\jwt\interfaces\repositories\JwtInterface;
 use Firebase\JWT\JWT;
-use yii2lab\helpers\StringHelper;
 
 /**
  * Class TokenRepository

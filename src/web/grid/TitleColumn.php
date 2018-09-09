@@ -5,7 +5,7 @@ namespace yii2lab\extension\web\grid;
 use Yii;
 use yii\grid\Column;
 use yii\helpers\ArrayHelper;
-use yii2lab\helpers\yii\Html;
+use yii2lab\extension\yii\helpers\Html;
 
 class TitleColumn extends Column
 {

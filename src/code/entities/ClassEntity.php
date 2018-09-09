@@ -5,7 +5,7 @@ namespace yii2lab\extension\code\entities;
 use yii\helpers\Inflector;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\helpers\Helper;
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 
 /**
  * Class ClassEntity

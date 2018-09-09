@@ -4,7 +4,7 @@ namespace yii2lab\extension\code\helpers;
 
 use yii2lab\extension\code\entities\CodeEntity;
 use yii2lab\extension\code\render\CodeRender;
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 use yii2lab\extension\store\Store;
 
 class CodeHelper

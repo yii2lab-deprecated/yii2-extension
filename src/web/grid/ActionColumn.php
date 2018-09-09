@@ -4,7 +4,7 @@ namespace yii2lab\extension\web\grid;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii2lab\helpers\yii\Html;
+use yii2lab\extension\yii\helpers\Html;
 use yii\helpers\Url;
 
 class ActionColumn extends \yii\grid\ActionColumn

@@ -5,7 +5,7 @@ namespace yii2lab\extension\console\helpers;
 use yii\helpers\Console;
 use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\helpers\StringHelper;
-use yii2lab\helpers\yii\ArrayHelper;
+use yii2lab\extension\yii\helpers\ArrayHelper;
 
 class Output {
 	

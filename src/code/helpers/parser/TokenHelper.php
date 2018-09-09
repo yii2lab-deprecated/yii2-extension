@@ -3,7 +3,7 @@
 namespace yii2lab\extension\code\helpers\parser;
 
 use yii2lab\extension\code\entities\TokenEntity;
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 
 class TokenHelper
 {

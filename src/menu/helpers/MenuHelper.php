@@ -9,7 +9,7 @@ use yii2lab\helpers\Helper;
 use yii2lab\extension\menu\interfaces\MenuInterface;
 use yii2lab\helpers\ModuleHelper;
 use yii2lab\helpers\UrlHelper;
-use yii2lab\helpers\yii\ArrayHelper;
+use yii2lab\extension\yii\helpers\ArrayHelper;
 use yii2lab\extension\web\enums\HtmlEnum;
 
 //TODO [nkl90]: протестировать класс!

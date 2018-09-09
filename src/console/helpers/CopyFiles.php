@@ -3,7 +3,7 @@
 namespace yii2lab\extension\console\helpers;
 
 use yii2lab\extension\console\helpers\input\Question;
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 
 class CopyFiles {
 	

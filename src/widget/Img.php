@@ -3,7 +3,7 @@
 namespace yii2lab\extension\widget;
 
 use yii\base\Widget;
-use yii2lab\helpers\yii\Html;
+use yii2lab\extension\yii\helpers\Html;
 
 class Img extends Widget
 {

@@ -2,7 +2,7 @@
 
 namespace yii2lab\extension\store;
 
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 use yii2mod\helpers\ArrayHelper;
 use yii\base\Component;
 

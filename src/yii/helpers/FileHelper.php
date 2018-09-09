@@ -128,7 +128,7 @@ class FileHelper extends BaseFileHelper
 	}
 	
 	public static function rootPath() {
-		return self::up(__DIR__, 5);
+		return self::up(__DIR__, 6);
 	}
 	
 	public static function trimRootPath($path) {

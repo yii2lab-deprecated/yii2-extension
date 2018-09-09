@@ -8,7 +8,7 @@ use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii2lab\domain\services\base\BaseService;
-use yii2lab\misc\enums\HttpHeaderEnum;
+use yii2lab\extension\web\enums\HttpHeaderEnum;
 
 class ControllerHelper {
 	

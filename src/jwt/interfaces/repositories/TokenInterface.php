@@ -17,5 +17,6 @@ interface TokenInterface {
     public function sign(TokenEntity $jwtEntity, ProfileEntity $profileEntity, $keyId = null, $head = null);
     public function encode(TokenEntity $jwtEntity, ProfileEntity $profileEntity);
     public function decode($token, ProfileEntity $profileEntity);
+    public function decodeRaw($token, ProfileEntity $profileEntity);
 
 }

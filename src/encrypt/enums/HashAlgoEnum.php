@@ -2,7 +2,7 @@
 
 namespace yii2lab\extension\encrypt\enums;
 
-use yii2lab\misc\enums\BaseEnum;
+use yii2lab\extension\enum\base\BaseEnum;
 
 /**
  * Class HashAlgoEnum

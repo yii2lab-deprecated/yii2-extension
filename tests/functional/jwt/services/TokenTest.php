@@ -9,7 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\extension\jwt\entities\JwtEntity;
 use yii2lab\extension\jwt\entities\TokenEntity;
-use yii2lab\misc\enums\TimeEnum;
+use yii2lab\extension\enum\enums\TimeEnum;
 use yii2lab\test\helpers\DataHelper;
 use yii2lab\test\helpers\TestHelper;
 use yii2lab\test\Test\Unit;

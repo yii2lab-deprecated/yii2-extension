@@ -16,5 +16,6 @@ interface TokenInterface {
 
     public function sign(TokenEntity $jwtEntity, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null);
     public function decode($token);
+    public function decodeRaw($token, $profileName = self::DEFAULT_PROFILE);
 
 }

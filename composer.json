@@ -23,6 +23,8 @@
 		"yiisoft/yii2": "*",
 		"yii2tech/filedb": "*",
 		"firebase/php-jwt": "^5.0",
+		"michelf/php-markdown": "^1.8",
+		"yii2mod/yii2-helpers": "*",
 		"php": ">=5.4.0"
 	}
 }

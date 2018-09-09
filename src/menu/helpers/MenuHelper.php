@@ -10,7 +10,7 @@ use yii2lab\extension\menu\interfaces\MenuInterface;
 use yii2lab\helpers\ModuleHelper;
 use yii2lab\helpers\UrlHelper;
 use yii2lab\helpers\yii\ArrayHelper;
-use yii2lab\misc\enums\HtmlEnum;
+use yii2lab\extension\web\enums\HtmlEnum;
 
 //TODO [nkl90]: протестировать класс!
 class MenuHelper

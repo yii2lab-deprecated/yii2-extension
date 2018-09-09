@@ -2,7 +2,7 @@
 
 namespace yii2lab\extension\code\enums;
 
-use yii2lab\misc\enums\BaseEnum;
+use yii2lab\extension\enum\base\BaseEnum;
 
 class AccessEnum extends BaseEnum {
 	

@@ -2,7 +2,7 @@
 
 namespace yii2lab\extension\code\helpers\parser;
 
-use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
+use yii2lab\extension\scenario\helpers\ScenarioHelper;
 use yii2lab\extension\code\filters\parser\DocCommentOnly;
 use yii2lab\extension\code\filters\parser\RemoveComment;
 use yii2lab\extension\code\filters\parser\RemoveDoubleEmptyLines;

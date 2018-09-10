@@ -26,6 +26,7 @@ class Benchmark {
 		if(!self::isEnable()) {
 			return;
 		}
+        $microtime = microtime(true);
 		if(!isset(self::$data[$name])) {
 			return;
 		}
@@ -37,7 +38,7 @@ class Benchmark {
 		if(!isset($item['begin'])) {
 			throw new ServerErrorHttpException('Benchmark not be started!');
 		}
-		$item['end'] = microtime(true);
+		$item['end'] = $microtime;
 		if($data) {
 			$item['data'][] = $data;
 		}
@@ -73,12 +74,18 @@ class Benchmark {
 	
 	private static function append($item) {
 		$name = $item['name'];
-		self::$data[$name] = $item;
 		if(!empty($item['end'])) {
 			$item['duration'] = $item['end'] - $item['begin'];
-			$store = self::getStoreInstance();
-			$store->save(self::$data);
 		}
+        self::$data[$name] = $item;
+		if($item['duration']) {
+            $store = self::getStoreInstance();
+            $store->save([
+                '_SERVER' => $_SERVER,
+                'data' => self::$data,
+
+            ]);
+        }
 	}
 	
 }

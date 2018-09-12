@@ -61,7 +61,7 @@ class Benchmark {
 	}
 	
 	private static function getFileName() {
-		$dir = \Yii::getAlias('@common/runtime/logs/benchmark');
+		$dir = ROOT_DIR . '/common/runtime/logs/benchmark';
 		$file = self::getRequestId() . '.json';
 		return $dir . DS . $file;
 	}

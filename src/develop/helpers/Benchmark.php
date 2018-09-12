@@ -13,20 +13,23 @@ class Benchmark {
 	private static $sessionId = null;
 	
 	public static function begin($name, $data = null) {
+		$microTime = microtime(true);
 		if(!self::isEnable()) {
 			return;
 		}
+		$name = self::getName($name);
 		$item['name'] = $name;
-		$item['begin'] = microtime(true);
+		$item['begin'] = $microTime;
 		$item['data'] = [$data];
 		self::append($item);
 	}
 	
 	public static function end($name, $data = null) {
+		$microTime = microtime(true);
 		if(!self::isEnable()) {
 			return;
 		}
-        $microtime = microtime(true);
+		$name = self::getName($name);
 		if(!isset(self::$data[$name])) {
 			return;
 		}
@@ -38,7 +41,7 @@ class Benchmark {
 		if(!isset($item['begin'])) {
 			throw new ServerErrorHttpException('Benchmark not be started!');
 		}
-		$item['end'] = $microtime;
+		$item['end'] = $microTime;
 		if($data) {
 			$item['data'][] = $data;
 		}
@@ -47,6 +50,15 @@ class Benchmark {
 	
 	public static function all() {
 		return self::$data;
+	}
+	
+	private static function getName($name) {
+		if(is_string($name)) {
+			return $name;
+		}
+		$scope = microtime(true) . BL . serialize($name);
+		$hash = hash('md5', $scope);
+		return $hash;
 	}
 	
 	private static function isEnable() {

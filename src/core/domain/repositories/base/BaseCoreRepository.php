@@ -34,8 +34,9 @@ class BaseCoreRepository extends BaseRestRepository {
 	
 	protected function showServerException(ResponseEntity $responseEntity) {
 		$data = $responseEntity->data;
-		if(class_exists($data['type'])) {
-			$previous = new $data['type']($data['message']);
+		$type = ArrayHelper::getValue($data, 'type');
+		if(class_exists($type)) {
+			$previous = new $type($data['message']);
 			$previous = $previous instanceof \Exception ? $previous : null;
 			throw new ServerErrorHttpException('Core Error' , 0, $previous);
 		}

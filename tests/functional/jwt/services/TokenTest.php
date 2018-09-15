@@ -8,7 +8,6 @@ use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\extension\jwt\entities\TokenEntity;
-use yii2lab\extension\jwt\entities\TokenEntity;
 use yii2lab\extension\enum\enums\TimeEnum;
 use yii2lab\test\helpers\DataHelper;
 use yii2lab\test\helpers\TestHelper;

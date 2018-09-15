@@ -14,7 +14,7 @@ use yii2lab\extension\jwt\entities\TokenEntity;
  */
 interface TokenInterface {
 
-    public function sign(TokenEntity $jwtEntity, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null);
+    public function sign(TokenEntity $tokenEntity, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null);
     public function decode($token);
     public function decodeRaw($token, $profileName = self::DEFAULT_PROFILE);
 

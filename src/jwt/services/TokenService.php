@@ -2,10 +2,18 @@
 
 namespace yii2lab\extension\jwt\services;
 
+use yii\helpers\ArrayHelper;
+use yii2lab\app\domain\helpers\EnvService;
+use yii2lab\extension\jwt\entities\AuthenticationEntity;
+use yii2lab\extension\jwt\entities\ProfileEntity;
 use yii2lab\extension\jwt\entities\TokenEntity;
 use yii2lab\extension\jwt\interfaces\services\TokenInterface;
 use yii2lab\domain\services\base\BaseService;
+use yii2lab\extension\web\enums\HttpMethodEnum;
 use yii2lab\helpers\StringHelper;
+use yii2lab\rest\domain\entities\RequestEntity;
+use yii2lab\rest\domain\entities\ResponseEntity;
+use yii2lab\rest\domain\helpers\RestHelper;
 
 /**
  * Class TokenService
@@ -25,23 +33,54 @@ class TokenService extends BaseService implements TokenInterface {
         return $profileEntity;
     }
 
-    public function sign(TokenEntity $jwtEntity, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null) {
+    public function sign(TokenEntity $tokenEntity, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null) {
         $profileEntity = $this->getProfile($profileName);
         $keyId = $keyId ?  : StringHelper::genUuid();
-        $this->repository->sign($jwtEntity, $profileEntity, $keyId, $head);
-        return $jwtEntity;
+        $this->prepEntity($tokenEntity, $profileEntity);
+        $this->repository->sign($tokenEntity, $profileEntity, $keyId, $head);
+        return $tokenEntity;
     }
 
     public function decode($token, $profileName = self::DEFAULT_PROFILE) {
         $profileEntity = $this->getProfile($profileName);
-        $jwtEntity = $this->repository->decode($token, $profileEntity);
-        $jwtEntity->token = $token;
-        return $jwtEntity;
+        $tokenEntity = $this->repository->decode($token, $profileEntity);
+        $tokenEntity->token = $token;
+        return $tokenEntity;
     }
 
     public function decodeRaw($token, $profileName = self::DEFAULT_PROFILE) {
         $profileEntity = $this->getProfile($profileName);
         return $this->repository->decodeRaw($token, $profileEntity);
+    }
+
+    public function authentication($oldToken, AuthenticationEntity $authenticationEntity, $profileName = self::DEFAULT_PROFILE) {
+        $authenticationEntity->validate();
+        $authenticationEntity->type = 'jwt';
+        $tokenData = $this->decodeRaw($oldToken, $profileName);
+        $tokenEntity = $this->repository->forgeEntity($tokenData->payload);
+        $requestEntity = new RequestEntity();
+        $requestEntity->uri = $tokenEntity->issuer_url;
+        $requestEntity->method = HttpMethodEnum::POST;
+        $requestEntity->data = $authenticationEntity->toArray();
+        $responseEntity = RestHelper::sendRequest($requestEntity);
+        return $responseEntity;
+    }
+
+    /*public function forge(, $profileName = self::DEFAULT_PROFILE) {
+
+    }*/
+
+    private function prepEntity(TokenEntity $tokenEntity, ProfileEntity $profileEntity) {
+        if(!$tokenEntity->issuer_url && $profileEntity->issuer_url) {
+            $tokenEntity->issuer_url = $profileEntity->issuer_url;
+            //$tokenEntity->issuer_url = EnvService::getUrl(API, 'v1/auth');
+        }
+        /*$userId = ArrayHelper::getValue($tokenEntity, 'subject.id');
+        if($userId) {
+            if(!$tokenEntity->subject_url) {
+                $tokenEntity->subject_url = EnvService::getUrl(API, 'v1/user/' . $userId);
+            }
+        }*/
     }
 
 }

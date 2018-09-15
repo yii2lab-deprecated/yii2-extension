@@ -29,34 +29,34 @@ class TokenRepository extends BaseRepository implements TokenInterface {
         ];
     }
 
-    public function sign(TokenEntity $jwtEntity, ProfileEntity $profileEntity, $keyId = null, $head = null) {
+    public function sign(TokenEntity $tokenEntity, ProfileEntity $profileEntity, $keyId = null, $head = null) {
         if($profileEntity->audience) {
-            $jwtEntity->audience = ArrayHelper::merge($jwtEntity->audience, $profileEntity->audience);
+            $tokenEntity->audience = ArrayHelper::merge($tokenEntity->audience, $profileEntity->audience);
         }
-        if(!$jwtEntity->expire_at && $profileEntity->life_time) {
-            $jwtEntity->expire_at = TIMESTAMP + $profileEntity->life_time;
+        if(!$tokenEntity->expire_at && $profileEntity->life_time) {
+            $tokenEntity->expire_at = TIMESTAMP + $profileEntity->life_time;
         }
-        $data = $this->entityToToken($jwtEntity);
-        $jwtEntity->token = JWT::encode($data, $profileEntity->key, $profileEntity->default_alg, $keyId, $head);
+        $data = $this->entityToToken($tokenEntity);
+        $tokenEntity->token = JWT::encode($data, $profileEntity->key, $profileEntity->default_alg, $keyId, $head);
     }
 
-    public function encode(TokenEntity $jwtEntity, ProfileEntity $profileEntity) {
-        $this->sign($jwtEntity, $profileEntity);
-        return $jwtEntity->token;
+    public function encode(TokenEntity $tokenEntity, ProfileEntity $profileEntity) {
+        $this->sign($tokenEntity, $profileEntity);
+        return $tokenEntity->token;
     }
 
     public function decode($token, ProfileEntity $profileEntity) {
         $decoded = JWT::decode($token, $profileEntity->key, $profileEntity->allowed_algs);
-        $jwtEntity = $this->forgeEntity($decoded);
-        return $jwtEntity;
+        $tokenEntity = $this->forgeEntity($decoded);
+        return $tokenEntity;
     }
 
     public function decodeRaw($token, ProfileEntity $profileEntity) {
         return JwtHelper::decodeRaw($token, $profileEntity);
     }
 
-    private function entityToToken(TokenEntity $jwtEntity) {
-        $data = $jwtEntity->toArray();
+    private function entityToToken(TokenEntity $tokenEntity) {
+        $data = $tokenEntity->toArray();
         $data = array_filter($data, function ($value) {return $value !== null;});
         $data = $this->alias->encode($data);
         return $data;

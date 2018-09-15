@@ -15,6 +15,7 @@ use yii2lab\domain\BaseEntity;
  * @property $allowed_algs string[]
  * @property $default_alg string
  * @property $audience string[]
+ * @property $issuer_url string
  */
 class ProfileEntity extends BaseEntity {
 
@@ -24,6 +25,7 @@ class ProfileEntity extends BaseEntity {
     protected $allowed_algs = [];
     protected $default_alg;
     protected $audience = [];
+    protected $issuer_url;
 
     public function rules() {
         return [

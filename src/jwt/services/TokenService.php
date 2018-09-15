@@ -27,12 +27,6 @@ class TokenService extends BaseService implements TokenInterface {
 
     const DEFAULT_PROFILE = 'default';
 
-    private function getProfile($name) {
-        $profileEntity = $this->domain->profile->oneById($name);
-        $profileEntity->validate();
-        return $profileEntity;
-    }
-
     public function sign(TokenEntity $tokenEntity, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null) {
         $profileEntity = $this->getProfile($profileName);
         $keyId = $keyId ?  : StringHelper::genUuid();
@@ -51,6 +45,14 @@ class TokenService extends BaseService implements TokenInterface {
     public function decodeRaw($token, $profileName = self::DEFAULT_PROFILE) {
         $profileEntity = $this->getProfile($profileName);
         return $this->repository->decodeRaw($token, $profileEntity);
+    }
+
+    public function forgeBySubject($subject, $profileName = self::DEFAULT_PROFILE) {
+        $profileEntity = $this->getProfile($profileName);
+        $tokenEntity = new TokenEntity();
+        $tokenEntity->subject = $subject;
+        \Dii::$domain->jwt->token->sign($tokenEntity);
+        return $tokenEntity;
     }
 
     public function authentication($oldToken, AuthenticationEntity $authenticationEntity, $profileName = self::DEFAULT_PROFILE) {
@@ -81,6 +83,12 @@ class TokenService extends BaseService implements TokenInterface {
                 $tokenEntity->subject_url = EnvService::getUrl(API, 'v1/user/' . $userId);
             }
         }*/
+    }
+
+    private function getProfile($name) {
+        $profileEntity = $this->domain->profile->oneById($name);
+        $profileEntity->validate();
+        return $profileEntity;
     }
 
 }

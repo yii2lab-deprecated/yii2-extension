@@ -1,0 +1,13 @@
+{
+	"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjZjNjk3OWVjLTk1NzUtNDc5NC05MzAzLTBkMmI4NTFlZGIwMiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkuZXh0ZW5kZWQudHBsXC92MVwvYXV0aCIsInN1YmplY3QiOnsiaWQiOjF9LCJhdWQiOlsiaHR0cDpcL1wvYXBpLmNvcmUueWlpIl0sImV4cCI6MTUzNzA4NDk4M30.uOFl5bpV5qcRiMT7LjxBY-p6l-QcKAi0lR3bEM0VVuE",
+	"issuer_url": "http://api.extended.tpl/v1/auth",
+	"subject": {
+		"id": 1
+	},
+	"subject_url": null,
+	"audience": [
+		"http://api.core.yii"
+	],
+	"expire_at": 1537084983,
+	"begin_at": null
+}

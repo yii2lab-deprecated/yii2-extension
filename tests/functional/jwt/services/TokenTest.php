@@ -7,6 +7,7 @@ use Firebase\JWT\ExpiredException;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii2lab\app\domain\helpers\EnvService;
+use yii2lab\domain\helpers\DomainHelper;
 use yii2lab\extension\jwt\entities\TokenEntity;
 use yii2lab\extension\enum\enums\TimeEnum;
 use yii2lab\test\helpers\DataHelper;
@@ -141,6 +142,20 @@ class TokenTest extends Unit
                 ],
             ],
         ], ArrayHelper::toArray($decoded));
+    }
+
+    public function testForge()
+    {
+        $subject = [
+            'id' => 1,
+        ];
+        $profileName = 'default';
+        $tokenEntity = \Dii::$domain->jwt->token->forgeBySubject($subject, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+        $expected = DataHelper::loadForTest(self::PACKAGE, __METHOD__, $tokenEntity->toArray());
+        unset($expected['token']);
+        unset($expected['expire_at']);
+        $this->tester->assertArraySubset($expected, $tokenEntity->toArray());
+        $this->tester->assertRegExp('#^[a-zA-Z0-9-_\.]+$#', $tokenEntity->token);
     }
 
     private function forgeTokenEntity($userId) {

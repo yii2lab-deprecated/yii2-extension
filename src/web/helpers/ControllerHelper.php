@@ -46,7 +46,7 @@ class ControllerHelper {
 		if(is_object($serviceName)) {
 			return $serviceName;
 		} elseif(is_string($serviceName)) {
-			return ArrayHelper::getValue(Yii::$domain, $serviceName);
+			return ArrayHelper::getValue(\App::$domain, $serviceName);
 		}
 		return null;
 	}

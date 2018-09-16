@@ -30,7 +30,7 @@ class TokenTest extends Unit
         $tokenEntity = $this->forgeTokenEntity($userId);
         $tokenEntity->expire_at = 1536247466;
         try {
-            \Dii::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+            \App::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
             $this->tester->assertTrue(false);
         } catch (NotFoundHttpException $e) {
             $this->tester->assertExceptionMessage('Profile "default111111111111111" not defined!', $e);
@@ -43,7 +43,7 @@ class TokenTest extends Unit
         $profileName = 'default';
         $tokenEntity = $this->forgeTokenEntity($userId);
         $tokenEntity->expire_at = 1536247466;
-        \Dii::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+        \App::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
         $expected = DataHelper::loadForTest(self::PACKAGE, __METHOD__, $tokenEntity->toArray());
         $this->tester->assertEquals($expected, $tokenEntity->toArray());
         $this->tester->assertRegExp('#^[a-zA-Z0-9-_\.]+$#', $tokenEntity->token);
@@ -55,9 +55,9 @@ class TokenTest extends Unit
         $profileName = 'default';
         $tokenEntity = $this->forgeTokenEntity($userId);
         $tokenEntity->expire_at = TIMESTAMP - TimeEnum::SECOND_PER_HOUR;
-        \Dii::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+        \App::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
         try {
-            $tokenEntityDecoded = \Dii::$domain->jwt->token->decode($tokenEntity->token);
+            $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
             $this->tester->assertTrue(false);
         } catch (ExpiredException $e) {
             $this->tester->assertExceptionMessage('Expired token', $e);
@@ -70,9 +70,9 @@ class TokenTest extends Unit
         $profileName = 'default';
         $tokenEntity = $this->forgeTokenEntity($userId);
         $tokenEntity->begin_at = TIMESTAMP + TimeEnum::SECOND_PER_HOUR;
-        \Dii::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+        \App::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
         try {
-            $tokenEntityDecoded = \Dii::$domain->jwt->token->decode($tokenEntity->token);
+            $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
             $this->tester->assertTrue(false);
         } catch (BeforeValidException $e) {
             $this->tester->assertExceptionMessageRegexp('#Cannot handle token prior to#', $e);
@@ -84,8 +84,8 @@ class TokenTest extends Unit
         $userId = 1;
         $profileName = 'default';
         $tokenEntity = $this->forgeTokenEntity($userId);
-        \Dii::$domain->jwt->token->sign($tokenEntity, $profileName);
-        $tokenEntityDecoded = \Dii::$domain->jwt->token->decode($tokenEntity->token);
+        \App::$domain->jwt->token->sign($tokenEntity, $profileName);
+        $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
         $this->tester->assertEquals($tokenEntity->subject['id'], $tokenEntityDecoded->subject['id']);
     }
 
@@ -95,7 +95,7 @@ class TokenTest extends Unit
         $profileName = 'default';
         $tokenEntity = $this->forgeTokenEntity($userId);
        try {
-           $tokenEntityDecoded = \Dii::$domain->jwt->token->decode($tokenEntity->token);
+           $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
            $this->tester->assertTrue(false);
         } catch (\UnexpectedValueException $e) {
            $this->tester->assertExceptionMessage('Wrong number of segments', $e);
@@ -108,7 +108,7 @@ class TokenTest extends Unit
         $profileName = 'default';
         $tokenEntity = $this->forgeTokenEntity($userId);
         try {
-            $tokenEntityDecoded = \Dii::$domain->jwt->token->decode($tokenEntity->token);
+            $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
             $this->tester->assertTrue(false);
         } catch (\UnexpectedValueException $e) {
             $this->tester->assertExceptionMessage('Wrong number of segments', $e);
@@ -120,7 +120,7 @@ class TokenTest extends Unit
         $userId = 1;
         $profileName = 'default';
         $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjZjNjk3OWVjLTk1NzUtNDc5NC05MzAzLTBkMmI4NTFlZGIwMiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkuZXhhbXBsZS5jb21cL3YxXC9hdXRoIiwic3ViamVjdCI6eyJpZCI6MX0sInN1YiI6Imh0dHA6XC9cL2FwaS5leGFtcGxlLmNvbVwvdjFcL3VzZXJcLzEiLCJhdWQiOlsiaHR0cDpcL1wvYXBpLmNvcmUueWlpIl0sImV4cCI6MTUzNjI0NzQ2Nn0.XjAxVetPxtldVYLQwkVmKNwbjlatLD5yo_PXfHcwEHo';
-        $decoded = \Dii::$domain->jwt->token->decodeRaw($token);
+        $decoded = \App::$domain->jwt->token->decodeRaw($token);
         $this->tester->assertRegExp('#[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}#', $decoded->header->kid);
         $this->tester->assertNotEmpty($decoded->sig);
         $this->tester->assertArraySubset([
@@ -150,7 +150,7 @@ class TokenTest extends Unit
             'id' => 1,
         ];
         $profileName = 'default';
-        $tokenEntity = \Dii::$domain->jwt->token->forgeBySubject($subject, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
+        $tokenEntity = \App::$domain->jwt->token->forgeBySubject($subject, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
         $expected = DataHelper::loadForTest(self::PACKAGE, __METHOD__, $tokenEntity->toArray());
         unset($expected['token']);
         unset($expected['expire_at']);

@@ -17,7 +17,7 @@ class ClientService extends BaseService {
 		try {
 			$response = $this->repository->send($request);
 		} catch(UnauthorizedHttpException $e) {
-			Yii::$domain->account->auth->breakSession();
+			\App::$domain->account->auth->breakSession();
 		}
 		return $response;
 	}

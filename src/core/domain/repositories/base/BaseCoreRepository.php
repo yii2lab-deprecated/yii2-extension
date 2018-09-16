@@ -49,7 +49,7 @@ class BaseCoreRepository extends BaseRestRepository {
 			throw new UnprocessableEntityHttpException($responseEntity->data);
 		}
 		if($statusCode == 401) {
-			Yii::$domain->account->auth->breakSession();
+			\App::$domain->account->auth->breakSession();
 			return;
 		}
 		parent::showUserException($responseEntity);

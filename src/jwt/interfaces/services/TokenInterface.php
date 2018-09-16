@@ -31,7 +31,7 @@ interface TokenInterface {
      * @param $profileName
      * @return TokenEntity
      */
-    public function forgeBySubject($subject, $profileName = self::DEFAULT_PROFILE);
+    public function forgeBySubject($subject, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null);
 
     /**
      * @param $oldToken

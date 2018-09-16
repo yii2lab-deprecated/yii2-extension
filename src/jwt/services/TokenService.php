@@ -47,11 +47,11 @@ class TokenService extends BaseService implements TokenInterface {
         return $this->repository->decodeRaw($token, $profileEntity);
     }
 
-    public function forgeBySubject($subject, $profileName = self::DEFAULT_PROFILE) {
+    public function forgeBySubject($subject, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null) {
         $profileEntity = $this->getProfile($profileName);
         $tokenEntity = new TokenEntity();
         $tokenEntity->subject = $subject;
-        \Dii::$domain->jwt->token->sign($tokenEntity);
+        \Dii::$domain->jwt->token->sign($tokenEntity, $profileName, $keyId, $head);
         return $tokenEntity;
     }
 

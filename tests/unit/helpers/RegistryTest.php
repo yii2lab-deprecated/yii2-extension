@@ -9,7 +9,8 @@ class RegistryTest extends Unit
 	
 	public function testGetStartValues()
 	{
-		$this->tester->assertEquals(Registry::get(), []);
+        Registry::reset();
+	    $this->tester->assertEquals(Registry::get(), []);
 	}
 	
 	public function testSetValues()

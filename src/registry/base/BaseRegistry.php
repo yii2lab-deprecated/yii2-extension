@@ -31,6 +31,10 @@ abstract class BaseRegistry {
 			ArrayHelper::remove(static::$data, $key);
 		}
 	}
+
+    static function reset() {
+       static::$data = [];
+    }
 	
 	protected function __construct() {}
 	

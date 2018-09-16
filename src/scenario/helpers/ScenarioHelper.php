@@ -11,6 +11,12 @@ use yii2lab\domain\values\BaseValue;
 use yii2lab\helpers\ClassHelper;
 use yii2lab\helpers\Helper;
 
+/**
+ * Class ScenarioHelper
+ * @package yii2lab\extension\scenario\helpers
+ *
+ * @deprecated use $filterCollection = new ScenarioCollection($filters); $data = $filterCollection->runAll($data);
+ */
 class ScenarioHelper {
 	
 	public static function forgeCollection($definitionArray) {

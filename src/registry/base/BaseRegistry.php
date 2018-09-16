@@ -5,35 +5,53 @@ namespace yii2lab\extension\registry\base;
 use yii2mod\helpers\ArrayHelper;
 
 abstract class BaseRegistry {
-	
+
+    private static $classesData = [];
+
+    private static function key($key = null) {
+        $result = static::class;
+        if($key) {
+            $result .= DOT . $key;
+        }
+        return $result;
+    }
+
 	static function get($key = null, $default = null) {
-		if(empty($key)) {
-			return static::$data;
-		}
-		return ArrayHelper::getValue(static::$data, $key, $default);
+        $key = self::key($key);
+		return ArrayHelper::getValue(self::$classesData, $key, $default);
 	}
 	
 	static function has($key) {
 		if(empty($key)) {
 			return false;
 		}
-		return ArrayHelper::has(static::$data, $key);
+        $key = self::key($key);
+		return ArrayHelper::has(self::$classesData, $key);
 	}
 	
 	static function set($key, $value) {
-		if(!empty($key)) {
-			ArrayHelper::set(static::$data, $key, $value);
-		}
+        if(empty($key)) {
+            return false;
+        }
+        $key = self::key($key);
+        ArrayHelper::set(self::$classesData, $key, $value);
 	}
 	
 	static function remove($key) {
-		if(!empty($key) && array_key_exists($key, static::$data)) {
-			ArrayHelper::remove(static::$data, $key);
+        if(empty($key)) {
+            return false;
+        }
+		if(self::has($key)) {
+			ArrayHelper::remove(self::$classesData[static::class], $key);
 		}
 	}
 
     static function reset() {
-       static::$data = [];
+        self::$classesData[static::class] = [];
+    }
+
+    static function load($data) {
+        self::$classesData[static::class] = $data;
     }
 	
 	protected function __construct() {}

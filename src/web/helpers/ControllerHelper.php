@@ -4,13 +4,30 @@ namespace yii2lab\extension\web\helpers;
 
 use DateTimeZone;
 use Yii;
+use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii2lab\domain\services\base\BaseService;
+use yii2lab\extension\web\enums\ActionEventEnum;
 use yii2lab\extension\web\enums\HttpHeaderEnum;
+use yii2lab\extension\web\events\ActionEvent;
 
 class ControllerHelper {
+	
+	public static function beforeWriteTrigger(Component $component, $data) {
+		$event = new ActionEvent();
+		$event->content = $data;
+		$component->trigger(ActionEventEnum::BEFORE_WRITE, $event);
+		return $event->content;
+	}
+	
+	public static function beforeReadTrigger(Component $component) {
+		$event = new ActionEvent();
+		//$event->content = $data;
+		$component->trigger(ActionEventEnum::BEFORE_READ, $event);
+		//return $event->content;
+	}
 	
 	public static function setTimeZone() {
 		$timeZone = Yii::$app->request->getHeaders()->get(HttpHeaderEnum::TIME_ZONE);

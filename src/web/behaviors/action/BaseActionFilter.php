@@ -3,8 +3,8 @@
 namespace yii2lab\extension\web\behaviors\action;
 
 use yii\base\Behavior;
+use yii2lab\domain\events\DataEvent;
 use yii2lab\extension\web\enums\ActionEventEnum;
-use yii2lab\extension\web\events\ActionEvent;
 
 abstract class BaseActionFilter extends Behavior
 {
@@ -23,27 +23,27 @@ abstract class BaseActionFilter extends Behavior
 		];
 	}
 	
-	public function beforeWrite(ActionEvent $event) {
+	public function beforeWrite(DataEvent $event) {
 		
 	}
 	
-	public function afterWrite(ActionEvent $event) {
+	public function afterWrite(DataEvent $event) {
 		
 	}
 	
-	public function beforeRead(ActionEvent $event) {
+	public function beforeRead(DataEvent $event) {
 		
 	}
 	
-	public function afterRead(ActionEvent $event) {
+	public function afterRead(DataEvent $event) {
 		
 	}
 	
-	public function beforeDelete(ActionEvent $event) {
+	public function beforeDelete(DataEvent $event) {
 		
 	}
 	
-	public function afterDelete(ActionEvent $event) {
+	public function afterDelete(DataEvent $event) {
 		
 	}
 }

@@ -33,6 +33,9 @@ class ArrayHelper extends YiiArrayHelper {
 	
 	public static function extractByKeys($array, $keys)
 	{
+		if(empty($keys)) {
+			return $array;
+		}
 		$result = [];
 		foreach ($keys as $key) {
 			if(array_key_exists($key, $array)) {

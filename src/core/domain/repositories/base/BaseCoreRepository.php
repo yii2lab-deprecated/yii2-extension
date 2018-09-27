@@ -54,7 +54,7 @@ class BaseCoreRepository extends BaseRestRepository {
 			throw new UnprocessableEntityHttpException($responseEntity->data);
 		}
 		if($statusCode == 401) {
-			\App::$domain->account->auth->breakSession();
+			\App::$domain->account->auth->loginRequired();
 			return;
 		}
 		parent::showUserException($responseEntity);

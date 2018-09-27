@@ -3,8 +3,8 @@
 namespace yii2lab\extension\widget\entityActions\actions;
 
 use yii\helpers\Url;
+use yii2lab\extension\widget\helpers\WidgetHelper;
 use yii2lab\extension\yii\helpers\Html;
-use yii2lab\helpers\StringHelper;
 use yii2module\lang\domain\helpers\LangHelper;
 
 class BaseAction {
@@ -42,7 +42,7 @@ class BaseAction {
 	
 	private function renderTemplate($name, $options) {
 		$template = $this->{$name};
-		return StringHelper::renderTemplate($template, $options);
+		return WidgetHelper::renderTemplate($template, $options);
 	}
 	
 }

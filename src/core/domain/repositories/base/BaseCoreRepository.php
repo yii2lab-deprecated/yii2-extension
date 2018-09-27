@@ -21,7 +21,7 @@ class BaseCoreRepository extends BaseRestRepository {
 		parent::init();
 		$this->initVersion();
 		$this->initBaseUrl();
-		$this->initHeaders();
+//		$this->initHeaders();
 	}
 	
 	protected function sendRequest(RequestEntity $requestEntity) {
@@ -31,6 +31,11 @@ class BaseCoreRepository extends BaseRestRepository {
 		$responseEntity = parent::sendRequest($requestEntity);
 		return $responseEntity;
 	}
+
+    protected function normalizeRequestEntity(RequestEntity $requestEntity) {
+        $this->headers = ArrayHelper::merge($this->headers, CoreHelper::getHeaders());
+        return parent::normalizeRequestEntity($requestEntity);
+    }
 	
 	protected function showServerException(ResponseEntity $responseEntity) {
 		$data = $responseEntity->data;

@@ -6,6 +6,8 @@ use yii2lab\extension\enum\base\BaseEnum;
 
 class TimeEnum extends BaseEnum {
 	
+	const SECOND_PER_MILLISECOND = 1 / 1000;
+	const SECOND_PER_MICROSECOND = self::SECOND_PER_MILLISECOND / 1000;
 	const SECOND_PER_MINUTE = 60;
 	const SECOND_PER_HOUR = self::SECOND_PER_MINUTE * 60;
 	const SECOND_PER_DAY = self::SECOND_PER_HOUR * 24;

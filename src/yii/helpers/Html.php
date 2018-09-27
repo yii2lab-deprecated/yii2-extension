@@ -8,7 +8,16 @@ use yii\helpers\Html as YiiHtml;
 class Html extends YiiHtml
 {
 
-    public static function defineFont($font, $path, $extList = ['ttf']) {
+	public static function ulRaw($items, $options = []) {
+		$options['item'] = [self::class, 'renderLine'];
+		return self::ul($items, $options);
+	}
+	
+	public static function renderLine($item) {
+		return Html::tag('li', $item);
+	}
+	
+	public static function defineFont($font, $path, $extList = ['ttf']) {
         $typesCss = '';
         foreach($extList as $ext) {
             if($ext == 'eot') {

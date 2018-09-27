@@ -36,6 +36,9 @@ class ArrayHelper extends YiiArrayHelper {
 		if(empty($keys)) {
 			return $array;
 		}
+		if(is_object($array)) {
+			$array = self::toArray($array);
+		}
 		$result = [];
 		foreach ($keys as $key) {
 			if(array_key_exists($key, $array)) {

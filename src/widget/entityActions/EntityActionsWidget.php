@@ -14,7 +14,7 @@ class EntityActionsWidget extends Widget {
 	
 	public $splitter = HtmlEnum::NBSP . HtmlEnum::NBSP;
 	public $actions = ['update', 'delete'];
-	public $buttons = [
+	public $actionsDefinition = [
 		'update' => UpdateAction::class,
 		'delete' => DeleteAction::class,
 	];
@@ -27,7 +27,7 @@ class EntityActionsWidget extends Widget {
 	
 	public function run() {
 		foreach($this->actions as $action) {
-			$button = ArrayHelper::getValue($this->buttons, $action);
+			$button = ArrayHelper::getValue($this->actionsDefinition, $action);
 			$buttonHtml = $this->renderButton($button);
 			if($buttonHtml) {
 				echo $buttonHtml;

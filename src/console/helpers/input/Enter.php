@@ -54,12 +54,11 @@ class Enter {
 	}
 	
 	private static function formInput(Model $form, $only = null) {
-		$attributeLabels = $form->attributeLabels();
 		foreach($form->attributes as $attributeName => $attributeValue) {
 			if(!empty($only) && !in_array($attributeName, $only)) {
 				continue;
 			}
-			$message = $attributeLabels[$attributeName];
+			$message = $form->getAttributeLabel($attributeName);
 			if(!empty($attributeValue) && empty($only)) {
 				$message .= ' (default: ' . $attributeValue . ')';
 			}

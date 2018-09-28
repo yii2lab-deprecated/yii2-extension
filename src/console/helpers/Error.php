@@ -2,8 +2,25 @@
 
 namespace yii2lab\extension\console\helpers;
 
-class Error {
+use yii\console\ExitCode;
+use yii\helpers\Console;
 
+class Error {
+	
+	static function warning($message) {
+		self::printMessage('WARNING!', $message, Console::FG_YELLOW);
+	}
+	
+	static function fatal($message) {
+		self::printMessage('FATAL!', $message, Console::FG_RED);
+		exit(ExitCode::UNSPECIFIED_ERROR);
+	}
+	
+	private static function printMessage($title, $message, $args) {
+		Output::line(' --- ' . $title . ' --- ', 'both', $args);
+		Output::line($message, 'both', $args);
+	}
+	
 	/**
 	 * Prints error message.
 	 * @param string $message message

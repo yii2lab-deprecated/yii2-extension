@@ -7,7 +7,12 @@ use yii\helpers\Html as YiiHtml;
 
 class Html extends YiiHtml
 {
-
+	
+	public static function renderBoolean($value) {
+		$value = boolval($value);
+		return $value ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
+	}
+	
 	public static function ulRaw($items, $options = []) {
 		$options['item'] = [self::class, 'renderLine'];
 		return self::ul($items, $options);

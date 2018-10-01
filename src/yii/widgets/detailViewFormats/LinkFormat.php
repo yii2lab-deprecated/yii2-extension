@@ -4,6 +4,7 @@ namespace yii2lab\extension\yii\widgets\detailViewFormats;
 
 use yii2lab\extension\arrayTools\base\BaseCollection;
 use yii2lab\extension\widget\helpers\WidgetHelper;
+use yii2lab\extension\yii\helpers\ArrayHelper;
 use yii2lab\extension\yii\helpers\Html;
 
 class LinkFormat {
@@ -26,8 +27,8 @@ class LinkFormat {
 	}
 
 	private function renderItem($value) {
-		$title = $value->{$this->titleAttribute};
-		$id = $value->{$this->idAttribute};
+		$title = ArrayHelper::getValue($value, $this->titleAttribute);
+		$id = ArrayHelper::getValue($value, $this->idAttribute);
 		$url = WidgetHelper::renderTemplate($this->urlTemplate, [
 			'base' => $this->baseUrl,
 			'id' => $id,

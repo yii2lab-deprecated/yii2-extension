@@ -2,7 +2,7 @@
 
 namespace yii2lab\extension\enum\base;
 
-use yii2lab\helpers\ReflectionHelper;
+use yii2lab\extension\common\helpers\ReflectionHelper;
 
 class BaseEnum {
 	

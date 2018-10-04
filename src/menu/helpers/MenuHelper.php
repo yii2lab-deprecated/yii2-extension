@@ -5,7 +5,7 @@ namespace yii2lab\extension\menu\helpers;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii2lab\helpers\Helper;
+use yii2lab\extension\common\helpers\Helper;
 use yii2lab\extension\menu\interfaces\MenuInterface;
 use yii2lab\helpers\ModuleHelper;
 use yii2lab\helpers\UrlHelper;

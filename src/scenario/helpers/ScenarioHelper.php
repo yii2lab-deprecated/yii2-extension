@@ -9,7 +9,7 @@ use yii2lab\extension\scenario\base\BaseScenario;
 use yii2lab\extension\arrayTools\helpers\Collection;
 use yii2lab\domain\values\BaseValue;
 use yii2lab\helpers\ClassHelper;
-use yii2lab\helpers\Helper;
+use yii2lab\extension\common\helpers\Helper;
 
 /**
  * Class ScenarioHelper

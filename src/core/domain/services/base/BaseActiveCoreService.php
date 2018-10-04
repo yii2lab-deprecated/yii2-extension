@@ -4,7 +4,7 @@ namespace yii2lab\extension\core\domain\services\base;
 
 use yii2lab\extension\core\domain\repositories\base\BaseActiveCoreRepository;
 use yii2lab\domain\services\base\BaseActiveService;
-use yii2lab\helpers\ClassHelper;
+use yii2lab\extension\common\helpers\ClassHelper;
 
 class BaseActiveCoreService extends BaseActiveService {
 	

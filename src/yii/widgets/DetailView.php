@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 use yii2lab\extension\yii\widgets\detailViewFormats\BooleanFormat;
 use yii2lab\extension\yii\widgets\detailViewFormats\LinkFormat;
 use yii2lab\extension\yii\widgets\detailViewFormats\ListFormat;
-use yii2lab\helpers\ClassHelper;
+use yii2lab\extension\common\helpers\ClassHelper;
 use yii2module\lang\domain\helpers\LangHelper;
 
 class DetailView extends \yii\widgets\DetailView {

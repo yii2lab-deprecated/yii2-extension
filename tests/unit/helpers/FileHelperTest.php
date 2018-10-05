@@ -143,7 +143,7 @@ class FileHelperTest extends Unit
 	
 	public function testRemove()
 	{
-		$dirName = VENDOR_DIR . DS . 'yii2lab/yii2-helpers/tests/_data/new';
+		$dirName = VENDOR_DIR . DS . 'yii2lab/yii2-extension/tests/_data/new';
 		$fileName = $dirName . '.txt';
 		if(!is_dir($dirName)) {
 			mkdir($dirName);
@@ -279,7 +279,7 @@ class FileHelperTest extends Unit
 	
 	public function testScanDir()
 	{
-		$result = FileHelper::scanDir(ROOT_DIR . DS . 'vendor/yii2lab/yii2-helpers/tests/_application/common/config');
+		$result = FileHelper::scanDir(ROOT_DIR . DS . 'vendor/yii2lab/yii2-extension/tests/_application/common/config');
 		$this->tester->assertEquals($result, [
 			'bootstrap.php',
 			'domains.php',
@@ -334,7 +334,7 @@ class FileHelperTest extends Unit
 	
 	public function testFindFilesWithPath()
 	{
-		$result = FileHelper::findFilesWithPath(ROOT_DIR . DS . 'vendor/yii2lab/yii2-helpers/tests/_application');
+		$result = FileHelper::findFilesWithPath(ROOT_DIR . DS . 'vendor/yii2lab/yii2-extension/tests/_application');
 		$this->tester->assertArraySubset($result, [
 			'common' . DS . 'config' . DS . 'bootstrap.php',
 			'common' . DS . 'config' . DS . 'domains.php',

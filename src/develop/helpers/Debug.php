@@ -3,6 +3,7 @@
 namespace yii2lab\extension\develop\helpers;
 
 use Yii;
+use yii2lab\extension\web\helpers\Page;
 use yii2lab\extension\yii\helpers\ArrayHelper;
 use yii\bootstrap\BootstrapAsset;
 use yii2lab\extension\yii\helpers\FileHelper;

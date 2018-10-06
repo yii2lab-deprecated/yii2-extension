@@ -7,6 +7,7 @@ use Yii;
 use yii2lab\domain\data\GetParams;
 use xj\ua\UserAgent;
 use yii\web\View;
+use yii2lab\domain\data\Query;
 
 class ClientHelper
 {
@@ -38,6 +39,53 @@ class ClientHelper
 			}
 		}
 		return $uaAttributes;
+	}
+	
+	public static function getCurrentPage($offset, $limit) {
+		$page = floor($offset / $limit) + 1;
+		return $page;
+	}
+	
+	public static function crutchForPaginate(Query $query = null, $defaultLimit = 20) {
+    	$getParams = Yii::$app->request->getQueryParams();
+		
+		$p = [];
+		$names = ['page', 'per-page', 'limit', 'offset'];
+		foreach($names as $name) {
+			$queryValue = $query->getParam($name);
+			if($queryValue) {
+				$p[$name] = intval($queryValue);
+				unset($getParams[$name]);
+				$query->removeParam($name);
+			}
+		}
+		
+		$page = 1;
+		$offset = 0;
+		$limit = $defaultLimit;
+		
+		if(!empty($p['limit'])) {
+			$limit = $p['limit'];
+		} elseif(!empty($p['per-page'])) {
+			$limit = $p['per-page'];
+		}
+		
+		if(isset($p['page'])) {
+			$page = $p['page'];
+			if($page < 1) {
+				$page = 1;
+			}
+			$offset = ($page - 1) * $limit;
+		}
+		
+		if(isset($p['offset'])) {
+			$offset = $p['offset'];
+			$page = self::getCurrentPage($offset, $limit);
+		}
+		$query->page($page);
+		$query->offset($offset);
+		$query->limit($limit);
+		Yii::$app->request->setQueryParams($getParams);
 	}
 	
 	public static function getQueryFromRequest($queryParams = null) {

@@ -23,6 +23,12 @@ trait ArrayReadTrait {
 	abstract public function forgeEntity($data, $class = null);
 	abstract protected function getCollection();
 	
+	/**
+	 * @param Query|null $query
+	 *
+	 * @return array|mixed
+	 * @deprecated
+	 */
 	public function allArray(Query $query = null) {
 		$iterator = $this->getIterator();
 		$array = $iterator->all($query);

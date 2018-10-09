@@ -2,6 +2,7 @@
 
 namespace yii2lab\extension\jwt\interfaces\repositories;
 
+use yii2lab\domain\interfaces\repositories\RepositoryInterface;
 use yii2lab\extension\jwt\entities\ProfileEntity;
 use yii2lab\extension\jwt\entities\TokenEntity;
 
@@ -12,7 +13,7 @@ use yii2lab\extension\jwt\entities\TokenEntity;
  * 
  * @property-read \yii2lab\extension\jwt\Domain $domain
  */
-interface TokenInterface {
+interface TokenInterface extends RepositoryInterface {
 
     public function sign(TokenEntity $tokenEntity, ProfileEntity $profileEntity, $keyId = null, $head = null);
     public function encode(TokenEntity $tokenEntity, ProfileEntity $profileEntity);

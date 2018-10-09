@@ -2,8 +2,6 @@
 
 namespace yii2lab\extension\jwt\services;
 
-use yii\helpers\ArrayHelper;
-use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\extension\jwt\entities\AuthenticationEntity;
 use yii2lab\extension\jwt\entities\ProfileEntity;
 use yii2lab\extension\jwt\entities\TokenEntity;
@@ -12,7 +10,6 @@ use yii2lab\domain\services\base\BaseService;
 use yii2lab\extension\web\enums\HttpMethodEnum;
 use yii2lab\helpers\StringHelper;
 use yii2lab\rest\domain\entities\RequestEntity;
-use yii2lab\rest\domain\entities\ResponseEntity;
 use yii2lab\rest\domain\helpers\RestHelper;
 
 /**
@@ -86,7 +83,8 @@ class TokenService extends BaseService implements TokenInterface {
     }
 
     private function getProfile($name) {
-        $profileEntity = $this->domain->profile->oneById($name);
+	    /** @var ProfileEntity $profileEntity */
+	    $profileEntity = $this->domain->profile->oneById($name);
         $profileEntity->validate();
         return $profileEntity;
     }

@@ -35,7 +35,16 @@ class ClassHelper {
         $name = substr($class, $lastPos + 1, 0 - strlen($type));
         return $name;
     }
-
+	
+	public static function extractMethod($method) {
+		$array = explode('::', $method);
+		if(count($array) < 2) {
+			return $method;
+		} else {
+			return $array[1];
+		}
+	}
+    
     /**
      * @param       $definition
      * @param array $params

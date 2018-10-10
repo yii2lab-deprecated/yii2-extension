@@ -2,13 +2,9 @@
 
 namespace yii2lab\extension\scenario\collections;
 
-use yii\base\InvalidConfigException;
-use yii\helpers\ArrayHelper;
-use yii\web\ServerErrorHttpException;
 use yii2lab\extension\scenario\base\BaseScenario;
 use yii2lab\extension\arrayTools\helpers\Collection;
 use yii2lab\domain\values\BaseValue;
-use yii2lab\extension\scenario\helpers\ScenarioHelper;
 use yii2lab\extension\common\helpers\ClassHelper;
 use yii2lab\extension\common\helpers\Helper;
 
@@ -37,11 +33,10 @@ class ScenarioCollection extends Collection {
      * @param            $data
      *
      * @return BaseValue
-     * @throws InvalidConfigException
-     * @throws ServerErrorHttpException
      */
     public function runAll($data = null) {
-        $filterCollection = $this->all();
+	    /** @var BaseScenario[] $filterCollection */
+	    $filterCollection = $this->all();
         if(empty($filterCollection)) {
             return $data;
         }

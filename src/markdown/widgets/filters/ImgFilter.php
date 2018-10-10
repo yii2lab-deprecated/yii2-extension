@@ -3,7 +3,6 @@
 namespace yii2lab\extension\markdown\widgets\filters;
 
 use Yii;
-use yii\base\BaseObject;
 use yii2lab\extension\scenario\base\BaseScenario;
 use yii2lab\extension\yii\helpers\FileHelper;
 use yii2lab\extension\yii\helpers\Html;

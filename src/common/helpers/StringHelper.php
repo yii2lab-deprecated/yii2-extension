@@ -113,8 +113,13 @@ class StringHelper {
 		if(empty($value)) {
 			return EMP;
 		}
-		$begin = substr($value, 0, $length);
-		$end = substr($value, 0 - $length);
+		if($length == 0) {
+			$begin = EMP;
+			$end = EMP;
+		} else {
+			$begin = substr($value, 0, $length);
+			$end = substr($value, 0 - $length);
+		}
 		$valueLength = !empty($valueLength) ? $valueLength : strlen($value) - $length * 2;
 		return $begin . str_repeat('*', $valueLength) . $end;
 	}

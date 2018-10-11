@@ -2,7 +2,6 @@
 
 namespace yii2lab\extension\jwt;
 
-use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\domain\enums\Driver;
 
 /**

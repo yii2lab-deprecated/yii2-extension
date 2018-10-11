@@ -4,8 +4,8 @@ namespace tests\functional\jwt\services;
 
 use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
-use yii\web\NotFoundHttpException;
 use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\extension\jwt\entities\TokenEntity;
 use yii2lab\extension\enum\enums\TimeEnum;
@@ -26,7 +26,7 @@ class TokenTest extends Unit
         try {
             \App::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
             $this->tester->assertBad();
-        } catch (NotFoundHttpException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->tester->assertExceptionMessage('Profile "default111111111111111" not defined!', $e);
         }
     }

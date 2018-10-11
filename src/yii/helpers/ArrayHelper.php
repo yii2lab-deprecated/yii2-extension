@@ -6,6 +6,13 @@ use yii\helpers\ArrayHelper as YiiArrayHelper;
 
 class ArrayHelper extends YiiArrayHelper {
 	
+	public static function firstKey($array)
+	{
+		$keys = array_keys($array);
+		$firstKey = $keys[0];
+		return $firstKey;
+	}
+	
 	public static function itemsToInt($array)
 	{
 		return self::prepareItems($array, 'intval');

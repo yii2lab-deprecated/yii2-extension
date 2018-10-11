@@ -7,16 +7,10 @@ use Firebase\JWT\ExpiredException;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii2lab\app\domain\helpers\EnvService;
-use yii2lab\domain\helpers\DomainHelper;
 use yii2lab\extension\jwt\entities\TokenEntity;
 use yii2lab\extension\enum\enums\TimeEnum;
 use yii2lab\test\helpers\DataHelper;
-use yii2lab\test\helpers\TestHelper;
 use yii2lab\test\Test\Unit;
-use Yii;
-use tests\functional\v1\enums\LoginEnum;
-use yii\web\ForbiddenHttpException;
-use yii2module\account\domain\v2\helpers\TestAuthHelper;
 
 class TokenTest extends Unit
 {
@@ -31,7 +25,7 @@ class TokenTest extends Unit
         $tokenEntity->expire_at = 1536247466;
         try {
             \App::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
-            $this->tester->assertTrue(false);
+            $this->tester->assertBad();
         } catch (NotFoundHttpException $e) {
             $this->tester->assertExceptionMessage('Profile "default111111111111111" not defined!', $e);
         }
@@ -58,7 +52,7 @@ class TokenTest extends Unit
         \App::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
         try {
             $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
-            $this->tester->assertTrue(false);
+            $this->tester->assertBad($tokenEntityDecoded);
         } catch (ExpiredException $e) {
             $this->tester->assertExceptionMessage('Expired token', $e);
         }
@@ -73,7 +67,7 @@ class TokenTest extends Unit
         \App::$domain->jwt->token->sign($tokenEntity, $profileName, '6c6979ec-9575-4794-9303-0d2b851edb02');
         try {
             $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
-            $this->tester->assertTrue(false);
+	        $this->tester->assertBad($tokenEntityDecoded);
         } catch (BeforeValidException $e) {
             $this->tester->assertExceptionMessageRegexp('#Cannot handle token prior to#', $e);
         }
@@ -92,11 +86,11 @@ class TokenTest extends Unit
     public function testSignAndDecodeEmptyToken()
     {
         $userId = 1;
-        $profileName = 'default';
+        //$profileName = 'default';
         $tokenEntity = $this->forgeTokenEntity($userId);
        try {
            $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
-           $this->tester->assertTrue(false);
+	       $this->tester->assertBad($tokenEntityDecoded);
         } catch (\UnexpectedValueException $e) {
            $this->tester->assertExceptionMessage('Wrong number of segments', $e);
         }
@@ -105,11 +99,11 @@ class TokenTest extends Unit
     public function testSignAndDecodeBadToken()
     {
         $userId = 1;
-        $profileName = 'default';
+        //$profileName = 'default';
         $tokenEntity = $this->forgeTokenEntity($userId);
         try {
             $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
-            $this->tester->assertTrue(false);
+	        $this->tester->assertBad($tokenEntityDecoded);
         } catch (\UnexpectedValueException $e) {
             $this->tester->assertExceptionMessage('Wrong number of segments', $e);
         }
@@ -118,7 +112,7 @@ class TokenTest extends Unit
     public function testSignAndDecodeRaw()
     {
         $userId = 1;
-        $profileName = 'default';
+        //$profileName = 'default';
         $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjZjNjk3OWVjLTk1NzUtNDc5NC05MzAzLTBkMmI4NTFlZGIwMiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkuZXhhbXBsZS5jb21cL3YxXC9hdXRoIiwic3ViamVjdCI6eyJpZCI6MX0sInN1YiI6Imh0dHA6XC9cL2FwaS5leGFtcGxlLmNvbVwvdjFcL3VzZXJcLzEiLCJhdWQiOlsiaHR0cDpcL1wvYXBpLmNvcmUueWlpIl0sImV4cCI6MTUzNjI0NzQ2Nn0.XjAxVetPxtldVYLQwkVmKNwbjlatLD5yo_PXfHcwEHo';
         $decoded = \App::$domain->jwt->token->decodeRaw($token);
         $this->tester->assertRegExp('#[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}#', $decoded->header->kid);

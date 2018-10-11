@@ -2,6 +2,8 @@
 
 namespace yii2lab\extension\jwt\services;
 
+use yii\base\InvalidArgumentException;
+use yii\web\NotFoundHttpException;
 use yii2lab\extension\jwt\entities\AuthenticationEntity;
 use yii2lab\extension\jwt\entities\ProfileEntity;
 use yii2lab\extension\jwt\entities\TokenEntity;
@@ -84,7 +86,11 @@ class TokenService extends BaseService implements TokenInterface {
 
     private function getProfile($name) {
 	    /** @var ProfileEntity $profileEntity */
-	    $profileEntity = $this->domain->profile->oneById($name);
+	    try {
+		    $profileEntity = $this->domain->profile->oneById($name);
+	    } catch(NotFoundHttpException $e) {
+	    	throw new InvalidArgumentException('Profile "' . $name . '" not defined!');
+	    }
         $profileEntity->validate();
         return $profileEntity;
     }

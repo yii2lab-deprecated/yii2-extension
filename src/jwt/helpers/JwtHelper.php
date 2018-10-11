@@ -3,6 +3,7 @@
 namespace yii2lab\extension\jwt\helpers;
 
 use Firebase\JWT\JWT;
+use UnexpectedValueException;
 use yii2lab\extension\jwt\entities\ProfileEntity;
 
 class JwtHelper
@@ -24,7 +25,7 @@ class JwtHelper
                 if (!isset($key[$header->kid])) {
                     throw new UnexpectedValueException('"kid" invalid, unable to lookup correct key');
                 }
-                $key = $key[$header->kid];
+                //$key = $key[$header->kid];
             } else {
                 throw new UnexpectedValueException('"kid" empty, unable to lookup correct key');
             }

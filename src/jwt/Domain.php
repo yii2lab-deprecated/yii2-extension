@@ -8,7 +8,6 @@ use yii2lab\domain\enums\Driver;
  * Class Domain
  * 
  * @package yii2lab\extension\jwt
- * @property-read \yii2lab\extension\jwt\interfaces\services\JwtInterface $jwt
  * @property-read \yii2lab\extension\jwt\interfaces\repositories\RepositoriesInterface $repositories
  * @property-read \yii2lab\extension\jwt\interfaces\services\ProfileInterface $profile
  * @property-read \yii2lab\extension\jwt\interfaces\services\TokenInterface $token

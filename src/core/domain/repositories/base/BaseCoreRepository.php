@@ -2,12 +2,11 @@
 
 namespace yii2lab\extension\core\domain\repositories\base;
 
-use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\ServerErrorHttpException;
 use yii2lab\extension\core\domain\helpers\CoreHelper;
 use yii2lab\domain\exceptions\UnprocessableEntityHttpException;
-use yii2lab\helpers\ClientHelper;
+use yii2lab\extension\web\helpers\ClientHelper;
 use yii2lab\rest\domain\entities\RequestEntity;
 use yii2lab\rest\domain\entities\ResponseEntity;
 use yii2lab\rest\domain\repositories\base\BaseRestRepository;
@@ -64,9 +63,9 @@ class BaseCoreRepository extends BaseRestRepository {
 		$this->baseUrl = CoreHelper::forgeUrl($this->version, $this->point);
 	}
 	
-	private function initHeaders() {
+	/*private function initHeaders() {
 		$this->headers = ArrayHelper::merge($this->headers, CoreHelper::getHeaders());
-	}
+	}*/
 
     private function initVersion() {
 	    if(empty($this->version)) {

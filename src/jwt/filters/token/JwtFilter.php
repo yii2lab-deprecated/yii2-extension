@@ -11,23 +11,23 @@ class JwtFilter extends BaseTokenFilter {
 
 	public $profile = 'default';
 	
-	public function run() {
+	public function auth($token) {
 		try {
-			$tokenEntity = \App::$domain->jwt->token->decode($this->token, $this->profile);
+			$tokenEntity = \App::$domain->jwt->token->decode($token, $this->profile);
 		} catch(\Exception $e) {
 			throw new NotFoundHttpException('the_token_has_expired');
 		}
 		/** @var LoginEntity $loginEntity */
-        $loginEntity = \App::$domain->account->login->oneById($tokenEntity->subject['id']);
-        $token = ArrayHelper::getValue($tokenEntity, 'subject.token');
-        if(!$token) {
-	        $token = $this->token;
-        }
-		$loginEntity->token = $token;
-        $this->setData($loginEntity);
+		$loginEntity = \App::$domain->account->login->oneById($tokenEntity->subject['id']);
+		$internalToken = ArrayHelper::getValue($tokenEntity, 'subject.token');
+		if(!$internalToken) {
+			$internalToken = $token;
+		}
+		$loginEntity->token = $internalToken;
+		return $loginEntity;
 	}
 	
-	public function auth($body, $ip) {
+	public function login($body, $ip) {
 		$loginEntity = \App::$domain->account->repositories->auth->authentication($body['login'], $body['password'], $ip);
 		$subject = [
 			'id' => $loginEntity->id,

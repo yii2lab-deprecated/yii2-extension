@@ -11,6 +11,12 @@ use yii2lab\rest\domain\entities\RequestEntity;
 use yii2lab\extension\web\enums\HttpMethodEnum;
 use yii2module\account\domain\v2\helpers\AuthHelper;
 
+/**
+ * Class ClientService
+ * @package yii2lab\extension\core\services
+ *
+ * @deprecated
+ */
 class ClientService extends BaseService {
 	
 	public function send(RequestEntity $request) {

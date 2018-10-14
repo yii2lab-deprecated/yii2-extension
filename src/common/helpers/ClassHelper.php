@@ -3,6 +3,7 @@
 namespace yii2lab\extension\common\helpers;
 
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\web\ServerErrorHttpException;
 use yii2lab\extension\common\exceptions\ClassInstanceException;
@@ -19,9 +20,21 @@ class ClassHelper {
 		return $handlerInstance;
 	}
 	
-	public static function isInstanceOf($instance, $interfaceClass) {
-		if(!$instance instanceof $interfaceClass) {
-			throw new ClassInstanceException("Class \"$instance\" not instanceof \"RunInterface\"");
+	public static function isInstanceOf($instance, $interface) {
+		if(empty($instance)) {
+			throw new InvalidArgumentException("Argument \"instance\" is empty");
+		}
+		if(empty($interface)) {
+			throw new InvalidArgumentException("Argument \"interfaceClass\" is empty");
+		}
+		if(!is_object($instance)) {
+			throw new InvalidArgumentException("Class \"$instance\" not exists");
+		}
+		if(!interface_exists($interface) && !class_exists($interface)) {
+			throw new InvalidArgumentException("Class \"$interface\" not exists");
+		}
+		if(!$instance instanceof $interface) {
+			throw new ClassInstanceException("Class \"$instance\" not instanceof \"$interface\"");
 		}
 	}
 	
@@ -62,15 +75,6 @@ class ClassHelper {
 		}
 	}
     
-    /**
-     * @param       $definition
-     * @param array $params
-     * @param null  $interface
-     *
-     * @return object
-     * @throws InvalidConfigException
-     * @throws ServerErrorHttpException
-     */
     public static function createObject($definition, array $params = [], $interface = null) {
         if(empty($definition)) {
             throw new InvalidConfigException('Empty class config');

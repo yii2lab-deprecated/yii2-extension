@@ -2,6 +2,7 @@
 
 namespace yii2lab\extension\scenario\helpers;
 
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\web\ServerErrorHttpException;
@@ -10,6 +11,7 @@ use yii2lab\extension\arrayTools\helpers\Collection;
 use yii2lab\domain\values\BaseValue;
 use yii2lab\extension\common\helpers\ClassHelper;
 use yii2lab\extension\common\helpers\Helper;
+use yii2lab\extension\scenario\interfaces\RunInterface;
 
 /**
  * Class ScenarioHelper
@@ -18,6 +20,12 @@ use yii2lab\extension\common\helpers\Helper;
  * @deprecated use $filterCollection = new ScenarioCollection($filters); $data = $filterCollection->runAll($data);
  */
 class ScenarioHelper {
+	
+	public static function runHandler($handlerDefinition, $data) {
+		/** @var RunInterface $handlerInstance */
+		$handlerInstance = ClassHelper::createInstance($handlerDefinition, $data, RunInterface::class);
+		return $handlerInstance->run();
+	}
 	
 	public static function forgeCollection($definitionArray) {
 		$collection = new Collection($definitionArray);

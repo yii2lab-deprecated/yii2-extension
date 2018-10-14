@@ -5,9 +5,26 @@ namespace yii2lab\extension\common\helpers;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\web\ServerErrorHttpException;
+use yii2lab\extension\common\exceptions\ClassInstanceException;
 
 class ClassHelper {
-
+	
+	public static function createInstance($definition, $data, $interfaceClass = null) {
+		$definition = self::normalizeComponentConfig($definition);
+		$handlerInstance = Yii::createObject($definition);
+		if($interfaceClass) {
+			ClassHelper::isInstanceOf($handlerInstance, $interfaceClass);
+		}
+		Yii::configure($handlerInstance, $data);
+		return $handlerInstance;
+	}
+	
+	public static function isInstanceOf($instance, $interfaceClass) {
+		if(!$instance instanceof $interfaceClass) {
+			throw new ClassInstanceException("Class \"$instance\" not instanceof \"RunInterface\"");
+		}
+	}
+	
     public static function getInstanceOfClassName($class, $classname) {
         $class = self::getClassName($class, $classname);
         if(empty($class)) {
@@ -67,7 +84,7 @@ class ClassHelper {
             self::configure($object, $definition);
         }
         if(!empty($interface)) {
-            self::checkInterface($object, $interface);
+            self::isInstanceOf($object, $interface);
         }
         return $object;
     }
@@ -77,6 +94,7 @@ class ClassHelper {
      * @param $interface
      *
      * @throws ServerErrorHttpException
+     * @deprecated use self::isInstanceOf()
      */
     public static function checkInterface($object, $interface) {
         if(!is_object($object)) {

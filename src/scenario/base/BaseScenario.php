@@ -3,13 +3,14 @@
 namespace yii2lab\extension\scenario\base;
 
 use yii\base\BaseObject;
+use yii2lab\extension\scenario\interfaces\RunInterface;
 
-abstract class BaseScenario extends BaseObject {
+abstract class BaseScenario extends BaseObject implements RunInterface {
 	
 	private $data;
 	public $isEnabled = true;
 	
-	abstract public function run();
+	//abstract public function run();
 	
 	public function isEnabled() {
 		return $this->isEnabled;

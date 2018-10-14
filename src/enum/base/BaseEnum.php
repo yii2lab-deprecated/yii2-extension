@@ -2,6 +2,7 @@
 
 namespace yii2lab\extension\enum\base;
 
+use yii\base\InvalidArgumentException;
 use yii2lab\extension\common\helpers\ReflectionHelper;
 
 class BaseEnum {
@@ -27,6 +28,13 @@ class BaseEnum {
 			$constants = ReflectionHelper::getConstants($className);
 		}
 		return $constants;
+	}
+	
+	public static function validate($value, $prefix = null) {
+		if(!self::isValid($value, $prefix)) {
+			$class = static::class;
+			throw new InvalidArgumentException("Value \"$value\" not contains in \"$class\" enum");
+		}
 	}
 	
 	public static function isValid($value, $prefix = null) {

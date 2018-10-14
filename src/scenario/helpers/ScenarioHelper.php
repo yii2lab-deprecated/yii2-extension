@@ -2,7 +2,6 @@
 
 namespace yii2lab\extension\scenario\helpers;
 
-use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\web\ServerErrorHttpException;
@@ -17,7 +16,6 @@ use yii2lab\extension\scenario\interfaces\RunInterface;
  * Class ScenarioHelper
  * @package yii2lab\extension\scenario\helpers
  *
- * @deprecated use $filterCollection = new ScenarioCollection($filters); $data = $filterCollection->runAll($data);
  */
 class ScenarioHelper {
 	
@@ -27,6 +25,12 @@ class ScenarioHelper {
 		return $handlerInstance->run();
 	}
 	
+	/**
+	 * @param $definitionArray
+	 *
+	 * @return Collection
+	 * @deprecated use $filterCollection = new ScenarioCollection($filters); $data = $filterCollection->runAll($data);
+	 */
 	public static function forgeCollection($definitionArray) {
 		$collection = new Collection($definitionArray);
 		return $collection;
@@ -39,6 +43,7 @@ class ScenarioHelper {
 	 * @return mixed
 	 * @throws InvalidConfigException
 	 * @throws ServerErrorHttpException
+	 * @deprecated use $filterCollection = new ScenarioCollection($filters); $data = $filterCollection->runAll($data);
 	 */
 	public static function run($definition, $data = null) {
 		$definition = Helper::isEnabledComponent($definition);
@@ -62,6 +67,7 @@ class ScenarioHelper {
 	 * @return BaseValue
 	 * @throws InvalidConfigException
 	 * @throws ServerErrorHttpException
+	 * @deprecated use $filterCollection = new ScenarioCollection($filters); $data = $filterCollection->runAll($data);
 	 */
 	public static function runAll(Collection $filterCollection, $data = null) {
 		

@@ -34,7 +34,8 @@ class ClassHelper {
 			throw new InvalidArgumentException("Class \"$interface\" not exists");
 		}
 		if(!$instance instanceof $interface) {
-			throw new ClassInstanceException("Class \"$instance\" not instanceof \"$interface\"");
+			$instanceClassName = get_class($instance);
+			throw new ClassInstanceException("Class \"$instanceClassName\" not instanceof \"$interface\"");
 		}
 	}
 	

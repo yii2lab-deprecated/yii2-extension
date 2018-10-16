@@ -10,8 +10,6 @@ abstract class BaseScenario extends BaseObject implements RunInterface {
 	private $data;
 	public $isEnabled = true;
 	
-	//abstract public function run();
-	
 	public function isEnabled() {
 		return $this->isEnabled;
 	}

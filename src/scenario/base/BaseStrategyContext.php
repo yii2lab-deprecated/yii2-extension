@@ -3,6 +3,7 @@
 namespace yii2lab\extension\scenario\base;
 
 use yii\base\BaseObject;
+use yii2lab\extension\common\helpers\ClassHelper;
 
 /**
  * Class BaseStrategyContext
@@ -21,6 +22,11 @@ abstract class BaseStrategyContext extends BaseObject {
 	
 	public function setStrategyInstance(Object $strategyInstance) {
 		$this->strategyInstance = $strategyInstance;
+	}
+	
+	public function setStrategyDefinition($strategyDefinition) {
+		$strategyInstance = ClassHelper::createInstance($strategyDefinition, []);
+		$this->setStrategyInstance($strategyInstance);
 	}
 	
 }

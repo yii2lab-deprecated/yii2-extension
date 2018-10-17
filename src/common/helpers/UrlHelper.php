@@ -3,14 +3,19 @@
 namespace yii2lab\extension\common\helpers;
 
 use function GuzzleHttp\Psr7\parse_query;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 class UrlHelper {
 	
-	public static function parse($url) {
+	public static function parse($url, $key = null) {
 		$r = parse_url($url);
 		$r['query'] = parse_query($r['query']);
-		return $r;
+		if($key) {
+			return ArrayHelper::getValue($r, $key);
+		} else {
+			return $r;
+		}
 	}
 	
 	public static function currentDomain() {

@@ -10,7 +10,9 @@ class UrlHelper {
 	
 	public static function parse($url, $key = null) {
 		$r = parse_url($url);
-		$r['query'] = parse_query($r['query']);
+		if(!empty($r['query'])) {
+			$r['query'] = parse_query($r['query']);
+		}
 		if($key) {
 			return ArrayHelper::getValue($r, $key);
 		} else {

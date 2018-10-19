@@ -3,6 +3,7 @@
 namespace yii2lab\extension\develop\helpers;
 
 use Yii;
+use yii2lab\extension\enum\enums\TimeEnum;
 use yii2lab\extension\web\helpers\Page;
 use yii2lab\extension\yii\helpers\ArrayHelper;
 use yii\bootstrap\BootstrapAsset;
@@ -13,6 +14,14 @@ use yii2lab\extension\store\Store;
 class Debug {
 	
 	private static $isLogged = false;
+	
+	public static function getRuntime($unit = TimeEnum::SECOND_PER_SECOND, $precision = 2) {
+		TimeEnum::validate($unit);
+		$runtimeSecond = microtime(true) - MICRO_TIME;
+		$runtime = $runtimeSecond / $unit;
+		$runtime = round($runtime, $precision);
+		return $runtime;
+	}
 	
 	public static function log($val) {
 		$url = Yii::$app->request->url;

@@ -10,6 +10,12 @@ use yii2lab\extension\common\exceptions\ClassInstanceException;
 
 class ClassHelper {
 	
+	public static function normalizeClassName($className) {
+		$className = trim($className, '@/\\');
+		$className = str_replace('/', '\\', $className);
+		return $className;
+	}
+	
 	public static function createInstance($definition, $data, $interfaceClass = null) {
 		$definition = self::normalizeComponentConfig($definition);
 		$handlerInstance = Yii::createObject($definition);

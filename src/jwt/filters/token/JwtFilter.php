@@ -11,7 +11,7 @@ class JwtFilter extends BaseTokenFilter {
 
 	public $profile = 'default';
 	
-	public function auth($token) {
+	public function authByToken($token) {
 		try {
 			$tokenEntity = \App::$domain->jwt->token->decode($token, $this->profile);
 		} catch(\Exception $e) {

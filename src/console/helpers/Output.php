@@ -3,13 +3,34 @@
 namespace yii2lab\extension\console\helpers;
 
 use yii\helpers\Console;
-use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\helpers\StringHelper;
 use yii2lab\extension\yii\helpers\ArrayHelper;
 
 class Output {
 	
 	const LINE_LEN = 78;
+	
+	static function render($text) {
+		Console::clearScreen();
+		echo $text . PHP_EOL;
+	}
+	
+	static function generateArray($rows, $args = []) {
+		$line = '';
+		foreach($rows as $cols) {
+			$rowStr = '';
+			foreach($cols as $col) {
+				$rowStr .= $col;
+			}
+			$line .= $rowStr . PHP_EOL;
+		}
+		$text = Output::wrap($line, $args);
+		return $text;
+	}
+	
+	static function generateLoading($text) {
+		//$line = '[' . str_repeat('=', ($k) * $count) . str_repeat(' ', ($count - 1 - $k) * $count) . ']';
+	}
 	
 	static function getDots($text, $reservedLength, $char = DOT) {
 		$packageNameLen = strlen($text);

@@ -37,7 +37,8 @@ class TokenRepository extends BaseRepository implements TokenInterface {
             $tokenEntity->expire_at = TIMESTAMP + $profileEntity->life_time;
         }
         $data = $this->entityToToken($tokenEntity);
-        $tokenEntity->token = JWT::encode($data, $profileEntity->key, $profileEntity->default_alg, $keyId, $head);
+	    $key = $this->extractKey($profileEntity->key, 'private');
+        $tokenEntity->token = JWT::encode($data, $key, $profileEntity->default_alg, $keyId, $head);
     }
 
     public function encode(TokenEntity $tokenEntity, ProfileEntity $profileEntity) {
@@ -46,7 +47,8 @@ class TokenRepository extends BaseRepository implements TokenInterface {
     }
 
     public function decode($token, ProfileEntity $profileEntity) {
-        $decoded = JWT::decode($token, $profileEntity->key, $profileEntity->allowed_algs);
+    	$key = $this->extractKey($profileEntity->key, 'public');
+        $decoded = JWT::decode($token, $key, $profileEntity->allowed_algs);
         $tokenEntity = $this->forgeEntity($decoded);
         return $tokenEntity;
     }
@@ -54,7 +56,14 @@ class TokenRepository extends BaseRepository implements TokenInterface {
     public function decodeRaw($token, ProfileEntity $profileEntity) {
         return JwtHelper::decodeRaw($token, $profileEntity);
     }
-
+	
+	private function extractKey($key, $name) {
+		if(is_array($key)) {
+			$key = $key[$name];
+		}
+		return $key;
+	}
+    
     private function entityToToken(TokenEntity $tokenEntity) {
         $data = $tokenEntity->toArray();
         $data = array_filter($data, function ($value) {return $value !== null;});

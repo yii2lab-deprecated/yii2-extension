@@ -39,7 +39,7 @@ class CoreHelper {
 	}
 	
 	public static function getHeaders() {
-		$headers['Authorization'] = AuthHelper::getToken();
+		$headers['Authorization'] = AuthHelper::getTokenDto()->getTokenString();
 		$headers['Language'] = Yii::$app->language;
 		return $headers;
 	}

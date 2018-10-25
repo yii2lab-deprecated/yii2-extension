@@ -83,7 +83,7 @@ class ClientService extends BaseService {
 	
 	protected function getHeaders($headers = []) {
 		if(empty($headers['Authorization'])) {
-			$authorization = AuthHelper::getToken();
+			$authorization = AuthHelper::getTokenDto()->getTokenString();
 			if(!empty($authorization)) {
 				$headers['Authorization'] = $authorization;
 			}

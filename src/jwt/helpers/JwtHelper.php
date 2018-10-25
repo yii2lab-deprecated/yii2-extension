@@ -4,6 +4,7 @@ namespace yii2lab\extension\jwt\helpers;
 
 use Firebase\JWT\JWT;
 use UnexpectedValueException;
+use yii2lab\extension\jwt\entities\JwtTokenEntity;
 use yii2lab\extension\jwt\entities\ProfileEntity;
 
 class JwtHelper
@@ -40,14 +41,19 @@ class JwtHelper
         self::validateHeader($decodedObject->header, $profileEntity);
         return $decodedObject;
     }
-
-    private static function tokenDecode($jwt) {
+	
+	/**
+	 * @param $jwt
+	 *
+	 * @return JwtTokenEntity|null
+	 */
+	public static function tokenDecode($jwt) {
         $tks = explode('.', $jwt);
-        $result = new \stdClass();
-        $result->header = self::tokenDecodeItem($tks[0]);
-        $result->payload = self::tokenDecodeItem($tks[1]);
-        $result->sig = JWT::urlsafeB64Decode($tks[2]);
-        return $result;
+        $jwtTokenEntity = new JwtTokenEntity();
+        $jwtTokenEntity->header = self::tokenDecodeItem($tks[0]);
+        $jwtTokenEntity->payload = self::tokenDecodeItem($tks[1]);
+        $jwtTokenEntity->sig = JWT::urlsafeB64Decode($tks[2]);
+        return $jwtTokenEntity;
     }
 
     private static function tokenDecodeItem($data) {

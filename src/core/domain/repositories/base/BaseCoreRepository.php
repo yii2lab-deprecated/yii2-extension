@@ -4,6 +4,7 @@ namespace yii2lab\extension\core\domain\repositories\base;
 
 use yii\helpers\ArrayHelper;
 use yii\web\ServerErrorHttpException;
+use yii\web\UnauthorizedHttpException;
 use yii2lab\extension\core\domain\helpers\CoreHelper;
 use yii2lab\domain\exceptions\UnprocessableEntityHttpException;
 use yii2lab\extension\web\helpers\ClientHelper;
@@ -53,7 +54,12 @@ class BaseCoreRepository extends BaseRestRepository {
 			throw new UnprocessableEntityHttpException($responseEntity->data);
 		}
 		if($statusCode == 401) {
-            \App::$domain->account->auth->breakSession();
+			try {
+				\App::$domain->account->auth->breakSession();
+			} catch(UnauthorizedHttpException $e) {
+				$message = ArrayHelper::getValue($responseEntity->data, 'message');
+				throw new UnauthorizedHttpException($message);
+			}
 			return;
 		}
 		parent::showUserException($responseEntity);

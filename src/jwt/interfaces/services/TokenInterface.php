@@ -16,22 +16,26 @@ use yii2module\account\domain\v2\entities\LoginEntity;
  */
 interface TokenInterface {
 
-    public function sign(TokenEntity $tokenEntity, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null);
-
-    /**
-     * @param $token
-     * @return TokenEntity
-     */
-    public function decode($token);
-    public function decodeRaw($token, $profileName = self::DEFAULT_PROFILE);
-
-    /**
-     * @param $oldToken
-     * @param AuthenticationEntity $authenticationEntity
-     * @param $profileName
-     * @return TokenEntity
-     */
-    public function forgeBySubject($subject, $profileName = self::DEFAULT_PROFILE, $keyId = null, $head = null);
+    public function sign(TokenEntity $tokenEntity, $profileName = 'default', $keyId = null, $head = null);
+	
+	/**
+	 * @param        $token
+	 * @param string $profileName
+	 *
+	 * @return TokenEntity
+	 */
+	public function decode($token, $profileName = 'default');
+    public function decodeRaw($token, $profileName = 'default');
+	
+	/**
+	 * @param        $subject
+	 * @param string $profileName
+	 * @param null   $keyId
+	 * @param null   $head
+	 *
+	 * @return TokenEntity
+	 */
+    public function forgeBySubject($subject, $profileName = 'default', $keyId = null, $head = null);
 
     /**
      * @param $oldToken
@@ -39,6 +43,6 @@ interface TokenInterface {
      * @param $profileName
      * @return LoginEntity
      */
-    public function authentication($oldToken, AuthenticationEntity $authenticationEntity, $profileName = self::DEFAULT_PROFILE);
+    public function authentication($oldToken, AuthenticationEntity $authenticationEntity, $profileName = 'default');
 
 }

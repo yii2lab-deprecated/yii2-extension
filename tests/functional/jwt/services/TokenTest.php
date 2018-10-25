@@ -79,10 +79,20 @@ class TokenTest extends Unit
         $profileName = 'default';
         $tokenEntity = $this->forgeTokenEntity($userId);
         \App::$domain->jwt->token->sign($tokenEntity, $profileName);
-        $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token);
+        $tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token, $profileName);
         $this->tester->assertEquals($tokenEntity->subject['id'], $tokenEntityDecoded->subject['id']);
     }
-
+	
+	public function testSignAndDecodeByRsa()
+	{
+		$userId = 1;
+		$profileName = 'rsa';
+		$tokenEntity = $this->forgeTokenEntity($userId);
+		\App::$domain->jwt->token->sign($tokenEntity, $profileName);
+		$tokenEntityDecoded = \App::$domain->jwt->token->decode($tokenEntity->token, $profileName);
+		$this->tester->assertEquals($tokenEntity->subject['id'], $tokenEntityDecoded->subject['id']);
+	}
+    
     public function testSignAndDecodeEmptyToken()
     {
         $userId = 1;

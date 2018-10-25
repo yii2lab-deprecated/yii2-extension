@@ -22,7 +22,7 @@ class ProfileEntity extends BaseEntity {
     protected $name;
     protected $key;
     protected $life_time;
-    protected $allowed_algs = [];
+    protected $allowed_algs = ['HS256', 'SHA512', 'HS384', 'RS256'];
     protected $default_alg;
     protected $audience = [];
     protected $issuer_url;
@@ -33,4 +33,17 @@ class ProfileEntity extends BaseEntity {
         ];
     }
 
+    public function getDefaultAlg() {
+    	if(!empty($this->default_alg)) {
+    		return $this->default_alg;
+	    }
+	    if(is_array($this->key)) {
+		    return 'RS256';
+	    }
+	    if(is_string($this->key)) {
+		    return 'HS256';
+	    }
+	    return null;
+    }
+    
 }

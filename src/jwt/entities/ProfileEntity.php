@@ -3,6 +3,7 @@
 namespace yii2lab\extension\jwt\entities;
 
 use yii2lab\domain\BaseEntity;
+use yii2lab\extension\enum\enums\TimeEnum;
 
 /**
  * Class JwtProfileEntity
@@ -18,10 +19,9 @@ use yii2lab\domain\BaseEntity;
  * @property $issuer_url string
  */
 class ProfileEntity extends BaseEntity {
-
     protected $name;
     protected $key;
-    protected $life_time;
+    protected $life_time = TimeEnum::SECOND_PER_MINUTE * 20;
     protected $allowed_algs = ['HS256', 'SHA512', 'HS384', 'RS256'];
     protected $default_alg;
     protected $audience = [];

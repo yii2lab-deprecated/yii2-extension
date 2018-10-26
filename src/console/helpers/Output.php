@@ -15,6 +15,20 @@ class Output {
 		echo $text . PHP_EOL;
 	}
 	
+	static function generateMatrix($matrixResult, $replace = []) {
+		$lineArr = [];
+		foreach($matrixResult as $row => $cols) {
+			$line = [];
+			foreach($cols as $col) {
+				$value = ArrayHelper::getValue($replace, $col, $col);
+				$line[] = Output::wrap(SPC . SPC, $value);
+			}
+			$lineArr[] = $line;
+		}
+		$text = Output::generateArray($lineArr);
+		return $text;
+	}
+	
 	static function generateArray($rows, $args = []) {
 		$line = '';
 		foreach($rows as $cols) {

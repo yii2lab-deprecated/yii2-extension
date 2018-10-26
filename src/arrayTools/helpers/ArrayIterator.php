@@ -12,6 +12,7 @@ class ArrayIterator  {
 	// сохраняем порядок фильтров как есть
 	const FILTER_WHERE = 'where';
 	const FILTER_SORT = 'sort';
+	const FILTER_OFFSET = 'offset';
 	
 	protected $collection;
 	
@@ -40,7 +41,7 @@ class ArrayIterator  {
 		return $collection[0];
 	}
 	
-	public function all(Query $query = null, $filters = [self::FILTER_SORT, self::FILTER_WHERE]) {
+	public function all(Query $query = null, $filters = [self::FILTER_SORT, self::FILTER_WHERE, self::FILTER_OFFSET]) {
 		$collection = $this->runFilters($query, $filters);
 		return $collection;
 	}
@@ -50,7 +51,7 @@ class ArrayIterator  {
 		return count($collection);
 	}
 	
-	protected function runFilters(Query $query = null, $filters = [self::FILTER_SORT, self::FILTER_WHERE]) {
+	protected function runFilters(Query $query = null, $filters = [self::FILTER_SORT, self::FILTER_WHERE, self::FILTER_OFFSET]) {
 		$query = Query::forge($query);
 		$collection = $this->collection;
 		$allFilters = ReflectionHelper::getConstantsValuesByPrefix($this,'filter');

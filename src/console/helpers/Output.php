@@ -12,7 +12,7 @@ class Output {
 	
 	static function render($text) {
 		Console::clearScreen();
-		echo $text . PHP_EOL;
+		echo $text;
 	}
 	
 	static function generateMatrix($matrixResult, $replace = []) {

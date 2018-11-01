@@ -41,7 +41,7 @@ class CoreHelper {
 	public static function getHeaders() {
 		$tokenDto = AuthHelper::getTokenDto();
 		if($tokenDto) {
-			$headers['Authorization'] = AuthHelper::getTokenDto()->getTokenString();
+			$headers['Authorization'] = AuthHelper::getTokenString();
 		}
 		$jwtToken = \App::$domain->partner->info->forgeAuthToken();
 		if($jwtToken) {

@@ -8,6 +8,7 @@ use yii2lab\extension\scenario\interfaces\RunInterface;
 abstract class BaseScenario extends BaseObject implements RunInterface {
 	
 	private $data;
+	public $event;
 	public $isEnabled = true;
 	
 	public function isEnabled() {

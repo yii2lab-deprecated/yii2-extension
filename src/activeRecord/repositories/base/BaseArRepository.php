@@ -144,6 +144,8 @@ abstract class BaseArRepository extends BaseRepository {
 		} catch(InvalidArgumentException $e) {
 			if(strpos($e->getMessage(), 'has no relation named') !== false) {
 				throw new BadQueryHttpException('Relation not defined', 0, $e);
+			} elseif(strpos($e->getMessage(), 'Invalid path alias') !== false) {
+				throw new BadQueryHttpException('Invalid path alias', 0, $e);
 			} else {
 				throw new BadQueryHttpException(null, 0, $e);
 			}

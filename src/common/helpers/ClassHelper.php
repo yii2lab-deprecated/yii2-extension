@@ -16,6 +16,17 @@ class ClassHelper {
 		return $className;
 	}
 	
+	/**
+	 * @param      $definition
+	 * @param      $data
+	 * @param null $interfaceClass
+	 *
+	 * @return object
+	 * @throws ClassInstanceException
+	 * @throws InvalidConfigException
+	 *
+	 * @deprecated use InstanceHelper
+	 */
 	public static function createInstance($definition, $data, $interfaceClass = null) {
 		$definition = self::normalizeComponentConfig($definition);
 		$handlerInstance = Yii::createObject($definition);

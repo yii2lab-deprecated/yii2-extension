@@ -8,6 +8,14 @@ use yii2lab\extension\yii\helpers\FileHelper;
 class TokenHelper
 {
 	
+	public static function trimCollection($collection, $charList = " \t\n\r\0\x0B") {
+		/** @var TokenEntity[] $collection */
+		foreach($collection as &$item) {
+			$item->value = trim($item->value, $charList);
+		}
+		return $collection;
+	}
+	
 	public static function save($fileName, $collection) {
 		$code =  self::collectionToCode($collection);
 		FileHelper::save($fileName, $code);
@@ -18,6 +26,11 @@ class TokenHelper
 		return self::codeToCollection($code);
 	}
 	
+	/**
+	 * @param string $code
+	 *
+	 * @return TokenEntity[]
+	 */
 	public static function codeToCollection(string $code) {
 		$tokens = token_get_all($code);
 		//prr($tokens,1,1);

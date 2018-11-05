@@ -2,19 +2,12 @@
 
 namespace yii2lab\extension\registry\base;
 
+use yii2lab\extension\registry\interfaces\RegistryInterface;
 use yii2mod\helpers\ArrayHelper;
 
-abstract class BaseRegistry {
+abstract class BaseRegistry implements RegistryInterface {
 
     private static $classesData = [];
-
-    private static function key($key = null) {
-        $result = static::class;
-        if($key) {
-            $result .= DOT . $key;
-        }
-        return $result;
-    }
 
 	static function get($key = null, $default = null) {
         $key = self::key($key);
@@ -53,6 +46,14 @@ abstract class BaseRegistry {
     static function load($data) {
         self::$classesData[static::class] = $data;
     }
+	
+	private static function key($key = null) {
+		$result = static::class;
+		if($key) {
+			$result .= DOT . $key;
+		}
+		return $result;
+	}
 	
 	protected function __construct() {}
 	

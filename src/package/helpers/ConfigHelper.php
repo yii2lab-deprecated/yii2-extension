@@ -9,13 +9,17 @@ use yii2module\vendor\domain\helpers\GitShell;
 class ConfigHelper {
 	
 	public static function addPackage(string $group, string $name) {
+		self::addPackageInProjectConfig($group, $name);
+		self::addPackageInAutoload($group, $name);
+	}
+	
+	public static function addPackageInProjectConfig(string $group, string $name) {
 		$config = ConfigFileHelper::load(ROOT_DIR);
 		$nn = "$group/yii2-$name";
 		if(!isset($config['require'][$nn]) && !isset($config['require-dev'][$nn])) {
 			$config['require'][$nn] = 'dev-master';
 		}
 		ConfigFileHelper::save(ROOT_DIR, $config);
-		self::addPackageInAutoload($group, $name);
 	}
 	
 	public static function addPackageInAutoload(string $group, string $name) {

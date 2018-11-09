@@ -11,7 +11,6 @@ use yii2lab\domain\interfaces\services\ReadInterface;
  * 
  * @property-read \yii2lab\extension\package\domain\Domain $domain
  * @property-read \yii2lab\extension\package\domain\interfaces\repositories\PackageInterface $repository
- * @property-read array $groups
  */
 interface PackageInterface extends ReadInterface {
 

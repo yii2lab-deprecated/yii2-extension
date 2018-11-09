@@ -10,6 +10,7 @@ use yii2lab\domain\enums\Driver;
  * @package yii2lab\extension\package\domain
  * @property-read \yii2lab\extension\package\domain\interfaces\services\PackageInterface $package
  * @property-read \yii2lab\extension\package\domain\interfaces\repositories\RepositoriesInterface $repositories
+ * @property-read \yii2lab\extension\package\domain\interfaces\services\GroupInterface $group
  */
 class Domain extends \yii2lab\domain\Domain {
 	
@@ -17,9 +18,11 @@ class Domain extends \yii2lab\domain\Domain {
 		return [
 			'repositories' => [
 				'package' => Driver::FILE,
+				'group' => Driver::FILEDB,
 			],
 			'services' => [
 				'package',
+				'group',
 			],
 		];
 	}

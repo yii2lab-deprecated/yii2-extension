@@ -10,17 +10,25 @@ use yii2lab\domain\BaseEntity;
  * @package yii2lab\extension\package\domain\entities
  * 
  * @property $id
- * @property $group
  * @property $name
+ * @property $group_name
+ * @property $group
  */
 class PackageEntity extends BaseEntity {
 
 	protected $id;
-	protected $group;
 	protected $name;
+	protected $group_name;
+	protected $group;
 
 	public function getId() {
-		return $this->group . SL . $this->name;
+		return $this->group_name . SL . $this->name;
+	}
+	
+	public function fieldType() {
+		return [
+			'group' => GroupEntity::class,
+		];
 	}
 	
 }

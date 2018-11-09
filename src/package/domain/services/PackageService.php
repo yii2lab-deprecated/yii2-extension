@@ -15,12 +15,4 @@ use yii2lab\extension\package\domain\interfaces\services\PackageInterface;
  */
 class PackageService extends BaseActiveService implements PackageInterface {
 
-	public $groups = [
-		'yii2game',
-		'yii2guide',
-		'yii2lab',
-		'yii2module',
-		'yii2woop',
-	];
-	
 }

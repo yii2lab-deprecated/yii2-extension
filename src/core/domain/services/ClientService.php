@@ -2,13 +2,13 @@
 
 namespace yii2lab\extension\core\services;
 
-use common\enums\app\ApiVersionEnum;
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\UnauthorizedHttpException;
 use yii2lab\domain\services\BaseService;
 use yii2lab\rest\domain\entities\RequestEntity;
 use yii2lab\extension\web\enums\HttpMethodEnum;
+use yii2lab\rest\domain\helpers\MiscHelper;
 use yii2module\account\domain\v2\helpers\AuthHelper;
 
 /**
@@ -28,24 +28,24 @@ class ClientService extends BaseService {
 		return $response;
 	}
 	
-	public function get($uri, $data = [], $headers = [], $version = ApiVersionEnum::VERSION_DEFAULT) {
+	public function get($uri, $data = [], $headers = [], $version = 'v1') {
 		return $this->runRequest(compact('uri', 'data', 'headers', 'version'), HttpMethodEnum::GET);
 	}
 
-	public function post($uri, $data = [], $headers = [], $version = ApiVersionEnum::VERSION_DEFAULT) {
+	public function post($uri, $data = [], $headers = [], $version = 'v1') {
 		return $this->runRequest(compact('uri', 'data', 'headers', 'version'), HttpMethodEnum::POST);
 	}
 
-	public function put($uri, $data = [], $headers = [], $version = ApiVersionEnum::VERSION_DEFAULT) {
+	public function put($uri, $data = [], $headers = [], $version = 'v1') {
 		return $this->runRequest(compact('uri', 'data', 'headers', 'version'), HttpMethodEnum::PUT);
 	}
 
-	public function delete($uri, $data = [], $headers = [], $version = ApiVersionEnum::VERSION_DEFAULT) {
+	public function delete($uri, $data = [], $headers = [], $version = 'v1') {
 		return $this->runRequest(compact('uri', 'data', 'headers', 'version'), HttpMethodEnum::DELETE);
 	}
 	
 	protected function getUri($uri, $version) {
-		if(!ApiVersionEnum::isValid($version)) {
+		if(!MiscHelper::isValidVersion($version)) {
 			throw new BadRequestHttpException('Bad API version');
 		}
 		return $version . SL . $uri;

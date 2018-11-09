@@ -23,6 +23,7 @@ class TokenHelper
 	
 	public static function load($fileName) {
 		$code = FileHelper::load($fileName);
+		$code = $code ? $code : EMP;
 		return self::codeToCollection($code);
 	}
 	

@@ -2,6 +2,7 @@
 
 namespace yii2lab\extension\package\helpers;
 
+use yii2lab\extension\package\domain\entities\PackageEntity;
 use yii2lab\extension\yii\helpers\FileHelper;
 use yii2module\vendor\domain\helpers\GitShell;
 
@@ -26,6 +27,20 @@ class PackageHelper {
 			$tree[ $group ] = self::findPackagesInGroup($group);
 		}
 		return $tree;
+	}
+	
+	public static function getPackageCollection(array $groups): array {
+		$tree = PackageHelper::getPackageTree($groups);
+		$collection = [];
+		foreach($tree as $group => $packages) {
+			foreach($packages as $package) {
+				$packageEntity = new PackageEntity();
+				$packageEntity->group_name = $group;
+				$packageEntity->name = $package;
+				$collection[] = $packageEntity;
+			}
+		}
+		return $collection;
 	}
 	
 	public static function findPackagesInGroup(string $group): array {

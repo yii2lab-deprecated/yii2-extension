@@ -3,6 +3,7 @@
 namespace yii2lab\extension\package\domain\entities;
 
 use yii2lab\domain\BaseEntity;
+use yii2lab\extension\yii\helpers\FileHelper;
 
 /**
  * Class PackageEntity
@@ -12,15 +13,29 @@ use yii2lab\domain\BaseEntity;
  * @property $id
  * @property $name
  * @property $group_name
- * @property $group
+ * @property $alias
+ * @property $dir
+ * @property GroupEntity $group
+ * @property ConfigEntity $config
  */
 class PackageEntity extends BaseEntity {
 
 	protected $id;
 	protected $name;
 	protected $group_name;
+	protected $alias;
+	protected $dir;
 	protected $group;
-
+	protected $config;
+	
+	public function getAlias() {
+		return '@vendor' . SL . $this->group_name . SL . $this->name;
+	}
+	
+	public function getDir() {
+		return FileHelper::getAlias($this->getAlias());
+	}
+	
 	public function getId() {
 		return $this->group_name . SL . $this->name;
 	}
@@ -28,6 +43,7 @@ class PackageEntity extends BaseEntity {
 	public function fieldType() {
 		return [
 			'group' => GroupEntity::class,
+			//'config' => ConfigEntity::class,
 		];
 	}
 	

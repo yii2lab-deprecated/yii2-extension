@@ -23,6 +23,14 @@ class PackageSchema extends BaseSchema {
 					'field' => 'name',
 				],
 			],
+			'config' => [
+				'type' => RelationEnum::ONE,
+				'field' => 'id',
+				'foreign' => [
+					'id' => 'package.config',
+					'field' => 'id',
+				],
+			],
 		];
 	}
 	

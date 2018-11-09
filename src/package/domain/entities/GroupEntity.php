@@ -11,12 +11,16 @@ use yii2lab\domain\BaseEntity;
  * @package yii2lab\extension\package\domain\entities
  *
  * @property $name
+ * @property $provider
+ * @property $url
+ * @property $authors
  */
 class GroupEntity extends BaseEntity {
 	
 	protected $name;
 	protected $provider;
 	protected $url;
+	protected $authors;
 
 	
 	

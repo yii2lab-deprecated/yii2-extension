@@ -5,6 +5,7 @@ namespace yii2lab\extension\activeRecord\repositories\base;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
 use yii\db\ActiveRecord;
+use yii\db\BaseActiveRecord;
 use yii\helpers\Inflector;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
@@ -154,7 +155,7 @@ abstract class BaseArRepository extends BaseRepository {
 		return $modelData;
 	}
 	
-	protected function saveModel(ActiveRecord $model) {
+	protected function saveModel(BaseActiveRecord $model) {
 		return $model->save();
 		/*try {
 		
@@ -196,7 +197,7 @@ abstract class BaseArRepository extends BaseRepository {
 		return $data;
 	}
 	
-	protected function massAssignment(ActiveRecord $model, BaseEntity $entity, $scenario = null) {
+	protected function massAssignment(BaseActiveRecord $model, BaseEntity $entity, $scenario = null) {
 		$data = $entity->toArray();
 		$data = $this->unsetFieldsByKey($this->allFields(), $data);
 		$scenarios = $this->scenarios();

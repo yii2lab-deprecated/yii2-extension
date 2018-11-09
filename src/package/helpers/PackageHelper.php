@@ -29,7 +29,8 @@ class PackageHelper {
 	}
 	
 	public static function findPackagesInGroup(string $group): array {
-		$dir = PackageHelper::getDir($group);
+		$dir = "@vendor/$group";
+		$dir = \Yii::getAlias($dir);
 		$files = FileHelper::scanDir($dir);
 		if(empty($files)) {
 			return [];

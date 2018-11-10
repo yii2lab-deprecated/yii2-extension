@@ -14,5 +14,9 @@ use yii2lab\domain\services\base\BaseActiveService;
  * @property-read \yii2lab\extension\package\domain\interfaces\repositories\ConfigInterface $repository
  */
 class ConfigService extends BaseActiveService implements ConfigInterface {
-
+	
+	public function oneByDir($dir) {
+		return $this->repository->oneByDir($dir);
+	}
+	
 }

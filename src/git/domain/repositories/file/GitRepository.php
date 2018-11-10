@@ -27,8 +27,6 @@ class GitRepository extends BaseActiveArrayRepository implements GitInterface {
 		$entity->remotes = $arr['remote'];
 		$entity->refs = GitConfigHelper::getRefs($dir);
 		$entity->tags = GitConfigHelper::getTagsByRefs($entity->refs);
-		
-		
 		return $entity;
 	}
 	

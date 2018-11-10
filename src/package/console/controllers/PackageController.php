@@ -28,11 +28,10 @@ class PackageController extends Controller {
 		
 		//prr($configEntity,1,1);
 		
-		
-		$query->with('group');
-		$query->with('config');
-		$query->with('git');
-		//$query->where(['id'=>['yii2woop/yii2-service']]);
+		//$query->with('group');
+		//$query->with('config');
+		//$query->with('git');
+		//$query->andWhere(['id'=>'yii2lab/yii2-extension']);
 		//$query->where([ 'name' => ['yii2-service']]);
 		//$collection = \App::$domain->package->package->oneById('yii2woop/yii2-service', $query);
 		//$collection = \App::$domain->package->package->one($query);
@@ -40,8 +39,14 @@ class PackageController extends Controller {
 		//$collection = \App::$domain->package->group->all();
 		
 		//$query->andWhere(['id'=>['yii2woop/yii2-service']]);
-		$collection = \App::$domain->package->package->all($query);
+		//$collection = \App::$domain->package->package->all($query);
 		
+		//$dir = 'C:\OpenServer\domains\yii\all\vendor\yii2lab\yii2-extension';
+		
+		//$collection = \App::$domain->git->git->oneByDir($dir);
+		
+		//$collection = \App::$domain->package->config->oneByDir('C:\OpenServer\domains\yii\all');
+		$collection = \App::$domain->package->package->all($query);
 		prr($collection,1,1);
 	}
 	

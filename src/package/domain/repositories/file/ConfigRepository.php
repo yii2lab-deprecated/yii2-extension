@@ -22,16 +22,21 @@ class ConfigRepository extends BaseActiveArrayRepository implements ConfigInterf
 	
 	protected $schemaClass = true;
 	
+	public function oneByDir($dir) {
+		$entity = new ConfigEntity;
+		$entity->dir = $dir;
+		$config = $this->loadConfig($entity->dir);
+		$entity->config = $config;
+		return $entity;
+	}
+	
 	protected function getCollection() {
 		/** @var PackageEntity[] $packageCollection */
 		$packageCollection = \App::$domain->package->package->all();
 		$collection = [];
 		foreach($packageCollection as $packageEntity) {
-			$entity = new ConfigEntity;
-			$entity->dir = $packageEntity->dir;
-			$config = $this->loadConfig($entity->dir);
-			$entity->config = $config;
-			$collection[] = $entity;
+			
+			$collection[] = $this->oneByDir($packageEntity->dir);
 		}
 		return $collection;
 	}

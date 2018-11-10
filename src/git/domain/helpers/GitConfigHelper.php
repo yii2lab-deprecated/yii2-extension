@@ -54,12 +54,15 @@ class GitConfigHelper {
 			$rr = explode(SPC, $name);
 			ArrayHelper::setValue($arr, implode(DOT, $rr), $value);
 		}
-		$arr['branch'] = self::assignName($arr['branch']);
-		$arr['remote'] = self::assignName($arr['remote']);
+		$arr['branch'] = self::assignName(ArrayHelper::getValue($arr, 'branch'));
+		$arr['remote'] = self::assignName(ArrayHelper::getValue($arr, 'remote'));
 		return $arr;
 	}
 	
 	private static function assignName($array) {
+		if(empty($array)) {
+			return [];
+		}
 		$flatArray = [];
 		foreach($array as $name => $value) {
 			$item = $value;

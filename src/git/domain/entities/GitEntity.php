@@ -16,8 +16,8 @@ use yii2lab\extension\yii\helpers\ArrayHelper;
  * @property BranchEntity[] $branches
  * @property TagEntity[] $tags
  * @property RefEntity[] $refs
- * @property $local_head
- * @property $orig_head
+ * property $local_head
+ * property $orig_head
  */
 class GitEntity extends BaseEntity {
 
@@ -27,8 +27,8 @@ class GitEntity extends BaseEntity {
 	protected $branches;
 	protected $refs;
 	protected $tags;
-	protected $local_head;
-	protected $orig_head;
+	/*protected $local_head;
+	protected $orig_head;*/
 	protected $is_send;
 	
 	public function fieldType() {

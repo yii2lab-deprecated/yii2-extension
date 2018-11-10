@@ -3,6 +3,7 @@
 namespace yii2lab\extension\git\domain\entities;
 
 use yii2lab\domain\BaseEntity;
+use yii2lab\extension\yii\helpers\ArrayHelper;
 
 /**
  * Class GitEntity
@@ -26,6 +27,7 @@ class GitEntity extends BaseEntity {
 	protected $tags;
 	protected $local_head;
 	protected $orig_head;
+	protected $is_send;
 	
 	public function fieldType() {
 		return [
@@ -43,4 +45,17 @@ class GitEntity extends BaseEntity {
 			],
 		];
 	}
+	
+	public function getIsSend() {
+		/** @var RefEntity $remoteRef */
+		$remoteRef = ArrayHelper::findOne($this->refs, [
+			'value' => 'refs/remotes/origin/master',
+		]);
+		/** @var RefEntity $ref */
+		$ref = ArrayHelper::findOne($this->refs, [
+			'value' => 'refs/heads/master',
+		]);
+		return $remoteRef->hash == $ref->hash;
+	}
+	
 }

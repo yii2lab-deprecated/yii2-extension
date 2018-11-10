@@ -3,6 +3,7 @@
 namespace yii2lab\extension\package\domain\entities;
 
 use yii2lab\domain\BaseEntity;
+use yii2lab\extension\git\domain\entities\GitEntity;
 use yii2lab\extension\yii\helpers\FileHelper;
 
 /**
@@ -17,6 +18,7 @@ use yii2lab\extension\yii\helpers\FileHelper;
  * @property $dir
  * @property GroupEntity $group
  * @property ConfigEntity $config
+ * @property GitEntity $git
  */
 class PackageEntity extends BaseEntity {
 
@@ -27,6 +29,7 @@ class PackageEntity extends BaseEntity {
 	protected $dir;
 	protected $group;
 	protected $config;
+	protected $git;
 	
 	public function getAlias() {
 		return '@vendor' . SL . $this->group_name . SL . $this->name;
@@ -43,7 +46,8 @@ class PackageEntity extends BaseEntity {
 	public function fieldType() {
 		return [
 			'group' => GroupEntity::class,
-			//'config' => ConfigEntity::class,
+			'config' => ConfigEntity::class,
+			'git' => GitEntity::class,
 		];
 	}
 	

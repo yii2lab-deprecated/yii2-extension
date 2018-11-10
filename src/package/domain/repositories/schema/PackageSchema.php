@@ -31,6 +31,14 @@ class PackageSchema extends BaseSchema {
 					'field' => 'id',
 				],
 			],
+			'git' => [
+				'type' => RelationEnum::ONE,
+				'field' => 'id',
+				'foreign' => [
+					'id' => 'git.git',
+					'field' => 'id',
+				],
+			],
 		];
 	}
 	

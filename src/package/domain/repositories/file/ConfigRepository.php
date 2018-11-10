@@ -2,14 +2,12 @@
 
 namespace yii2lab\extension\package\domain\repositories\file;
 
-use yii\helpers\ArrayHelper;
 use yii2lab\domain\BaseEntity;
-use yii2lab\domain\data\Query;
 use yii2lab\extension\arrayTools\repositories\base\BaseActiveArrayRepository;
 use yii2lab\extension\package\domain\entities\ConfigEntity;
 use yii2lab\extension\package\domain\entities\PackageEntity;
+use yii2lab\extension\package\domain\helpers\ConfigRepositoryHelper;
 use yii2lab\extension\package\domain\interfaces\repositories\ConfigInterface;
-use yii2lab\extension\package\helpers\PackageHelper;
 use yii2lab\extension\store\StoreFile;
 use yii2lab\extension\yii\helpers\FileHelper;
 
@@ -25,10 +23,8 @@ class ConfigRepository extends BaseActiveArrayRepository implements ConfigInterf
 	protected $schemaClass = true;
 	
 	protected function getCollection() {
-		$groupCollection = \App::$domain->package->group->all();
-		$groups = ArrayHelper::getColumn($groupCollection, 'name');
 		/** @var PackageEntity[] $packageCollection */
-		$packageCollection = PackageHelper::getPackageCollection($groups);
+		$packageCollection = \App::$domain->package->package->all();
 		$collection = [];
 		foreach($packageCollection as $packageEntity) {
 			$entity = new ConfigEntity;
@@ -44,14 +40,11 @@ class ConfigRepository extends BaseActiveArrayRepository implements ConfigInterf
 		/** @var ConfigEntity $entity */
 		$entity->hideAttributes(['config']);
 		$entity = new ConfigEntity($entity->toArray());
-		
-		
-		
 		$this->saveConfig($entity->id, $entity->config);
 	}
 	
 	private function idToFileName($id) {
-		$dir = FileHelper::getAlias('@vendor/' . $id);
+		$dir = ConfigRepositoryHelper::idToDir($id);
 		$configFile = $dir . DS . 'composer.json';
 		return $configFile;
 	}

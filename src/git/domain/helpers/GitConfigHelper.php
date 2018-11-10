@@ -29,8 +29,7 @@ class GitConfigHelper {
 		return $tags;
 	}
 	
-	public static function getRefs($id) {
-		$dir = ConfigRepositoryHelper::idToDir($id);
+	public static function getRefs($dir) {
 		$file = $dir . DS . '.git' . DS . 'info' . DS . 'refs';
 		$data = FileHelper::load($file);
 		$lines = StringHelper::textToLines($data);
@@ -47,8 +46,7 @@ class GitConfigHelper {
 		return $refs;
 	}
 	
-	public static function loadIni($id) {
-		$dir = ConfigRepositoryHelper::idToDir($id);
+	public static function loadIni($dir) {
 		$iniFile = $dir . DS . '.git' . DS . 'config';
 		$gitConfig = parse_ini_file($iniFile, true);
 		$arr = [];

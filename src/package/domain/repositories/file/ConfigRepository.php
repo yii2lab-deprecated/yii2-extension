@@ -28,8 +28,8 @@ class ConfigRepository extends BaseActiveArrayRepository implements ConfigInterf
 		$collection = [];
 		foreach($packageCollection as $packageEntity) {
 			$entity = new ConfigEntity;
-			$entity->id = $packageEntity->id;
-			$config = $this->loadConfig($entity->id);
+			$entity->dir = $packageEntity->dir;
+			$config = $this->loadConfig($entity->dir);
 			$entity->config = $config;
 			$collection[] = $entity;
 		}
@@ -40,23 +40,22 @@ class ConfigRepository extends BaseActiveArrayRepository implements ConfigInterf
 		/** @var ConfigEntity $entity */
 		$entity->hideAttributes(['config']);
 		$entity = new ConfigEntity($entity->toArray());
-		$this->saveConfig($entity->id, $entity->config);
+		$this->saveConfig($entity->dir, $entity->config);
 	}
 	
-	private function idToFileName($id) {
-		$dir = ConfigRepositoryHelper::idToDir($id);
+	private function idToFileName($dir) {
 		$configFile = $dir . DS . 'composer.json';
 		return $configFile;
 	}
 	
-	private function saveConfig($id, $data) {
-		$configFile = $this->idToFileName($id);
+	private function saveConfig($dir, $data) {
+		$configFile = $this->idToFileName($dir);
 		$store = new StoreFile($configFile);
 		return $store->save($data);
 	}
 	
-	private function loadConfig($id) {
-		$configFile = $this->idToFileName($id);
+	private function loadConfig($dir) {
+		$configFile = $this->idToFileName($dir);
 		$store = new StoreFile($configFile);
 		$config = $store->load();
 		$config = is_array($config) ? $config : [];

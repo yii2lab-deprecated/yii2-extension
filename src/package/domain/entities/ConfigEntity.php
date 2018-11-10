@@ -11,14 +11,14 @@ use yii2lab\domain\data\Query;
  *
  * @package yii2lab\extension\package\domain\entities
  *
- * @property $id
+ * property $id
+ * @property $dir
  * @property $config
- *
- *
  */
 class ConfigEntity extends BaseEntity {
 	
-	protected $id;
+	//protected $id;
+	protected $dir;
 	protected $name;
 	protected $type;
 	protected $keywords;
@@ -30,7 +30,7 @@ class ConfigEntity extends BaseEntity {
 	protected $config;
 	
 	public function getName() {
-		return ArrayHelper::getValue($this->config, 'name', $this->id);
+		return ArrayHelper::getValue($this->config, 'name', '');
 	}
 	
 	public function getType() {
@@ -55,9 +55,9 @@ class ConfigEntity extends BaseEntity {
 		return $packageEntity->group->authors;
 	}
 	
-	public function getAuthors() {
+	/*public function getAuthors() {
 		return ArrayHelper::getValue($this->config, 'authors', $this->getAuthorsFromGroup());
-	}
+	}*/
 	
 	public function getMinimumStability() {
 		return ArrayHelper::getValue($this->config, 'minimum-stability', 'dev');

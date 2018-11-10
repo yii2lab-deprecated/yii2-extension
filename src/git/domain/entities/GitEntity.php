@@ -10,7 +10,8 @@ use yii2lab\extension\yii\helpers\ArrayHelper;
  * 
  * @package yii2lab\extension\git\domain\entities
  * 
- * @property $id
+ * property $id
+ * @property $dir
  * @property RemoteEntity[] $remotes
  * @property BranchEntity[] $branches
  * @property TagEntity[] $tags
@@ -20,7 +21,8 @@ use yii2lab\extension\yii\helpers\ArrayHelper;
  */
 class GitEntity extends BaseEntity {
 
-	protected $id;
+	//protected $id;
+	protected $dir;
 	protected $remotes;
 	protected $branches;
 	protected $refs;

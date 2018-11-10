@@ -94,6 +94,17 @@ class StringHelper {
 		return $text;
 	}
 	
+	public static function normalizeNewLine($text) {
+		$text = str_replace(PHP_EOL, "\n", $text);
+		return $text;
+	}
+	
+	public static function textToLines($text) {
+		$text = self::normalizeNewLine($text);
+		$text = explode("\n", $text);
+		return $text;
+	}
+	
 	public static function removeDoubleSpace($text) {
 		$text = preg_replace(self::PATTERN_SPACES, SPC, $text);
 		return $text;

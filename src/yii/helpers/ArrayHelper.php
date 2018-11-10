@@ -140,8 +140,16 @@ class ArrayHelper extends YiiArrayHelper {
 		if(empty($itemValue) && empty($conditionValue)) {
 			return true;
 		}
-		if(!empty($itemValue) && $itemValue == $conditionValue) {
-			return true;
+		if(!empty($itemValue)) {
+			if(is_array($conditionValue)) {
+				if(in_array($itemValue, $conditionValue)) {
+					return true;
+				}
+			} else {
+				if($itemValue == $conditionValue) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}

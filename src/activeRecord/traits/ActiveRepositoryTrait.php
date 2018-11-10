@@ -80,9 +80,9 @@ trait ActiveRepositoryTrait {
 		$condition = [];
 		if(!empty($uniqueItem) && is_array($uniqueItem)) {
 			foreach($uniqueItem as $name) {
-				$entityValue = $entity->{$name};
-				if(!empty($entityValue)) {
-					$condition[ $name ] = $entityValue;
+				//$entityValue = $entity->{$name};
+				if(!empty(isset($entity->{$name}))) {
+					$condition[ $name ] = $entity->{$name};
 				}
 			}
 		}

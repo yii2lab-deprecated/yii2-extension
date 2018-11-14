@@ -10,7 +10,7 @@ use yii2lab\extension\jwt\entities\TokenEntity;
 use yii2lab\extension\jwt\interfaces\services\TokenInterface;
 use yii2lab\domain\services\base\BaseService;
 use yii2lab\extension\web\enums\HttpMethodEnum;
-use yii2lab\helpers\StringHelper;
+use yii2lab\extension\common\helpers\StringHelper;
 use yii2lab\rest\domain\entities\RequestEntity;
 use yii2lab\rest\domain\helpers\RestHelper;
 

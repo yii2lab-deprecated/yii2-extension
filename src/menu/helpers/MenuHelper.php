@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii2lab\extension\common\helpers\Helper;
 use yii2lab\extension\menu\interfaces\MenuInterface;
-use yii2lab\helpers\ModuleHelper;
+use yii2lab\extension\common\helpers\ModuleHelper;
 use yii2lab\extension\common\helpers\UrlHelper;
 use yii2lab\extension\yii\helpers\ArrayHelper;
 use yii2lab\extension\web\enums\HtmlEnum;

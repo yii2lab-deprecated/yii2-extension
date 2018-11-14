@@ -3,7 +3,7 @@
 namespace yii2lab\extension\store\drivers;
 
 use yii2lab\extension\code\helpers\generator\FileGeneratorHelper;
-use yii2lab\helpers\StringHelper;
+use yii2lab\extension\common\helpers\StringHelper;
 use yii2lab\extension\store\interfaces\DriverInterface;
 use yii\helpers\VarDumper;
 use yii2lab\extension\yii\helpers\FileHelper;

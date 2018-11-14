@@ -2,7 +2,7 @@
 
 namespace yii2lab\extension\yuml\helpers;
 
-use yii2lab\helpers\StringHelper;
+use yii2lab\extension\common\helpers\StringHelper;
 
 class UmlHelper
 {

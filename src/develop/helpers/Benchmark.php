@@ -5,7 +5,7 @@ namespace yii2lab\extension\develop\helpers;
 use yii\web\ServerErrorHttpException;
 use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\extension\store\StoreFile;
-use yii2lab\helpers\StringHelper;
+use yii2lab\extension\common\helpers\StringHelper;
 
 class Benchmark {
 	

@@ -15,9 +15,6 @@ class TimeComponent extends Validator {
 		if($timeZone != \Yii::$app->timeZone) {
 			\Yii::$app->timeZone = $timeZone;
 		}
-		if(APP == API) {
-			prr(date('H:i:s', time()),1,1);
-		}
 		parent::init();
 	}
 	

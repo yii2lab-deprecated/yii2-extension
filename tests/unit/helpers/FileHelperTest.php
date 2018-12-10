@@ -181,7 +181,7 @@ class FileHelperTest extends Unit
 	public function testRootPath()
 	{
 		$result = FileHelper::rootPath();
-		expect($result)->notEmpty();
+		$this->tester->assertNotEmpty($result);
 	}
 	
 	public function testTrimRootPath()

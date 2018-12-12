@@ -4,6 +4,7 @@ namespace yii2lab\extension\core\domain\helpers;
 
 use Yii;
 use yii\base\InvalidConfigException;
+use yii2lab\extension\web\enums\HttpHeaderEnum;
 use yii2module\account\domain\v2\helpers\AuthHelper;
 
 class CoreHelper {
@@ -41,13 +42,14 @@ class CoreHelper {
 	public static function getHeaders() {
 		$tokenDto = AuthHelper::getTokenDto();
 		if($tokenDto) {
-			$headers['Authorization'] = AuthHelper::getTokenString();
+			$headers[HttpHeaderEnum::AUTHORIZATION] = AuthHelper::getTokenString();
 		}
 		$partnerTokenDto = \App::$domain->partner->auth->forgeAuthToken();
 		if($partnerTokenDto) {
 			$headers['Authorization-partner'] = $partnerTokenDto->getTokenString();
 		}
-		$headers['Language'] = Yii::$app->language;
+		$headers[HttpHeaderEnum::LANGUAGE] = Yii::$app->language;
+		$headers[HttpHeaderEnum::TIME_ZONE] = Yii::$app->timeZone;
 		return $headers;
 	}
 	

@@ -2,6 +2,7 @@
 
 namespace yii2lab\extension\common\helpers;
 
+use DateTime;
 use yii\helpers\ArrayHelper;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\helpers\types\BaseType;
@@ -20,11 +21,13 @@ class TypeHelper {
 	
 	private static function decodeValueObject($value) {
 		if($value instanceof TimeValue) {
-			$value = $value->getInFormat(TimeValue::FORMAT_API);
+			$resultValue = $value->getInFormat(DateTime::ISO8601);
 		} elseif($value instanceof ValueObjectInterface) {
-			$value = $value->get();
+			$resultValue = $value->get();
+		} else {
+			$resultValue = $value;
 		}
-		return $value;
+		return $resultValue;
 	}
 	
 	private static function entityToArray($entity) {

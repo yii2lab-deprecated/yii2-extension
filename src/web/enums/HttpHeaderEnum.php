@@ -16,5 +16,6 @@ class HttpHeaderEnum extends BaseEnum {
 	const AUTHORIZATION = 'Authorization';
 	const ACCESS_TOKEN = 'access-token';
 	const X_REQUESTED_WITH = 'X-Requested-With';
+	const LANGUAGE = 'language';
 
 }

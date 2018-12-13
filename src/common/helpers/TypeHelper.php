@@ -3,11 +3,13 @@
 namespace yii2lab\extension\common\helpers;
 
 use DateTime;
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\helpers\types\BaseType;
 use yii2lab\domain\interfaces\ValueObjectInterface;
 use yii2lab\domain\values\TimeValue;
+use yii2lab\extension\web\enums\HttpHeaderEnum;
 
 class TypeHelper {
 	
@@ -21,7 +23,13 @@ class TypeHelper {
 	
 	private static function decodeValueObject($value) {
 		if($value instanceof TimeValue) {
-			$resultValue = $value->getInFormat(DateTime::ISO8601);
+			// todo: crutch
+			$timeZone = Yii::$app->request->getHeaders()->get(HttpHeaderEnum::TIME_ZONE);
+			if($timeZone) {
+				$resultValue = $value->getInFormat(DateTime::ISO8601);
+			} else {
+				$resultValue = $value->getInFormat(TimeValue::FORMAT_API);
+			}
 		} elseif($value instanceof ValueObjectInterface) {
 			$resultValue = $value->get();
 		} else {

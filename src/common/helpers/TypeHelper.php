@@ -25,6 +25,9 @@ class TypeHelper {
 		if($value instanceof TimeValue) {
 			// todo: crutch
 			$timeZone = Yii::$app->request->getHeaders()->get(HttpHeaderEnum::TIME_ZONE);
+			if(empty($timeZone)) {
+				$timeZone = Yii::$app->timeZone;
+			}
 			if($timeZone) {
 				$resultValue = $value->getInFormat(DateTime::ISO8601);
 			} else {
@@ -87,7 +90,9 @@ class TypeHelper {
 	}
 	
 	public static function serialize($entity, $formatMap) {
+
 		$item = self::entityToArray($entity);
+		prr($item,1,1);
 		if(!empty($formatMap)) {
 			$item = self::normalizeItemTypes($item, $formatMap);
 		}

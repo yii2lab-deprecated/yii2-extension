@@ -25,9 +25,9 @@ class TypeHelper {
 		if($value instanceof TimeValue) {
 			// todo: crutch
 			$timeZone = Yii::$app->request->getHeaders()->get(HttpHeaderEnum::TIME_ZONE);
-			if(empty($timeZone)) {
-				$timeZone = Yii::$app->timeZone;
-			}
+			//if(empty($timeZone)) {
+			//	$timeZone = Yii::$app->timeZone;
+			//}
 			if($timeZone) {
 				$resultValue = $value->getInFormat(DateTime::ISO8601);
 			} else {

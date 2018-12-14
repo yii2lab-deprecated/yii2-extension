@@ -92,7 +92,6 @@ class TypeHelper {
 	public static function serialize($entity, $formatMap) {
 
 		$item = self::entityToArray($entity);
-		prr($item,1,1);
 		if(!empty($formatMap)) {
 			$item = self::normalizeItemTypes($item, $formatMap);
 		}

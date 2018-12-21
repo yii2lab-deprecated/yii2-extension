@@ -4,6 +4,7 @@ namespace yii2lab\extension\activeRecord\helpers;
 
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\db\Expression;
 use yii\web\BadRequestHttpException;
 use yii2lab\domain\data\Query;
 
@@ -37,7 +38,8 @@ class SearchHelper {
 		}
 		$q = Query::forge();
 		foreach($searchByTextFields as $key) {
-			$q->orWhere(['ilike', $key, $text]);
+			$exp = new Expression('lower(' . $key . ') like ' . strtolower($text). ')');
+			$q->orWhere($exp);
 		}
 		return $q->getParam('where');
 	}

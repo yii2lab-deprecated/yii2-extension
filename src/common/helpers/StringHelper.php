@@ -7,8 +7,9 @@ class StringHelper {
 	const PATTERN_SPACES = '#\s+#m';
 	
 	public static function stripContent($data, $beginText, $endText) {
+		$replacement = $endText;
 		$pattern = preg_quote($beginText) . '[\s\S]+' . preg_quote($endText);
-		$data = preg_replace('#' . $pattern . '#i', EMP, $data);
+		$data = preg_replace('#' . $pattern . '#i', $replacement, $data);
 		return $data;
 	}
 	

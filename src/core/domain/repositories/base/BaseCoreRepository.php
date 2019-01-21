@@ -36,7 +36,7 @@ class BaseCoreRepository extends BaseRestRepository {
         $this->headers = ArrayHelper::merge($this->headers, CoreHelper::getHeaders());
         return parent::normalizeRequestEntity($requestEntity);
     }
-	
+
 	protected function showServerException(ResponseEntity $responseEntity) {
 		$data = $responseEntity->data;
 		$type = ArrayHelper::getValue($data, 'type');
@@ -45,7 +45,11 @@ class BaseCoreRepository extends BaseRestRepository {
 			$previous = $previous instanceof \Exception ? $previous : null;
 			throw new ServerErrorHttpException('Core Error' , 0, $previous);
 		}
-		throw new ServerErrorHttpException('Core Error: ' . $data['message'], 0);
+		if(is_array($data)) {
+			throw new ServerErrorHttpException('Core Error: ' . $data['message'], 0);
+		}else{
+			throw new ServerErrorHttpException('Core Error: ' . 'Server return html response body with bug trace', 0);
+		}
 	}
 	
 	protected function showUserException(ResponseEntity $responseEntity) {

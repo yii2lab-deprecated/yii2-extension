@@ -2,16 +2,14 @@
 
 namespace yii2lab\extension\common\helpers;
 
-use DateTime;
-use Yii;
 use yii\helpers\ArrayHelper;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\helpers\types\BaseType;
 use yii2lab\domain\interfaces\ValueObjectInterface;
 use yii2lab\domain\values\TimeValue;
-use yii2lab\extension\web\enums\HttpHeaderEnum;
 
-class TypeHelper {
+class TypeHelper
+{
 	
 	const INTEGER = 'integer';
 	const FLOAT = 'float';
@@ -21,18 +19,11 @@ class TypeHelper {
 	
 	private static $_instanceTypes = [];
 	
-	private static function decodeValueObject($value) {
+	private static function decodeValueObject($value)
+	{
 		if($value instanceof TimeValue) {
 			// todo: crutch
-			$timeZone = Yii::$app->request->getHeaders()->get(HttpHeaderEnum::TIME_ZONE);
-			//if(empty($timeZone)) {
-			//	$timeZone = Yii::$app->timeZone;
-			//}
-			if($timeZone) {
-				$resultValue = $value->getInFormat(DateTime::ISO8601);
-			} else {
-				$resultValue = $value->getInFormat(TimeValue::FORMAT_API);
-			}
+			$resultValue = $value->getInFormat(TimeValue::FORMAT_API);
 		} elseif($value instanceof ValueObjectInterface) {
 			$resultValue = $value->get();
 		} else {
@@ -41,7 +32,8 @@ class TypeHelper {
 		return $resultValue;
 	}
 	
-	private static function entityToArray($entity) {
+	private static function entityToArray($entity)
+	{
 		if(method_exists($entity, 'toArrayRaw')) {
 			$item = $entity->toArrayRaw();
 		} elseif(method_exists($entity, 'toArray')) {
@@ -61,7 +53,8 @@ class TypeHelper {
 		return $item;
 	}
 	
-	private static function normalizeItemTypes($item, $formatMap) {
+	private static function normalizeItemTypes($item, $formatMap)
+	{
 		foreach($formatMap as $fieldName => $format) {
 			if(is_array($format)) {
 				if(isset($item[ $fieldName ])) {
@@ -89,8 +82,9 @@ class TypeHelper {
 		return $item;
 	}
 	
-	public static function serialize($entity, $formatMap) {
-
+	public static function serialize($entity, $formatMap)
+	{
+		
 		$item = self::entityToArray($entity);
 		if(!empty($formatMap)) {
 			$item = self::normalizeItemTypes($item, $formatMap);
@@ -98,7 +92,8 @@ class TypeHelper {
 		return $item;
 	}
 	
-	public static function encode($value, $typeStr) {
+	public static function encode($value, $typeStr)
+	{
 		list($type, $param) = self::parseType($typeStr);
 		/** @var BaseType $instanceType */
 		$instanceType = self::getInstanceType($type);
@@ -115,7 +110,8 @@ class TypeHelper {
 		return $value;
 	}
 	
-	private static function parseType($typeStr) {
+	private static function parseType($typeStr)
+	{
 		$arr = explode(':', $typeStr);
 		$param = null;
 		if(count($arr) > 1) {
@@ -126,15 +122,16 @@ class TypeHelper {
 		return [$type, $param];
 	}
 	
-	public static function getInstanceType($class) {
+	public static function getInstanceType($class)
+	{
 		$class = 'yii2lab\domain\helpers\types\\' . ucfirst($class) . 'Type';
 		if(!class_exists($class)) {
 			return null;
 		}
 		if(!array_key_exists($class, self::$_instanceTypes)) {
-			self::$_instanceTypes[$class] = new $class;
+			self::$_instanceTypes[ $class ] = new $class;
 		}
-		return self::$_instanceTypes[$class];
+		return self::$_instanceTypes[ $class ];
 	}
 	
 }

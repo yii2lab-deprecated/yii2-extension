@@ -38,7 +38,7 @@ class SearchHelper {
 		}
 		$q = Query::forge();
 		foreach($searchByTextFields as $key) {
-			$exp = new Expression('lower(' . $key . ') like \'' . strtolower ($text) . '\'');
+			$exp = new Expression('lower(' . $key . ') like \'' . mb_strtolower ($text) . '\'');
 			$q->orWhere($exp);
 		}
 		return $q->getParam('where');

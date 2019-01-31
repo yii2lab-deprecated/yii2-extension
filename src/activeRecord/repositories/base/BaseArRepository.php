@@ -140,6 +140,7 @@ abstract class BaseArRepository extends BaseRepository {
 		$this->getQueryValidator()->validateSortFields($query);
 		$this->forgeQueryForAll($query);
 		$this->forgeQueryForWhere($query);
+		$this->forgeQueryForBetween($query);
 		try {
 			$models = $this->query->all();
 		} catch(InvalidArgumentException $e) {
@@ -240,6 +241,17 @@ abstract class BaseArRepository extends BaseRepository {
 		$q = $query->toArray();
 		if(!empty($q['where'])) {
 			$where = $this->alias->encode($q['where']);
+			$this->query->where($where);
+		}
+	}
+
+	protected function forgeQueryForBetween(Query $query) {
+		if(empty($query)) {
+			return;
+		}
+		$q = $query->toArray();
+		if(!empty($q['between'])) {
+			$where = $this->alias->encode($q['between']);
 			$this->query->where($where);
 		}
 	}

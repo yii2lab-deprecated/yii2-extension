@@ -4,6 +4,8 @@ namespace yii2lab\extension\scenario\base;
 
 use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
+use yii2lab\domain\exceptions\UnprocessableEntityHttpException;
+use yii2lab\domain\helpers\ErrorCollection;
 
 /**
  * Class BaseStrategyContext

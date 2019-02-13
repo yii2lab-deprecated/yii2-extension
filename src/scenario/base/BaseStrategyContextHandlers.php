@@ -38,7 +38,9 @@ abstract class BaseStrategyContextHandlers extends BaseStrategyContext {
 			throw new InvalidArgumentException('Strategy handlers not defined!');
 		}
 		if(!isset($strategyHandlers[$name])) {
-			throw new InvalidArgumentException('Handler "' . $name . '" not found!');
+			$errors = new ErrorCollection();
+			$errors->add('partner-name','Handler ' . $name . ' not found!');
+			throw new UnprocessableEntityHttpException($errors);
 		}
 	}
 	

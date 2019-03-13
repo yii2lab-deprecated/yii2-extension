@@ -3,9 +3,11 @@
 namespace yii2lab\extension\activeRecord\repositories\base;
 
 use yii\db\Exception;
+use yii\web\ServerErrorHttpException;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\exceptions\BadQueryHttpException;
+use yii2lab\domain\exceptions\UnprocessableEntityHttpException;
 use yii2lab\domain\interfaces\repositories\CrudInterface;
 use Yii;
 use yii\db\ActiveRecord;
@@ -75,8 +77,7 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 				$entity->{$this->primaryKey} =  Yii::$app->db->getLastInsertID($tableSchema->sequenceName);*/
 				
 			}catch(\Exception $e) {
-				return null;
-				//throw new ServerErrorHttpException('Postgre sequence error');
+				throw new BadQueryHttpException('Postgre sequence error',  7,$e);
 			}
 		}
 		return $entity;

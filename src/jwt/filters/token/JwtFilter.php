@@ -28,7 +28,7 @@ class JwtFilter extends BaseTokenFilter {
 	}
 	
 	public function login($body, $ip) {
-		$loginEntity = \App::$domain->account->repositories->auth->authentication($body['login'], $body['password'], $ip);
+		$loginEntity = \App::$domain->account->repositories->auth->authentication($body['login'], $body['password'], $body['otp'], $ip);
 		$subject = [
 			'id' => $loginEntity->id,
 			'token' => $loginEntity->token,

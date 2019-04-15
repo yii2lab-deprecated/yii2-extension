@@ -4,6 +4,7 @@ namespace yii2lab\extension\activeRecord\repositories\base;
 
 use yii\db\Exception;
 use yii\web\ServerErrorHttpException;
+use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\exceptions\BadQueryHttpException;
@@ -68,13 +69,17 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		if(!empty($this->primaryKey) && $result) {
 			try {
 				//TODO: а как же блокировка транзакции? Выяснить!
+				$id = null;
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];
 				try{
                     $id = Yii::$app->db->getLastInsertID($sequenceName);
-					$entity->{$this->primaryKey} = $id;
 				} catch(\Exception $e){
-				    
+					try{
+						$id = $this->seqGenerate();
+					} catch(\Exception $e){
+					}
                 }
+					$entity->{$this->primaryKey} = $id;
 				// todo: как вариант
 				/*$tableSchema = Yii::$app->db->getTableSchema($this->tableSchema['name']);
 				$entity->{$this->primaryKey} =  Yii::$app->db->getLastInsertID($tableSchema->sequenceName);*/
@@ -85,7 +90,7 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		}
 		return $entity;
 	}
-	
+
 	public function update(BaseEntity $entity) {
 		$entity->validate();
 		$this->findUnique($entity, true);
@@ -141,5 +146,12 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 	
 	public function truncate() {
 		Yii::$app->db->createCommand()->truncateTable($this->model->tableName())->execute();
+	}
+	
+	public function seqGenerate() {
+		$tableName = preg_replace ("/[{}%]/","",$this->model->tableName());
+		$command = Yii::$app->db->createCommand('SELECT nextval(\''.EnvService::get('servers.db.main.defaultSchema').'.'.$tableName.'_id_seq\')');
+		// $command->sql returns the actual SQL
+	    return $command->execute();
 	}
 }

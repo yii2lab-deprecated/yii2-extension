@@ -63,16 +63,23 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		/** @var ActiveRecord $model */
 		$model = Yii::createObject(get_class($this->model));
 		$this->massAssignment($model, $entity, self::SCENARIO_INSERT);
-		$result = $this->saveModel($model);
+		
+		
+		if(!empty($this->primaryKey)) {
+			$id = null ;
+			try {
+				$id = $this->seqGenerate();
+			} catch(\Exception $e) {
+			}
+			$model->{$this->primaryKey} = $id;
+			$result = $this->saveModel($model);
+		}
 		if(!empty($this->primaryKey) && $result) {
 			try {
-				//TODO: а как же блокировка транзакции? Выяснить!
-				$id = null;
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];
 				try {
 					$id = Yii::$app->db->getLastInsertID($sequenceName);
 				} catch(\Exception $e) {
-				
 				}
 				$entity->{$this->primaryKey} = $id;
 				// todo: как вариант

@@ -2,18 +2,16 @@
 
 namespace yii2lab\extension\activeRecord\repositories\base;
 
+use Yii;
+use yii\db\ActiveRecord;
 use yii\db\Exception;
-use yii\web\ServerErrorHttpException;
+use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 use yii2lab\app\domain\helpers\EnvService;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\exceptions\BadQueryHttpException;
-use yii2lab\domain\exceptions\UnprocessableEntityHttpException;
 use yii2lab\domain\interfaces\repositories\CrudInterface;
-use Yii;
-use yii\db\ActiveRecord;
-use yii\web\NotFoundHttpException;
-use yii\helpers\ArrayHelper;
 use yii2lab\domain\interfaces\repositories\SearchInterface;
 use yii2lab\extension\activeRecord\helpers\SearchHelper;
 use yii2lab\extension\activeRecord\traits\ActiveRepositoryTrait;
@@ -71,26 +69,23 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 				//TODO: а как же блокировка транзакции? Выяснить!
 				$id = null;
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];
-				try{
-                    $id = Yii::$app->db->getLastInsertID($sequenceName);
-				} catch(\Exception $e){
-					try{
-						$id = $this->seqGenerate();
-					} catch(\Exception $e){
-					}
-                }
-					$entity->{$this->primaryKey} = $id;
+				try {
+					$id = Yii::$app->db->getLastInsertID($sequenceName);
+				} catch(\Exception $e) {
+				
+				}
+				$entity->{$this->primaryKey} = $id;
 				// todo: как вариант
 				/*$tableSchema = Yii::$app->db->getTableSchema($this->tableSchema['name']);
 				$entity->{$this->primaryKey} =  Yii::$app->db->getLastInsertID($tableSchema->sequenceName);*/
 				
-			}catch(\Exception $e) {
-				throw new BadQueryHttpException('Postgre sequence error',  7,$e);
+			} catch(\Exception $e) {
+				throw new BadQueryHttpException('Postgre sequence error', 7, $e);
 			}
 		}
 		return $entity;
 	}
-
+	
 	public function update(BaseEntity $entity) {
 		$entity->validate();
 		$this->findUnique($entity, true);
@@ -149,9 +144,9 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 	}
 	
 	public function seqGenerate() {
-		$tableName = preg_replace ("/[{}%]/","",$this->model->tableName());
-		$command = Yii::$app->db->createCommand('SELECT nextval(\''.EnvService::get('servers.db.main.defaultSchema').'.'.$tableName.'_id_seq\')');
+		$tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
+		$command = Yii::$app->db->createCommand('SELECT nextval(\'' . EnvService::get('servers.db.main.defaultSchema') . '.' . $tableName . '_id_seq\')');
 		// $command->sql returns the actual SQL
-	    return $command->execute();
+		return $command->execute();
 	}
 }

@@ -64,16 +64,9 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		$model = Yii::createObject(get_class($this->model));
 		$this->massAssignment($model, $entity, self::SCENARIO_INSERT);
 		
-		
-		if(!empty($this->primaryKey)) {
-			$id = null ;
-			try {
-				$id = $this->seqGenerate();
-			} catch(\Exception $e) {
-			}
-			$model->{$this->primaryKey} = $id;
-			$result = $this->saveModel($model);
-		}
+
+		$result = $this->saveModel($model);
+	
 		if(!empty($this->primaryKey) && $result) {
 			try {
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];

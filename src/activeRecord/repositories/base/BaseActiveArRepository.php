@@ -65,7 +65,8 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		$this->massAssignment($model, $entity, self::SCENARIO_INSERT);
 		
 
-			$result = $this->saveModel($model);
+		$result = $this->saveModel($model);
+	
 		if(!empty($this->primaryKey) && $result) {
 			try {
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];

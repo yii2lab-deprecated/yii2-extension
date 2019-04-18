@@ -122,7 +122,12 @@ class ClientHelper
 		if (self::isConsole()) {
 			return self::LOCALHOST_IP;
 		}
-		return Yii::$app->request->userIP;
+		if ($_SERVER['REMOTE_ADDR'] == env('servers.nat.address') && isset($_SERVER['HTTP_CLIENT_IP'])) {
+			 $clientIp = $_SERVER['HTTP_CLIENT_IP'];
+		 } else {
+			 $clientIp = $_SERVER['REMOTE_ADDR'];
+		 }
+		return $clientIp;
 	}
  
 	private static function isConsole() {

@@ -2,6 +2,7 @@
 
 namespace yii2lab\extension\core\domain\repositories\base;
 
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnauthorizedHttpException;
@@ -13,22 +14,24 @@ use yii2lab\rest\domain\entities\ResponseEntity;
 use yii2lab\rest\domain\repositories\base\BaseRestRepository;
 
 class BaseCoreRepository extends BaseRestRepository {
-	
+
 	public $version = null;
 	public $point = EMP;
-	
+
 	public function init() {
 		parent::init();
 		$this->initVersion();
 		$this->initBaseUrl();
 //		$this->initHeaders();
 	}
-	
+
 	protected function sendRequest(RequestEntity $requestEntity) {
 		$headers = $requestEntity->headers;
 		$headers[ClientHelper::IP_HEADER_KEY] = ClientHelper::getIpFromRequest();
 		$requestEntity->headers = $headers;
 		$responseEntity = parent::sendRequest($requestEntity);
+		Yii::info(headers[ClientHelper::IP_HEADER_KEY], 	__METHOD__);
+		Yii::info($responseEntity->content, __METHOD__);
 		return $responseEntity;
 	}
 
@@ -51,7 +54,7 @@ class BaseCoreRepository extends BaseRestRepository {
 			throw new ServerErrorHttpException('Core Error: ' . 'Server return html response body with bug trace', 0);
 		}
 	}
-	
+
 	protected function showUserException(ResponseEntity $responseEntity) {
 		$statusCode = $responseEntity->status_code;
 		if($statusCode == 422) {
@@ -68,11 +71,11 @@ class BaseCoreRepository extends BaseRestRepository {
 		}
 		parent::showUserException($responseEntity);
 	}
-	
+
 	private function initBaseUrl() {
 		$this->baseUrl = CoreHelper::forgeUrl($this->version, $this->point);
 	}
-	
+
 	/*private function initHeaders() {
 		$this->headers = ArrayHelper::merge($this->headers, CoreHelper::getHeaders());
 	}*/

@@ -28,6 +28,7 @@ class BaseCoreRepository extends BaseRestRepository {
 	protected function sendRequest(RequestEntity $requestEntity) {
 		$headers = $requestEntity->headers;
 		$headers[ClientHelper::IP_HEADER_KEY] = ClientHelper::getIpFromRequest();
+		prr(ClientHelper::getIpFromRequest() . ' before',1,1);
 		$requestEntity->headers = $headers;
 		$responseEntity = parent::sendRequest($requestEntity);
 		return $responseEntity;

@@ -31,6 +31,7 @@ class BaseCoreRepository extends BaseRestRepository {
 		prr(ClientHelper::getIpFromRequest() . ' before',1,1);
 		$requestEntity->headers = $headers;
 		$responseEntity = parent::sendRequest($requestEntity);
+		prr($responseEntity->content,1,1);
 		return $responseEntity;
 	}
 

@@ -30,8 +30,8 @@ class BaseCoreRepository extends BaseRestRepository {
 		$headers[ClientHelper::IP_HEADER_KEY] = ClientHelper::getIpFromRequest();
 		$requestEntity->headers = $headers;
 		$responseEntity = parent::sendRequest($requestEntity);
-		Yii::info(headers[ClientHelper::IP_HEADER_KEY], 	__METHOD__);
-		Yii::info($responseEntity->content, __METHOD__);
+		Yii::warning($headers[ClientHelper::IP_HEADER_KEY], 	__METHOD__);
+		Yii::warning($responseEntity->content, __METHOD__);
 		return $responseEntity;
 	}
 

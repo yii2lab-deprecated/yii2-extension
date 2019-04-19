@@ -4,10 +4,12 @@ namespace yii2lab\extension\web\helpers;
 
 use InvalidArgumentException;
 use Yii;
+use yii\web\BadRequestHttpException;
 use yii2lab\domain\data\GetParams;
 use xj\ua\UserAgent;
 use yii\web\View;
 use yii2lab\domain\data\Query;
+use yii2woop\service\domain\v3\interfaces\SearchInterface;
 
 class ClientHelper
 {
@@ -94,6 +96,36 @@ class ClientHelper
 		}
 		$getParams = new GetParams();
 		return $getParams->getAllParams($queryParams);
+	}
+	
+	/**
+	 * Forming query for search
+	 *
+	 * @param                 $getParams
+	 * @param SearchInterface $className
+	 *
+	 * @return Query
+	 * @throws BadRequestHttpException
+	 * @throws \yii\base\InvalidConfigException
+	 */
+	public static function getQueryPostMerge($getParams, SearchInterface $className) {
+		$postParams = Yii::$app->request->getBodyParams();
+		foreach($getParams as $key => $getParam) {
+			if(empty($getParam)) {
+				unset($getParams[ $key ]);
+			}
+		}
+		$params = array_merge($postParams, $getParams);
+		
+		foreach($params as $key => $value) {
+			if(!in_array($key, $className::affordVariables())) {
+				throw new BadRequestHttpException('Переданы недопустимые параметры');
+			}
+		}
+		$query = self::getQueryFromRequest($params);
+		unset($params['expand']);
+		$query->whereFromCondition($params);
+		return $query;
 	}
 	
     public static function ip() {

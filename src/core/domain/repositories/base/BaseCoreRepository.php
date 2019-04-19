@@ -30,13 +30,8 @@ class BaseCoreRepository extends BaseRestRepository
 	protected function sendRequest(RequestEntity $requestEntity)
 	{
 		$headers = $requestEntity->headers;
-		if (!empty($headers[ClientHelper::IP_HEADER_KEY])) {
-			if (empty(Yii::$app->request->headers->get('partner-name'))) {
-				$headers[ClientHelper::IP_HEADER_KEY] = ClientHelper::getIpFromRequest();
-			}
-		} else {
-			$headers[ClientHelper::IP_HEADER_KEY] = ClientHelper::getIpFromRequest();
-		};
+		$headers[ClientHelper::IP_HEADER_KEY] = ClientHelper::getIpFromRequest();
+		Yii::warning($headers[ClientHelper::IP_HEADER_KEY], __METHOD__);
 		$requestEntity->headers = $headers;
 		$responseEntity = parent::sendRequest($requestEntity);
 		return $responseEntity;

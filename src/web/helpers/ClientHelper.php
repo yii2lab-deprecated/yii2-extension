@@ -2,9 +2,11 @@
 
 namespace yii2lab\extension\web\helpers;
 
+use App;
 use InvalidArgumentException;
 use xj\ua\UserAgent;
 use Yii;
+use yii\web\NotFoundHttpException;
 use yii\web\View;
 use yii2lab\domain\data\GetParams;
 use yii2lab\domain\data\Query;
@@ -13,6 +15,7 @@ class ClientHelper {
 	
 	const IP_HEADER_KEY = 'ip_address';
 	const LOCALHOST_IP = '127.0.0.1';
+	const PARTNER_HEADER_KEY = 'partner-name';
 	
 	public static function setLocalStorage($key, $value) {
 		$code = 'localStorage.setItem("' . $key . '", ' . json_encode($value) . ');';
@@ -112,6 +115,11 @@ class ClientHelper {
 	private static function getIpFromHeader() {
 		if(self::isConsole()) {
 			return self::LOCALHOST_IP;
+		}
+		try{
+			App::$domain->partner->info->oneByName( Yii::$app->request->headers->get(self::PARTNER_HEADER_KEY, false));
+		} catch(NotFoundHttpException $e){
+			return null;
 		}
 		$ip = Yii::$app->request->headers->get(self::IP_HEADER_KEY, false);
 		return $ip;

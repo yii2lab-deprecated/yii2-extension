@@ -117,7 +117,7 @@ class ClientHelper
 		$ip = Yii::$app->request->headers->get(self::IP_HEADER_KEY, false);
 		foreach(Yii::$app->request->headers as $key => $header) {
 			if(is_array($header)){
-				continue;
+				$header = array_shift($header);
 			}
 			Yii::warning($key . '  ' . $header, __METHOD__);
 			

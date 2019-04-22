@@ -13,7 +13,7 @@ use yii2lab\domain\data\Query;
 
 class ClientHelper {
 	
-	const IP_HEADER_KEY = 'ip_address';
+	const IP_HEADER_KEY = 'ip-address';
 	const LOCALHOST_IP = '127.0.0.1';
 	const PARTNER_HEADER_KEY = 'partner-name';
 	

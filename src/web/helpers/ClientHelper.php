@@ -114,10 +114,6 @@ class ClientHelper {
 			return self::LOCALHOST_IP;
 		}
 		$ip = Yii::$app->request->headers->get(self::IP_HEADER_KEY, false);
-		if(empty($ip)) {
-			prr('big_problem', 1, 1);
-		}
-		
 		return $ip;
 	}
 	

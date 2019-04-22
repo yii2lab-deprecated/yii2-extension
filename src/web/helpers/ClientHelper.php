@@ -116,11 +116,9 @@ class ClientHelper
 		}
 		$ip = Yii::$app->request->headers->get(self::IP_HEADER_KEY, false);
 		if($ip){
-			Yii::warning('get_id '. $ip, __METHOD__);
+			prr($ip,1,1);
 		} else {
-			$sdfsY = '';
-			$sdfsY = Yii::$app->request->headers->get(self::IP_HEADER_KEY);
-			Yii::warning('dont get_id '. $sdfsY . ' end', __METHOD__);
+			prr('big_problem',1,1);
 		}
 		
 

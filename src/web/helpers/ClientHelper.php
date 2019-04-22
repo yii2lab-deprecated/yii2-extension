@@ -115,13 +115,15 @@ class ClientHelper
 			return self::LOCALHOST_IP;
 		}
 		$ip = Yii::$app->request->headers->get(self::IP_HEADER_KEY, false);
-		foreach(Yii::$app->request->headers as $key => $header) {
-			if(is_array($header)){
-				$header = array_shift($header);
-			}
-			Yii::warning($key . '  ' . $header, __METHOD__);
-			
+		if($ip){
+			Yii::warning('get_id '. $ip, __METHOD__);
+		} else {
+			$sdfsY = '';
+			$sdfsY = Yii::$app->request->headers->get(self::IP_HEADER_KEY);
+			Yii::warning('dont get_id '. $sdfsY . ' end', __METHOD__);
 		}
+		
+
 		return $ip;
 	}
  

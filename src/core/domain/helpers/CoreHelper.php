@@ -5,6 +5,7 @@ namespace yii2lab\extension\core\domain\helpers;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii2lab\extension\web\enums\HttpHeaderEnum;
+use yii2lab\extension\web\helpers\ClientHelper;
 use yii2module\account\domain\v2\helpers\AuthHelper;
 
 class CoreHelper {
@@ -50,6 +51,11 @@ class CoreHelper {
 		}
 		$headers[HttpHeaderEnum::LANGUAGE] = Yii::$app->language;
 		$headers[HttpHeaderEnum::TIME_ZONE] = Yii::$app->timeZone;
+		$headers[HttpHeaderEnum::IP_ADDRESS] = ClientHelper::getIpFromRequest();
+		if(Yii::$app->request->headers->get(HttpHeaderEnum::PARTNER_NAME)){
+			$headers[HttpHeaderEnum::PARTNER_NAME]  = Yii::$app->request->headers->get(HttpHeaderEnum::PARTNER_NAME);
+		}
+
 		return $headers;
 	}
 	

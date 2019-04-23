@@ -54,6 +54,8 @@ class CoreHelper {
 		$headers[HttpHeaderEnum::IP_ADDRESS] = ClientHelper::getIpFromRequest();
 		if(Yii::$app->request->headers->get(HttpHeaderEnum::PARTNER_NAME)){
 			$headers[HttpHeaderEnum::PARTNER_NAME]  = Yii::$app->request->headers->get(HttpHeaderEnum::PARTNER_NAME);
+		} else{
+			$headers[HttpHeaderEnum::PARTNER_NAME]  = 'wooppay_kz';
 		}
 
 		return $headers;

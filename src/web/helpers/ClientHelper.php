@@ -117,7 +117,7 @@ class ClientHelper {
 			return self::LOCALHOST_IP;
 		}
 		try{
-			App::$domain->partner->info->oneByName( Yii::$app->request->headers->get(self::PARTNER_HEADER_KEY, false));
+			App::$domain->partner->info->oneByNameRaw( Yii::$app->request->headers->get(self::PARTNER_HEADER_KEY, false));
 		} catch(NotFoundHttpException $e){
 			return null;
 		}

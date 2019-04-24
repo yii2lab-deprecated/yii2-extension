@@ -65,29 +65,24 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		$this->massAssignment($model, $entity, self::SCENARIO_INSERT);
 		
 		if(!empty($this->primaryKey)) {
-			$id = null;
+			$seqId = null;
 			try {
-				$id = $this->seqGenerate();
+				$seqId = $this->seqGenerate();
 			} catch(\Exception $e) {
 				throw new BadQueryHttpException('Postgre sequence error', 7, $e);
 			}
-			$model->{$this->primaryKey} = $id;
+			$model->{$this->primaryKey} = $seqId;
 			$result = $this->saveModel($model);
 		}
-
-	
-		if(!empty($this->primaryKey) && $result) {
+		if(!empty($this->primaryKey) && $result && empty($seqId)) {
 			try {
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];
+				
 				try {
 					$id = Yii::$app->db->getLastInsertID($sequenceName);
 				} catch(\Exception $e) {
 				}
 				$entity->{$this->primaryKey} = $id;
-				// todo: как вариант
-				/*$tableSchema = Yii::$app->db->getTableSchema($this->tableSchema['name']);
-				$entity->{$this->primaryKey} =  Yii::$app->db->getLastInsertID($tableSchema->sequenceName);*/
-				
 			} catch(\Exception $e) {
 				throw new BadQueryHttpException('Postgre sequence error', 7, $e);
 			}

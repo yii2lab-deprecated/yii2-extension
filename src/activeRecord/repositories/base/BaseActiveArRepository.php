@@ -64,8 +64,17 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		$model = Yii::createObject(get_class($this->model));
 		$this->massAssignment($model, $entity, self::SCENARIO_INSERT);
 		
+		if(!empty($this->primaryKey)) {
+			$id = null;
+			try {
+				$id = $this->seqGenerate();
+			} catch(\Exception $e) {
+				throw new BadQueryHttpException('Postgre sequence error', 7, $e);
+			}
+			$model->{$this->primaryKey} = $id;
+			$result = $this->saveModel($model);
+		}
 
-		$result = $this->saveModel($model);
 	
 		if(!empty($this->primaryKey) && $result) {
 			try {
@@ -145,8 +154,9 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 	
 	public function seqGenerate() {
 		$tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
-		$command = Yii::$app->db->createCommand('SELECT nextval(\'' . EnvService::get('servers.db.main.defaultSchema') . '.' . $tableName . '_id_seq\')');
-		// $command->sql returns the actual SQL
-		return $command->execute();
+		$command = Yii::$app->db->createCommand('SELECT nextval(\'' . EnvService::get('servers.db.main.defaultSchema') . '.' . $tableName . '_id_seq\')')->query();
+		//		// $command->sql returns the actual SQL
+		$result = $command->read();
+		return $result['nextval'];
 	}
 }

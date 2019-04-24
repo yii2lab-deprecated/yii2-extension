@@ -65,6 +65,11 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		$this->massAssignment($model, $entity, self::SCENARIO_INSERT);
 		
 		if(!empty($this->primaryKey)) {
+			$aliases = $this->alias->getAliases();
+			if (!empty($aliases[$this->primaryKey])){
+				$this->primaryKey =  $aliases[$this->primaryKey];
+			};
+			
 			$seqId = null;
 			$seqId = $this->seqGenerate();
 			if($seqId){
@@ -72,6 +77,7 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 			}
 			$result = $this->saveModel($model);
 		}
+		
 		if(!empty($this->primaryKey) && $result && empty($seqId)) {
 			try {
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];

@@ -66,21 +66,19 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		
 		if(!empty($this->primaryKey)) {
 			$seqId = null;
-			try {
-				$seqId = $this->seqGenerate();
-			} catch(\Exception $e) {
-				throw new BadQueryHttpException('Postgre sequence error', 7, $e);
+			$seqId = $this->seqGenerate();
+			if($seqId){
+				$model->{$this->primaryKey} = $seqId;
 			}
-			$model->{$this->primaryKey} = $seqId;
 			$result = $this->saveModel($model);
 		}
 		if(!empty($this->primaryKey) && $result && empty($seqId)) {
 			try {
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];
-				
 				try {
 					$id = Yii::$app->db->getLastInsertID($sequenceName);
 				} catch(\Exception $e) {
+					Yii::error($e->getMessage());
 				}
 				$entity->{$this->primaryKey} = $id;
 			} catch(\Exception $e) {
@@ -148,10 +146,23 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 	}
 	
 	public function seqGenerate() {
-		$tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
-		$command = Yii::$app->db->createCommand('SELECT nextval(\'' . EnvService::get('servers.db.main.defaultSchema') . '.' . $tableName . '_id_seq\')')->query();
-		//		// $command->sql returns the actual SQL
-		$result = $command->read();
+		try {
+			$tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
+			$schema = EnvService::get('servers.db.main.defaultSchema');
+			$sequenceName = Yii::$app->db->createCommand('SELECT ' . 'get_sequence_name(\'' . $schema . '.' . $tableName . '\')')->query();
+			$sequenceName = $sequenceName->read();
+			if(empty($sequenceName['get_sequence_name'])) {
+				Yii::warning($tableName . ' sequence is empty');
+				return null;
+			}
+
+			$command = Yii::$app->db->createCommand('SELECT nextval(\'' . EnvService::get('servers.db.main.defaultSchema') . '.'. $sequenceName['get_sequence_name'].'\')')->query();
+			//		// $command->sql returns the actual SQL
+			$result = $command->read();
+		} catch(\Exception $e) {
+			Yii::error($e->getMessage());
+			return null;
+		}
 		return $result['nextval'];
 	}
 }

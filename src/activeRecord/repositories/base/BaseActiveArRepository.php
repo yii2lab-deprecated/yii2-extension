@@ -83,10 +83,10 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];
 				try {
 					$id = Yii::$app->db->getLastInsertID($sequenceName);
+					$entity->{$this->primaryKey} = $id;
 				} catch(\Exception $e) {
 					Yii::error($e->getMessage());
 				}
-				$entity->{$this->primaryKey} = $id;
 			} catch(\Exception $e) {
 				throw new BadQueryHttpException('Postgre sequence error', 7, $e);
 			}

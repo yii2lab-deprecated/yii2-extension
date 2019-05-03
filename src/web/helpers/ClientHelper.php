@@ -1,31 +1,28 @@
 <?php
-
 namespace yii2lab\extension\web\helpers;
-
+use App;
 use InvalidArgumentException;
-use Yii;
-use yii\web\BadRequestHttpException;
-use yii2lab\domain\data\GetParams;
 use xj\ua\UserAgent;
+use Yii;
+use yii\web\NotFoundHttpException;
 use yii\web\View;
+use yii2lab\domain\data\GetParams;
 use yii2lab\domain\data\Query;
-use yii2woop\service\domain\v3\interfaces\SearchInterface;
-
-class ClientHelper
-{
-
-	const IP_HEADER_KEY = 'ip_address';
+class ClientHelper {
+	
+	const IP_HEADER_KEY = 'ip-address';
 	const LOCALHOST_IP = '127.0.0.1';
-
-    public static function setLocalStorage($key, $value) {
-        $code = 'localStorage.setItem("' . $key . '", ' . json_encode($value) . ');';
-        self::runJavasriptCode($code);
-    }
-
-    public static function runJavasriptCode($code, $pos = View::POS_READY) {
-        Yii::$app->view->registerJs($code, $pos);
-    }
-
+	const PARTNER_HEADER_KEY = 'partner-name';
+	
+	public static function setLocalStorage($key, $value) {
+		$code = 'localStorage.setItem("' . $key . '", ' . json_encode($value) . ');';
+		self::runJavasriptCode($code);
+	}
+	
+	public static function runJavasriptCode($code, $pos = View::POS_READY) {
+		Yii::$app->view->registerJs($code, $pos);
+	}
+	
 	public static function getAgentInfo($isLowerCase = false) {
 		try {
 			$userAgent = UserAgent::model();
@@ -34,7 +31,7 @@ class ClientHelper
 		}
 		
 		/* @var \xj\ua\UserAgent $userAgent */
-		$uaAttributes =  $userAgent->getAttributes();
+		$uaAttributes = $userAgent->getAttributes();
 		if($isLowerCase) {
 			foreach($uaAttributes as &$attribute) {
 				$attribute = strtolower($attribute);
@@ -49,15 +46,15 @@ class ClientHelper
 	}
 	
 	public static function crutchForPaginate(Query $query = null, $defaultLimit = 20) {
-    	$getParams = Yii::$app->request->getQueryParams();
+		$getParams = Yii::$app->request->getQueryParams();
 		
 		$p = [];
 		$names = ['page', 'per-page', 'limit', 'offset'];
 		foreach($names as $name) {
 			$queryValue = $query->getParam($name);
 			if($queryValue) {
-				$p[$name] = intval($queryValue);
-				unset($getParams[$name]);
+				$p[ $name ] = intval($queryValue);
+				unset($getParams[ $name ]);
 				$query->removeParam($name);
 			}
 		}
@@ -98,6 +95,51 @@ class ClientHelper
 		return $getParams->getAllParams($queryParams);
 	}
 	
+	public static function ip() {
+		if(self::isConsole()) {
+			return self::LOCALHOST_IP;
+		}
+		$ip = self::getIpFromHeader();
+		if($ip) {
+			return $ip;
+		}
+		$ip = self::getIpFromRequest();
+		if($ip) {
+			return $ip;
+		}
+	}
+	
+	private static function getIpFromHeader() {
+		if(self::isConsole()) {
+			return self::LOCALHOST_IP;
+		}
+		try{
+			App::$domain->partner->info->oneByNameRaw( Yii::$app->request->headers->get(self::PARTNER_HEADER_KEY, false));
+		} catch(NotFoundHttpException $e){
+			return null;
+		}
+		$ip = Yii::$app->request->headers->get(self::IP_HEADER_KEY, false);
+		return $ip;
+	}
+	
+	public static function getIpFromRequest() {
+		if(self::isConsole()) {
+			return self::LOCALHOST_IP;
+		}
+		if($_SERVER['REMOTE_ADDR'] == env('servers.nat.address') && isset($_SERVER['HTTP_CLIENT_IP'])) {
+			$clientIp = $_SERVER['HTTP_CLIENT_IP'];
+		} else {
+			$clientIp = $_SERVER['REMOTE_ADDR'];
+		}
+		return $clientIp;
+	}
+	
+	private static function isConsole() {
+		//		// todo: костыль
+		//		return true;
+		return APP == CONSOLE;
+	}
+	
 	/**
 	 * Forming query for search
 	 *
@@ -126,45 +168,5 @@ class ClientHelper
 		unset($params['expand']);
 		$query->whereFromCondition($params);
 		return $query;
-	}
-	
-    public static function ip() {
-    	if (self::isConsole()) {
-            return self::LOCALHOST_IP;
-        }
-        $ip = self::getIpFromHeader();
-    	if($ip) {
-    		return $ip;
-	    }
-	    $ip = self::getIpFromRequest();
-	    if($ip) {
-		    return $ip;
-	    }
-    }
-	
-	private static function getIpFromHeader() {
-		if (self::isConsole()) {
-			return self::LOCALHOST_IP;
-		}
-		$ip = Yii::$app->request->headers->get(self::IP_HEADER_KEY, false);
-		return $ip;
-	}
- 
-	public static function getIpFromRequest() {
-		if (self::isConsole()) {
-			return self::LOCALHOST_IP;
-		}
-		if ($_SERVER['REMOTE_ADDR'] == env('servers.nat.address') && isset($_SERVER['HTTP_CLIENT_IP'])) {
-			 $clientIp = $_SERVER['HTTP_CLIENT_IP'];
-		 } else {
-			 $clientIp = $_SERVER['REMOTE_ADDR'];
-		 }
-		return $clientIp;
-	}
- 
-	private static function isConsole() {
-//		// todo: костыль
-//		return true;
-		return APP == CONSOLE;
 	}
 }

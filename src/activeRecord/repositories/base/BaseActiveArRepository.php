@@ -64,21 +64,28 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		$model = Yii::createObject(get_class($this->model));
 		$this->massAssignment($model, $entity, self::SCENARIO_INSERT);
 		
-
+		if(!empty($this->primaryKey)) {
+			$aliases = $this->alias->getAliases();
+			if (!empty($aliases[$this->primaryKey])){
+				$this->primaryKey =  $aliases[$this->primaryKey];
+			};
+			
+			$seqId = null;
+			$seqId = $this->seqGenerate();
+			if($seqId){
+				$model->{$this->primaryKey} = $seqId;
+			}
+		}
 		$result = $this->saveModel($model);
-	
-		if(!empty($this->primaryKey) && $result) {
+		if(!empty($this->primaryKey) && $result && empty($seqId)) {
 			try {
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];
 				try {
 					$id = Yii::$app->db->getLastInsertID($sequenceName);
+					$entity->{$this->primaryKey} = $id;
 				} catch(\Exception $e) {
+					Yii::error($e->getMessage());
 				}
-				$entity->{$this->primaryKey} = $id;
-				// todo: как вариант
-				/*$tableSchema = Yii::$app->db->getTableSchema($this->tableSchema['name']);
-				$entity->{$this->primaryKey} =  Yii::$app->db->getLastInsertID($tableSchema->sequenceName);*/
-				
 			} catch(\Exception $e) {
 				throw new BadQueryHttpException('Postgre sequence error', 7, $e);
 			}
@@ -144,9 +151,23 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 	}
 	
 	public function seqGenerate() {
-		$tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
-		$command = Yii::$app->db->createCommand('SELECT nextval(\'' . EnvService::get('servers.db.main.defaultSchema') . '.' . $tableName . '_id_seq\')');
-		// $command->sql returns the actual SQL
-		return $command->execute();
+		try {
+			$tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
+			$schema = EnvService::get('servers.db.main.defaultSchema');
+			$sequenceName = Yii::$app->db->createCommand('SELECT ' . 'get_sequence_name(\'' . $schema . '.' . $tableName . '\')')->query();
+			$sequenceName = $sequenceName->read();
+			if(empty($sequenceName['get_sequence_name'])) {
+				Yii::warning($tableName . ' sequence is empty');
+				return null;
+			}
+
+			$command = Yii::$app->db->createCommand('SELECT nextval(\'' . EnvService::get('servers.db.main.defaultSchema') . '.'. $sequenceName['get_sequence_name'].'\')')->query();
+			//		// $command->sql returns the actual SQL
+			$result = $command->read();
+		} catch(\Exception $e) {
+			Yii::error($e->getMessage());
+			return null;
+		}
+		return $result['nextval'];
 	}
 }

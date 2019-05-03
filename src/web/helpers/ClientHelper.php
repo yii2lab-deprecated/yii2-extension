@@ -2,9 +2,12 @@
 
 namespace yii2lab\extension\web\helpers;
 
+use App;
 use InvalidArgumentException;
 use Yii;
 use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
+use yii\web\View;
 use yii2lab\domain\data\GetParams;
 use xj\ua\UserAgent;
 use yii\web\View;
@@ -143,8 +146,6 @@ class ClientHelper
 
     private static function isConsole()
     {
-//		// todo: костыль
-//		return true;
         return APP == CONSOLE;
     }
 

@@ -75,9 +75,8 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 			if($seqId){
 				$model->{$this->primaryKey} = $seqId;
 			}
-			$result = $this->saveModel($model);
 		}
-		
+		$result = $this->saveModel($model);
 		if(!empty($this->primaryKey) && $result && empty($seqId)) {
 			try {
 				$sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];

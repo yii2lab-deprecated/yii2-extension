@@ -33,7 +33,6 @@ class BaseCoreRepository extends BaseRestRepository
 		$headers[ClientHelper::IP_HEADER_KEY] = ClientHelper::getIpFromRequest();
 		$requestEntity->headers = $headers;
 		$responseEntity = parent::sendRequest($requestEntity);
-		prr($responseEntity->data,1,1);
 		return $responseEntity;
 	}
 

@@ -14,7 +14,7 @@ use yii2woop\service\domain\v3\interfaces\SearchInterface;
 class ClientHelper
 {
 
-	const IP_HEADER_KEY = 'ip_address';
+	const IP_HEADER_KEY = 'ip-address';
 	const LOCALHOST_IP = '127.0.0.1';
 
 	public static function setLocalStorage($key, $value)

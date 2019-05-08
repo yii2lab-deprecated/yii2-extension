@@ -154,7 +154,7 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 		try {
 			$tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
 			$schema = EnvService::get('servers.db.main.defaultSchema');
-			$sequenceName = Yii::$app->db->createCommand('SELECT ' . 'get_sequence_name(\'' . $schema . '.' . $tableName . '\')')->query();
+			$sequenceName = Yii::$app->db->createCommand('SELECT ' . 'get_sequence_name(\'' . $tableName . '\')')->query();
 			$sequenceName = $sequenceName->read();
 			if(empty($sequenceName['get_sequence_name'])) {
 				Yii::warning($tableName . ' sequence is empty');

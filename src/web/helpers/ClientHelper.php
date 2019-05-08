@@ -116,7 +116,6 @@ class ClientHelper
 		}
 		$ip = self::getIpFromRequest();
 		if ($ip) {
-			Yii::warning('come_from getIpFromRequest  = ' .$ip,__METHOD__);
 			return $ip;
 		}
 	}
@@ -133,17 +132,13 @@ class ClientHelper
 	public static function getIpFromRequest($ip = null)
 	{
 		if (self::isConsole()) {
-			Yii::warning("bad",__METHOD__);
 			return self::LOCALHOST_IP;
 		}
 		if ($_SERVER['REMOTE_ADDR'] == env('servers.nat.address') && isset($_SERVER['HTTP_CLIENT_IP'])) {
 			$clientIp = $_SERVER['HTTP_CLIENT_IP'];
-			Yii::warning('strange',__METHOD__);
 		} else {
 			$clientIp = $_SERVER['REMOTE_ADDR'];
-			Yii::warning('good',__METHOD__);
 		}
-		Yii::warning($clientIp,__METHOD__);
 		return $clientIp;
 	}
 

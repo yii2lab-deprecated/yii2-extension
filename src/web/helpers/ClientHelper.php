@@ -111,7 +111,6 @@ class ClientHelper
 		}
 		$ip = self::getIpFromHeader();
 		if ($ip) {
-			Yii::warning('come_from header  = ' .$ip,__METHOD__);
 			return $ip;
 		}
 		$ip = self::getIpFromRequest();

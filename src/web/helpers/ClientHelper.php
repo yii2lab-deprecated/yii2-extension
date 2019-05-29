@@ -156,8 +156,21 @@ class ClientHelper
 	 * @throws BadRequestHttpException
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	public static function getQueryPostMerge($getParams, SearchInterface $className)
+	public static function getQueryPostMerge($params, SearchInterface $className)
 	{
+		foreach ($params as $key => $value) {
+			if (!in_array($key, $className::affordVariables())) {
+                unset($params[$key]);
+			}
+		}
+		$query = self::getQueryFromRequest($params);
+        $params = self::unsetParams($params);
+		$query->whereFromCondition($params);
+
+		return $query;
+	}
+
+	public static function getParamsMerge($getParams){
 		$postParams = Yii::$app->request->getBodyParams();
 		foreach ($getParams as $key => $getParam) {
 			if (empty($getParam)) {
@@ -165,15 +178,17 @@ class ClientHelper
 			}
 		}
 		$params = array_merge($postParams, $getParams);
-
-		foreach ($params as $key => $value) {
-			if (!in_array($key, $className::affordVariables())) {
-				throw new BadRequestHttpException('Переданы недопустимые параметры');
-			}
-		}
-		$query = self::getQueryFromRequest($params);
-		unset($params['expand']);
-		$query->whereFromCondition($params);
-		return $query;
+		return $params;
 	}
+
+
+	private static function unsetParams($params){
+        unset($params['expand']);
+        unset($params['per-page']);
+        unset($params['page']);
+        unset($params['offset']);
+        unset($params['limit']);
+
+        return $params;
+    }
 }

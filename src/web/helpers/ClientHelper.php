@@ -168,12 +168,23 @@ class ClientHelper
 
 		foreach ($params as $key => $value) {
 			if (!in_array($key, $className::affordVariables())) {
-				throw new BadRequestHttpException('Переданы недопустимые параметры');
+                unset($params[$key]);
 			}
 		}
 		$query = self::getQueryFromRequest($params);
-		unset($params['expand']);
+        $params = self::unsetParams($params);
 		$query->whereFromCondition($params);
+
 		return $query;
 	}
+
+	private static function unsetParams($params){
+        unset($params['expand']);
+        unset($params['per-page']);
+        unset($params['page']);
+        unset($params['offset']);
+        unset($params['limit']);
+
+        return $params;
+    }
 }

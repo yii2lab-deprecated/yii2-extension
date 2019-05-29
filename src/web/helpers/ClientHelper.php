@@ -156,16 +156,8 @@ class ClientHelper
 	 * @throws BadRequestHttpException
 	 * @throws \yii\base\InvalidConfigException
 	 */
-	public static function getQueryPostMerge($getParams, SearchInterface $className)
+	public static function getQueryPostMerge($params, SearchInterface $className)
 	{
-		$postParams = Yii::$app->request->getBodyParams();
-		foreach ($getParams as $key => $getParam) {
-			if (empty($getParam)) {
-				unset($getParams[$key]);
-			}
-		}
-		$params = array_merge($postParams, $getParams);
-
 		foreach ($params as $key => $value) {
 			if (!in_array($key, $className::affordVariables())) {
                 unset($params[$key]);
@@ -177,6 +169,18 @@ class ClientHelper
 
 		return $query;
 	}
+
+	public static function getParamsMerge($getParams){
+		$postParams = Yii::$app->request->getBodyParams();
+		foreach ($getParams as $key => $getParam) {
+			if (empty($getParam)) {
+				unset($getParams[$key]);
+			}
+		}
+		$params = array_merge($postParams, $getParams);
+		return $params;
+	}
+
 
 	private static function unsetParams($params){
         unset($params['expand']);

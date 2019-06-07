@@ -81,7 +81,7 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
             if ($seqId) {
                 $model->{$this->primaryKey} = $seqId;
                 if(empty($entity->id) ){
-					$entity->$this->primaryKey = $seqId;
+					$entity->{$this->primaryKey} = $seqId;
 				}
             }
 

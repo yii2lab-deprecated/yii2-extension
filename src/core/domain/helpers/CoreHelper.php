@@ -52,8 +52,9 @@ class CoreHelper {
 		$headers[HttpHeaderEnum::LANGUAGE] = Yii::$app->language;
 		$headers[HttpHeaderEnum::TIME_ZONE] = Yii::$app->timeZone;
 		$headers[HttpHeaderEnum::IP_ADDRESS] = ClientHelper::getIpFromRequest();
-		if(Yii::$app->request->headers->get(HttpHeaderEnum::PARTNER_NAME)){
-			$headers[HttpHeaderEnum::PARTNER_NAME]  = Yii::$app->request->headers->get(HttpHeaderEnum::PARTNER_NAME);
+		$partnerName = Yii::$app->request->headers->get(HttpHeaderEnum::PARTNER_NAME);
+		if($partnerName){
+			$headers[HttpHeaderEnum::PARTNER_NAME]  = $partnerName;
 		} else{
 			$headers[HttpHeaderEnum::PARTNER_NAME]  = 'wooppay_kz';
 		}

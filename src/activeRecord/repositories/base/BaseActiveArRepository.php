@@ -80,7 +80,7 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 			$seqId = $this->seqGenerate();
 			if ($seqId) {
 				if (property_exists(get_class($this->model), $this->primaryKey)){
-					$model->{$this->primaryKey} = $seqId;
+					$model->setAttribute($this->primaryKey, $seqId);
 				}
 				if (empty($entity->id)) {
 					$entity->{$this->primaryKey} = $seqId;

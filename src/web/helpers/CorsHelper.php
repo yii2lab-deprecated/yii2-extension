@@ -42,6 +42,8 @@ class CorsHelper {
 					HttpHeaderEnum::TOTAL_COUNT,
 					HttpHeaderEnum::PAGE_COUNT,
 					HttpHeaderEnum::CURRENT_PAGE,
+					HttpHeaderEnum::PARTNER_NAME,
+					HttpHeaderEnum::PARENT,
 					HttpHeaderEnum::PER_PAGE,
 					HttpHeaderEnum::LANGUAGE,
 				],

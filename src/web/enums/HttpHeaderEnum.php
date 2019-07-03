@@ -18,6 +18,7 @@ class HttpHeaderEnum extends BaseEnum {
 	const X_REQUESTED_WITH = 'X-Requested-With';
 	const LANGUAGE = 'language';
 	const PARTNER_NAME = 'partner-name';
+	const PARENT = 'parent';
 	const IP_ADDRESS = 'ip-address';
 
 }

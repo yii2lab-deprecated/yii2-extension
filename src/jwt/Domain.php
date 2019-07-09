@@ -17,8 +17,8 @@ class Domain extends \yii2lab\domain\Domain {
 	public function config() {
 		return [
 			'repositories' => [
-                'token' => 'jwt',
-                'profile' => Driver::ENV,
+                'token' =>  'jwt',
+                'profile' => YII_ENV != YII_ENV_TEST ? Driver::ENV : Driver::TEST,
 			],
 			'services' => [
                 'token',

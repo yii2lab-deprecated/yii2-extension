@@ -96,9 +96,15 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
                     $id = Yii::$app->db->getLastInsertID($sequenceName);
                     $entity->{$this->primaryKey} = $id;
                 } catch (\Exception $e) {
+					if(!empty(Yii::$app->db->transaction)){
+						Yii::$app->db->transaction->rollBack();
+					}
                     Yii::error($e->getMessage());
                 }
             } catch (\Exception $e) {
+				if(!empty(Yii::$app->db->transaction)){
+					Yii::$app->db->transaction->rollBack();
+				}
                 throw new BadQueryHttpException('Postgre sequence error', 7, $e);
             }
         }
@@ -170,6 +176,9 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 
     public function seqGenerate()
     {
+//    	if(YII_ENV_TEST){
+//    		return null;
+//		}
         try {
             $tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
             $getSequenceNameQeury = Yii::$app->db->createCommand('SELECT ' . 'get_sequence_name(:tableName)');
@@ -184,6 +193,10 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
             $command->bindParam('sequenceName', $sequenceSchemaName);
 			$result = $command->query()->read();
 		} catch (\Exception $e) {
+        	if(!empty(Yii::$app->db->transaction)){
+				Yii::$app->db->transaction->rollBack();
+			}
+
             Yii::error($e->getMessage());
             return null;
         }

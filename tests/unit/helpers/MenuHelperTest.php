@@ -3,6 +3,7 @@ namespace tests\unit\helpers;
 
 use yii2lab\test\fixtures\UserAssignmentFixture;
 use yii2lab\test\fixtures\UserFixture;
+use yii2lab\test\fixtures\UserSecurityFixture;
 use yii2lab\test\Test\Unit;
 use yii2lab\extension\menu\helpers\MenuHelper;
 use yii2lab\test\helpers\DataHelper;
@@ -19,11 +20,15 @@ class MenuHelperTest extends Unit
 		$this->tester->haveFixtures([
 			[
 				'class' => UserFixture::class,
-				'dataFile' => '@vendor/yii2lab/yii2-test/src/fixtures/data/user.php'
+				'dataFile' => '@vendor/yii2module/yii2-account/src/domain/v2/fixtures/data/user.php'
 			],
 			[
 				'class' => UserAssignmentFixture::class,
-				'dataFile' => '@vendor/yii2lab/yii2-test/src/fixtures/data/user_assignment.php'
+				'dataFile' => '@vendor/yii2module/yii2-account/src/domain/v2/fixtures/data/user_assignment.php'
+			],
+			[
+				'class' => UserSecurityFixture::class,
+				'dataFile' => '@vendor/yii2module/yii2-account/src/domain/v2/fixtures/data/user_security.php'
 			],
 		]);
 	}

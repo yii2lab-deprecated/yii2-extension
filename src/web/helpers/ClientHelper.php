@@ -56,7 +56,7 @@ class ClientHelper
 		$data['browser'] = ArrayHelper::getValue($agent, 'browser');
 		$data['language'] = Yii::$app->request->getPreferredLanguage();
 		if(Yii::$app->request->headers->get(HttpHeaderEnum::LANGUAGE)){
-			$data['language'] = Yii::$app->request->getPreferredLanguage(Yii::$app->request->headers->get(HttpHeaderEnum::LANGUAGE));
+			$data['language'] = Yii::$app->request->headers->get(HttpHeaderEnum::LANGUAGE);
 		}
 		$data['operationSystem'] = ArrayHelper::getValue($agent, 'os');
 		return $data;

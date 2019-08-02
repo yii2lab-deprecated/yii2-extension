@@ -9,6 +9,9 @@ use yii\web\BadRequestHttpException;
 use yii\web\View;
 use yii2lab\domain\data\GetParams;
 use yii2lab\domain\data\Query;
+use yii2lab\extension\web\enums\HtmlEnum;
+use yii2lab\extension\web\enums\HttpHeaderEnum;
+use yii2lab\extension\yii\helpers\ArrayHelper;
 use yii2woop\service\domain\v3\interfaces\SearchInterface;
 
 class ClientHelper
@@ -44,6 +47,19 @@ class ClientHelper
 			}
 		}
 		return $uaAttributes;
+	}
+	public static function logFormatUserInfo()
+	{
+		$agent = self::getAgentInfo(1);
+		$data['ip'] =  ClientHelper::ip();
+		$data['device'] = ArrayHelper::getValue($agent, 'platform');
+		$data['browser'] = ArrayHelper::getValue($agent, 'browser');
+		$data['language'] = Yii::$app->request->getPreferredLanguage();
+		if(Yii::$app->request->headers->get(HttpHeaderEnum::LANGUAGE)){
+			$data['language'] = Yii::$app->request->getPreferredLanguage(Yii::$app->request->headers->get(HttpHeaderEnum::LANGUAGE));
+		}
+		$data['operationSystem'] = ArrayHelper::getValue($agent, 'os');
+		return $data;
 	}
 
 	public static function getCurrentPage($offset, $limit)

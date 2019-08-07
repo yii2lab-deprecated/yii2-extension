@@ -20,5 +20,6 @@ class HttpHeaderEnum extends BaseEnum {
 	const PARTNER_NAME = 'partner-name';
 	const PARENT = 'parent';
 	const IP_ADDRESS = 'ip-address';
+	const USER_AGENT = 'user-agent';
 
 }

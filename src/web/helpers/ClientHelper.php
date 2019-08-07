@@ -3,12 +3,13 @@
 namespace yii2lab\extension\web\helpers;
 
 use InvalidArgumentException;
-use xj\ua\UserAgent;
+
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\View;
 use yii2lab\domain\data\GetParams;
 use yii2lab\domain\data\Query;
+use yii2lab\extension\core\domain\helpers\UserAgent;
 use yii2lab\extension\web\enums\HtmlEnum;
 use yii2lab\extension\web\enums\HttpHeaderEnum;
 use yii2lab\extension\yii\helpers\ArrayHelper;
@@ -54,11 +55,11 @@ class ClientHelper
 		$data['ip'] =  ClientHelper::ip();
 		$data['device'] = ArrayHelper::getValue($agent, 'platform');
 		$data['browser'] = ArrayHelper::getValue($agent, 'browser');
+		$data['version'] = ArrayHelper::getValue($agent, 'version');
 		$data['language'] = Yii::$app->request->getPreferredLanguage();
 		if(Yii::$app->request->headers->get(HttpHeaderEnum::LANGUAGE)){
 			$data['language'] = Yii::$app->request->headers->get(HttpHeaderEnum::LANGUAGE);
 		}
-		$data['operationSystem'] = ArrayHelper::getValue($agent, 'os');
 		return $data;
 	}
 

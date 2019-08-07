@@ -50,14 +50,14 @@ class UserAgent extends Model
 
 		$additionalParseData = self::parse($userAgent);
 		if (empty($result['platform'])) {
-			$result['platform'] = $additionalParseData[1];
-			$result ['language'] = $additionalParseData[3];
+			$result['platform'] = !empty($additionalParseData[1]) ? $additionalParseData[1] : '';
+			$result ['language'] = !empty($additionalParseData[3]) ?$additionalParseData[3]: '';
 		}
 		if (strlen($result['browser']) < 3) {
-			$result['browser'] = $additionalParseData[2];
+			$result['browser'] = !empty($additionalParseData[2]) ?$additionalParseData[2]: '';
 		}
 		if (empty($result['version'])) {
-			$result['version'] = $additionalParseData[0];
+			$result['version'] =!empty($additionalParseData[0]) ?  $additionalParseData[0]: '';
 		}
 
 		return $result;

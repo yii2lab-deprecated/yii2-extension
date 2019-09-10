@@ -127,7 +127,7 @@ class TokenTest extends Unit
         $decoded = \App::$domain->jwt->token->decodeRaw($token);
         $this->tester->assertRegExp('#[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}#', $decoded->header->kid);
         $this->tester->assertNotEmpty($decoded->sig);
-        $this->tester->assertArraySubset([
+        TestHelper::assertArraySubset([
             'sig' => base64_decode('XjAxVetPxtldVYLQwkVmKNwbjlatLD5yo/PXfHcwEHo='),
             'header' => [
                 'typ' => 'JWT',
@@ -158,7 +158,7 @@ class TokenTest extends Unit
         $expected = DataHelper::loadForTest(self::PACKAGE, __METHOD__, $tokenEntity->toArray());
         unset($expected['token']);
         unset($expected['expire_at']);
-        $this->tester->assertArraySubset($expected, $tokenEntity->toArray());
+        TestHelper::assertArraySubset($expected, $tokenEntity->toArray());
         $this->tester->assertRegExp('#^[a-zA-Z0-9-_\.]+$#', $tokenEntity->token);
     }
 

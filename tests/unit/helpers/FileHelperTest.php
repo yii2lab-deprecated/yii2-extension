@@ -1,6 +1,7 @@
 <?php
 namespace tests\unit\helpers;
 
+use yii2lab\test\helpers\TestHelper;
 use yii2lab\test\Test\Unit;
 use yii2lab\extension\yii\helpers\FileHelper;
 

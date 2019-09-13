@@ -93,6 +93,9 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
             try {
                 $sequenceName = empty($this->tableSchema['sequenceName']) ? '' : $this->tableSchema['sequenceName'];
                 try {
+					if(YII_ENV_TEST){
+						return $entity;
+					}
                     $id = Yii::$app->db->getLastInsertID($sequenceName);
                     $entity->{$this->primaryKey} = $id;
                 } catch (\Exception $e) {
@@ -176,9 +179,9 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 
     public function seqGenerate()
     {
-//    	if(YII_ENV_TEST){
-//    		return null;
-//		}
+    	if(YII_ENV_TEST){
+    		return null;
+		}
         try {
             $tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
             $getSequenceNameQeury = Yii::$app->db->createCommand('SELECT ' . 'get_sequence_name(:tableName)');

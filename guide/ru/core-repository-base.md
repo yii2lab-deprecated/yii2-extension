@@ -13,7 +13,7 @@ BaseCoreRepository
 ## Пример
 
 ```php
-use yii2lab\core\domain\repositories\base\BaseCoreRepository;
+use yii2lab\extension\core\domain\repositories\base\BaseActiveCoreRepository ;
 use yii2lab\misc\enums\HttpMethodEnum;
 use yii2lab\rest\domain\entities\RequestEntity;
 use yii2module\account\domain\v2\entities\LoginEntity;

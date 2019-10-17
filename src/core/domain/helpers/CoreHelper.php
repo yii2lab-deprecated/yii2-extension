@@ -58,8 +58,6 @@ class CoreHelper {
 
 		if($partnerName){
 			$headers[HttpHeaderEnum::PARTNER_NAME]  = $partnerName;
-		} else{
-			$headers[HttpHeaderEnum::PARTNER_NAME]  = 'wooppay_kz';
 		}
 		if($partnerName){
 			$headers[HttpHeaderEnum::PARENT]  = $parent;

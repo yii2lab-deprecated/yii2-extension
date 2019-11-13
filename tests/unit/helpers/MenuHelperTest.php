@@ -15,23 +15,7 @@ class MenuHelperTest extends Unit
 	const PACKAGE = 'yii2lab/yii2-extension';
 	const ADMIN_ID = 381949;
 	const USER_ID = 381070;
-	public function _before()
-	{
-		$this->tester->haveFixtures([
-			[
-				'class' => UserFixture::class,
-				'dataFile' => '@vendor/yii2module/yii2-account/src/domain/v2/fixtures/data/user.php'
-			],
-			[
-				'class' => UserAssignmentFixture::class,
-				'dataFile' => '@vendor/yii2module/yii2-account/src/domain/v2/fixtures/data/user_assignment.php'
-			],
-			[
-				'class' => UserSecurityFixture::class,
-				'dataFile' => '@vendor/yii2module/yii2-account/src/domain/v2/fixtures/data/user_security.php'
-			],
-		]);
-	}
+
 	public function testGenerateMenu()
 	{
 		$menu = DataHelper::load(self::PACKAGE, 'store/source/menu.php');

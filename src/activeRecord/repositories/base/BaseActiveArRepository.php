@@ -179,9 +179,9 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 
     public function seqGenerate()
     {
-    	if(YII_ENV_TEST){
-    		return null;
-		}
+//    	if(YII_ENV_TEST){
+//    		return null;
+//		}
         try {
             $tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
             $getSequenceNameQeury = Yii::$app->db->createCommand('SELECT ' . 'get_sequence_name(:tableName)');
@@ -191,8 +191,12 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
                 Yii::warning($tableName . ' sequence is empty');
                 return null;
             }
-            $sequenceSchemaName = EnvService::get('servers.db.main.defaultSchema') . '.' . $sequenceName['get_sequence_name'];
-			$command = Yii::$app->db->createCommand('SELECT nextval(:sequenceName)');
+			if(YII_ENV_TEST){
+				$sequenceSchemaName = EnvService::get('servers.db.test.defaultSchema') . '.' . $sequenceName['get_sequence_name'];
+			} else {
+				$sequenceSchemaName = EnvService::get('servers.db.main.defaultSchema') . '.' . $sequenceName['get_sequence_name'];
+			}
+            $command = Yii::$app->db->createCommand('SELECT nextval(:sequenceName)');
             $command->bindParam('sequenceName', $sequenceSchemaName);
 			$result = $command->query()->read();
 		} catch (\Exception $e) {

@@ -42,7 +42,7 @@ class ActionColumn extends \yii\grid\ActionColumn
 					'aria-label' => Yii::t('yii', 'View'),
 					'data-pjax' => '0',
 				], $this->buttonOptions);
-				return Html::a(Html::fa('eye'), $url, $options);
+				return Html::a(Html::fa('address-card'), $url, $options);
 			};
 		}
 		if (!isset($this->buttons['update'])) {

@@ -76,8 +76,8 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
 				$this->primaryKey = $aliases[$this->primaryKey];
 			};
 
-			$seqId = null;
-			$seqId = $this->seqGenerate();
+			$seqId = $this->hasSequence() ? $this->seqGenerate() : null;
+
 			if ($seqId) {
 				if (property_exists(get_class($this->model), $this->primaryKey)){
 					$model->setAttribute($this->primaryKey, $seqId);
@@ -182,27 +182,38 @@ abstract class BaseActiveArRepository extends BaseArRepository implements CrudIn
     	if(YII_ENV_TEST){
     		return null;
 		}
-        try {
-            $tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
-            $getSequenceNameQeury = Yii::$app->db->createCommand('SELECT ' . 'get_sequence_name(:tableName)');
-            $getSequenceNameQeury->bindParam('tableName', $tableName);
-            $sequenceName = $getSequenceNameQeury->query()->read();
-            if (empty($sequenceName['get_sequence_name'])) {
-                Yii::warning($tableName . ' sequence is empty');
-                return null;
-            }
-            $sequenceSchemaName = EnvService::get('servers.db.main.defaultSchema') . '.' . $sequenceName['get_sequence_name'];
-			$command = Yii::$app->db->createCommand('SELECT nextval(:sequenceName)');
-            $command->bindParam('sequenceName', $sequenceSchemaName);
-			$result = $command->query()->read();
-		} catch (\Exception $e) {
-        	if(!empty(Yii::$app->db->transaction)){
-				Yii::$app->db->transaction->rollBack();
-			}
 
-            Yii::error($e->getMessage());
+    	$result = $this->getSequence();
+
+        return $result['nextval'];
+    }
+
+    public function hasSequence()
+    {
+        try {
+            return $this->getSequence();
+        } catch (\Exception $e) {
+            if(!empty(Yii::$app->db->transaction)){
+                Yii::$app->db->transaction->rollBack();
+            }
+
+            return false;
+        }
+    }
+
+    public function getSequence()
+    {
+        $tableName = preg_replace("/[{}%]/", "", $this->model->tableName());
+        $getSequenceNameQuery = Yii::$app->db->createCommand('SELECT ' . 'get_sequence_name(:tableName)');
+        $getSequenceNameQuery->bindParam('tableName', $tableName);
+        $sequenceName = $getSequenceNameQuery->query()->read();
+        if (empty($sequenceName['get_sequence_name'])) {
+            Yii::warning($tableName . ' sequence is empty');
             return null;
         }
-        return $result['nextval'];
+        $sequenceSchemaName = EnvService::get('servers.db.main.defaultSchema') . '.' . $sequenceName['get_sequence_name'];
+        $command = Yii::$app->db->createCommand('SELECT nextval(:sequenceName)');
+        $command->bindParam('sequenceName', $sequenceSchemaName);
+        return $command->query()->read();
     }
 }
